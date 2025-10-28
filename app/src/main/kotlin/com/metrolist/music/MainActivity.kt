@@ -111,7 +111,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.util.Consumer
 import androidx.core.view.WindowCompat
-import androidx.datastore.preferences.core.edit
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -240,12 +239,18 @@ class MainActivity : ComponentActivity() {
                 if (service is MusicBinder) {
                     playerConnection =
                         PlayerConnection(this@MainActivity, service, database, lifecycleScope)
+                        
+                    //zoo
+                    staticPlayerConnection = playerConnection
                 }
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
                 playerConnection?.dispose()
                 playerConnection = null
+                
+                //zoo
+                staticPlayerConnection = null
             }
         }
 
@@ -1374,103 +1379,19 @@ class MainActivity : ComponentActivity() {
         const val ACTION_SEARCH = "com.metrolist.music.action.SEARCH"
         const val ACTION_LIBRARY = "com.metrolist.music.action.LIBRARY"
         
-        /*@JvmStatic
-        fun clearQueue(activity: MainActivity) {
-            activity.lifecycleScope.launch {
-                activity.playerConnection?.let { connection ->
-                    connection.player.clearMediaItems() 
-                    connection.service.clearAutomix()
-                }
-            }
-        }*/
-    
-    
-    	// MainActivity.kt, inside companion object
-
-		/*@JvmStatic
-		fun clearQueue(activity: MainActivity) {
-		    activity.lifecycleScope.launch {
-		        val context = activity.applicationContext
+        //zoo
+        private var staticPlayerConnection: PlayerConnection? = null
+  		@JvmStatic
+  		fun ClearQueue() {
+    		staticPlayerConnection?.let {
+      			connection ->
+      			connection.service.clearAutomix()
+      			connection.player.stop()
+      			connection.player.clearMediaItems()
+    		}
+  		}
         
-		        activity.playerConnection?.let { connection ->
-		            connection.player.pause() 
-		            connection.player.seekTo(0)
-		            connection.player.clearMediaItems() 
-		            connection.service.clearAutomix()
-              
-		            context.stopService(Intent(context, MusicService::class.java))
-		        }
-
-		        val persistentQueueFile = context.filesDir.resolve("persistent_queue.data")
-		        val persistentAutomixFile = context.filesDir.resolve("persistent_automix.data")
-		        val persistentPlayerStateFile = context.filesDir.resolve("persistent_player_state.data")
         
-		        persistentQueueFile.delete()
-		        persistentAutomixFile.delete()
-		        persistentPlayerStateFile.delete()
-		    }
-		}*/
-
-
-
-    @JvmStatic
-    fun clearQueue(activity: MainActivity) {
-        activity.lifecycleScope.launch {
-            val context = activity.applicationContext
-
-            activity.playerConnection?.let { connection ->
-                try {
-                    connection.player.pause()
-                    connection.player.seekTo(0)
-                    connection.player.clearMediaItems()
-                    connection.service.clearAutomix()
-                } catch (_: Exception) {}
-
-                try {
-                    context.stopService(
-                        android.content.Intent(
-                            context,
-                            com.metrolist.music.playback.MusicService::class.java
-                        )
-                    )
-                } catch (_: Exception) {}
-
-                activity.playerConnection = null
-            }
-
-            withContext(kotlinx.coroutines.Dispatchers.IO) {
-                context.filesDir.resolve("persistent_queue.data").delete()
-                context.filesDir.resolve("persistent_automix.data").delete()
-                context.filesDir.resolve("persistent_player_state.data").delete()
-            }
-
-            kotlinx.coroutines.delay(300)
-
-            val intent = Intent(context, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            }
-            context.startActivity(intent)
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
     }
 }
 
