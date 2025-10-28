@@ -200,7 +200,7 @@ fun SwitchPreference(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 enabled = isEnabled,
-                thumbContent = {
+                /*thumbContent = {
                     Icon(
                         painter = painterResource(
                             id = if (checked) R.drawable.check else R.drawable.close
@@ -208,7 +208,7 @@ fun SwitchPreference(
                         contentDescription = null,
                         modifier = Modifier.size(SwitchDefaults.IconSize),
                     )
-                }
+                }*/
             )
         },
         onClick = { onCheckedChange(!checked) },
