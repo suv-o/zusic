@@ -298,7 +298,6 @@ class MainActivity : ComponentActivity() {
         
         Web.Init(this)
         
-        
         window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -327,14 +326,14 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = true)
+            val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = false)
 
             LaunchedEffect(checkForUpdates) {
                 if (checkForUpdates) {
                     withContext(Dispatchers.IO) {
                         if (System.currentTimeMillis() - Updater.lastCheckTime > 1.days.inWholeMilliseconds) {
-                            val updatesEnabled = dataStore.get(CheckForUpdatesKey, true)
-                            val notifEnabled = dataStore.get(UpdateNotificationsEnabledKey, true)
+                            val updatesEnabled = dataStore.get(CheckForUpdatesKey, false)
+                            val notifEnabled = dataStore.get(UpdateNotificationsEnabledKey, false)
                             if (!updatesEnabled) return@withContext
                             Updater.getLatestVersionName().onSuccess {
                                 latestVersionName = it
@@ -779,7 +778,7 @@ class MainActivity : ComponentActivity() {
                                                         contentDescription = stringResource(R.string.stats)
                                                     )
                                                 }
-                                                IconButton(onClick = { showAccountDialog = true }) {
+                                                /*IconButton(onClick = { showAccountDialog = true }) {
                                                     BadgedBox(badge = {
                                                         if (latestVersionName != BuildConfig.VERSION_NAME) {
                                                             Badge()
@@ -801,6 +800,12 @@ class MainActivity : ComponentActivity() {
                                                             )
                                                         }
                                                     }
+                                                }*/
+                                            	IconButton(onClick = { navController.navigate("settings") }) {
+                                                    Icon(
+                                                        painter = painterResource(R.drawable.account),
+                                                        contentDescription = stringResource(R.string.account)
+                                                    )
                                                 }
                                             },
                                             scrollBehavior = searchBarScrollBehavior,
