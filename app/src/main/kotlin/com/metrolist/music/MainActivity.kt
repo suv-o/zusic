@@ -1373,7 +1373,7 @@ class MainActivity : ComponentActivity() {
         const val ACTION_SEARCH = "com.metrolist.music.action.SEARCH"
         const val ACTION_LIBRARY = "com.metrolist.music.action.LIBRARY"
         
-        @JvmStatic
+        /*@JvmStatic
         fun clearQueue(activity: MainActivity) {
             activity.lifecycleScope.launch {
                 activity.playerConnection?.let { connection ->
@@ -1381,7 +1381,41 @@ class MainActivity : ComponentActivity() {
                     connection.service.clearAutomix()
                 }
             }
-        }
+        }*/
+    
+    
+    	// MainActivity.kt, inside companion object
+
+		@JvmStatic
+		fun clearQueue(activity: MainActivity) {
+		    activity.lifecycleScope.launch {
+		        val context = activity.applicationContext
+        
+		        activity.playerConnection?.let { connection ->
+		            connection.player.pause() 
+		            connection.player.seekTo(0)
+		            connection.player.clearMediaItems() 
+		            connection.service.clearAutomix()
+              
+		            context.stopService(Intent(context, MusicService::class.java))
+		        }
+
+		        val persistentQueueFile = context.filesDir.resolve("persistent_queue.data")
+		        val persistentAutomixFile = context.filesDir.resolve("persistent_automix.data")
+		        val persistentPlayerStateFile = context.filesDir.resolve("persistent_player_state.data")
+        
+		        persistentQueueFile.delete()
+		        persistentAutomixFile.delete()
+		        persistentPlayerStateFile.delete()
+		    }
+		}
+
+    
+    
+    
+    
+    
+    
     
     }
 }
