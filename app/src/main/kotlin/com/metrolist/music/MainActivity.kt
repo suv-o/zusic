@@ -111,6 +111,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.util.Consumer
 import androidx.core.view.WindowCompat
+import androidx.datastore.preferences.core.edit
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -1411,60 +1412,46 @@ class MainActivity : ComponentActivity() {
 		}*/
 
 
-		// MainActivity.kt, inside companion object
 
-@JvmStatic
-fun clearQueue(activity: MainActivity) {
-    activity.lifecycleScope.launch {
-        val context = activity.applicationContext
-        
-        // --- 1. Settings Clear (Auto-LoadMore Rokne Ke Liye) ---
-        // AutoLoadMore setting ko OFF karein. Yeh MusicService ke logic ko fail karega.
-        try {
-            context.dataStore.edit { settings ->
-                // com.metrolist.music.constants.AutoLoadMoreKey ko use kiya gaya hai.
-                settings[androidx.datastore.preferences.core.booleanPreferencesKey("AutoLoadMoreKey")] = false
+    @JvmStatic
+    fun clearQueue(activity: MainActivity) {
+        activity.lifecycleScope.launch {
+            val context = activity.applicationContext
+
+            activity.playerConnection?.let { connection ->
+                try {
+                    connection.player.pause()
+                    connection.player.seekTo(0)
+                    connection.player.clearMediaItems()
+                    connection.service.clearAutomix()
+                } catch (_: Exception) {}
+
+                try {
+                    context.stopService(
+                        android.content.Intent(
+                            context,
+                            com.metrolist.music.playback.MusicService::class.java
+                        )
+                    )
+                } catch (_: Exception) {}
+
+                activity.playerConnection = null
             }
-        } catch (e: Exception) {
-            // DataStore access fail hone par ignore karein
-        }
 
-        // --- 2. Player Control, Automix Clear Aur Force Stop ---
-        activity.playerConnection?.let { connection ->
-            connection.player.pause() 
-            connection.player.seekTo(0)
-            connection.player.clearMediaItems() 
-            
-            // ✅ Existing Method Call: Automix items ko clear karein
-            connection.service.clearAutomix() 
-            
-            // ⚠️ Critical Step 1: Service ko stop karne ka command dein (Notification hatane ke liye)
-            context.stopService(android.content.Intent(context, com.metrolist.music.playback.MusicService::class.java))
-            
-            // ⚠️ Critical Step 2: Connection object ko null set karein
-            // Isse app ka MediaController service se disconnect ho jayega.
-            activity.playerConnection = null 
-        }
+            withContext(kotlinx.coroutines.Dispatchers.IO) {
+                context.filesDir.resolve("persistent_queue.data").delete()
+                context.filesDir.resolve("persistent_automix.data").delete()
+                context.filesDir.resolve("persistent_player_state.data").delete()
+            }
 
-        // --- 3. Teeno Persistent Files Delete Karein (Restore Rokne Ke Liye) ---
-        // Files ke hardcoded naam use kiye gaye hain.
-        val persistentQueueFile = context.filesDir.resolve("persistent_queue.data")
-        val persistentAutomixFile = context.filesDir.resolve("persistent_automix.data")
-        val persistentPlayerStateFile = context.filesDir.resolve("persistent_player_state.data")
-        
-        // Yeh line IO thread mein chalna behtar hai.
-        withContext(kotlinx.coroutines.Dispatchers.IO) {
-            persistentQueueFile.delete()
-            persistentAutomixFile.delete() 
-            persistentPlayerStateFile.delete()
-        }
+            kotlinx.coroutines.delay(300)
 
-        // Thoda sa delay de dein taaki system ke paas stop hone ka time ho.
-        kotlinx.coroutines.delay(500) 
+            val intent = Intent(context, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            context.startActivity(intent)
+        }
     }
-}
-
-
 
 
 
