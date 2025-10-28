@@ -1386,7 +1386,7 @@ class MainActivity : ComponentActivity() {
     
     	// MainActivity.kt, inside companion object
 
-		@JvmStatic
+		/*@JvmStatic
 		fun clearQueue(activity: MainActivity) {
 		    activity.lifecycleScope.launch {
 		        val context = activity.applicationContext
@@ -1408,7 +1408,74 @@ class MainActivity : ComponentActivity() {
 		        persistentAutomixFile.delete()
 		        persistentPlayerStateFile.delete()
 		    }
-		}
+		}*/
+
+
+		// MainActivity.kt, inside companion object
+
+@JvmStatic
+fun clearQueue(activity: MainActivity) {
+    activity.lifecycleScope.launch {
+        val context = activity.applicationContext
+        
+        // --- 1. Settings Clear (Auto-LoadMore Rokne Ke Liye) ---
+        // AutoLoadMore setting ko OFF karein. Yeh MusicService ke logic ko fail karega.
+        try {
+            context.dataStore.edit { settings ->
+                // com.metrolist.music.constants.AutoLoadMoreKey ko use kiya gaya hai.
+                settings[androidx.datastore.preferences.core.booleanPreferencesKey("AutoLoadMoreKey")] = false
+            }
+        } catch (e: Exception) {
+            // DataStore access fail hone par ignore karein
+        }
+
+        // --- 2. Player Control, Automix Clear Aur Force Stop ---
+        activity.playerConnection?.let { connection ->
+            connection.player.pause() 
+            connection.player.seekTo(0)
+            connection.player.clearMediaItems() 
+            
+            // ✅ Existing Method Call: Automix items ko clear karein
+            connection.service.clearAutomix() 
+            
+            // ⚠️ Critical Step 1: Service ko stop karne ka command dein (Notification hatane ke liye)
+            context.stopService(android.content.Intent(context, com.metrolist.music.playback.MusicService::class.java))
+            
+            // ⚠️ Critical Step 2: Connection object ko null set karein
+            // Isse app ka MediaController service se disconnect ho jayega.
+            activity.playerConnection = null 
+        }
+
+        // --- 3. Teeno Persistent Files Delete Karein (Restore Rokne Ke Liye) ---
+        // Files ke hardcoded naam use kiye gaye hain.
+        val persistentQueueFile = context.filesDir.resolve("persistent_queue.data")
+        val persistentAutomixFile = context.filesDir.resolve("persistent_automix.data")
+        val persistentPlayerStateFile = context.filesDir.resolve("persistent_player_state.data")
+        
+        // Yeh line IO thread mein chalna behtar hai.
+        withContext(kotlinx.coroutines.Dispatchers.IO) {
+            persistentQueueFile.delete()
+            persistentAutomixFile.delete() 
+            persistentPlayerStateFile.delete()
+        }
+
+        // Thoda sa delay de dein taaki system ke paas stop hone ka time ho.
+        kotlinx.coroutines.delay(500) 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
     
