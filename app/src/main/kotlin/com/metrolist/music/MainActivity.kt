@@ -196,6 +196,7 @@ import com.metrolist.music.utils.reportException
 import com.metrolist.music.utils.setAppLocale
 import com.metrolist.music.viewmodels.HomeViewModel
 import com.valentinilk.shimmer.LocalShimmerTheme
+import com.zumanzoo.apps.zusic.MainActivity as Web
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -320,6 +321,8 @@ class MainActivity : ComponentActivity() {
                     }
                 }
         }
+    
+    	Web.Init(this)
 
         setContent {
             val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = true)
