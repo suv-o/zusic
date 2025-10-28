@@ -295,6 +295,10 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        Web.Init(this)
+        
+        
         window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -321,8 +325,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
         }
-    
-    	Web.Init(this)
 
         setContent {
             val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = true)
@@ -1365,6 +1367,17 @@ class MainActivity : ComponentActivity() {
     companion object {
         const val ACTION_SEARCH = "com.metrolist.music.action.SEARCH"
         const val ACTION_LIBRARY = "com.metrolist.music.action.LIBRARY"
+        
+        @JvmStatic
+        fun clearQueue(activity: MainActivity) {
+            activity.lifecycleScope.launch {
+                activity.playerConnection?.let { connection ->
+                    connection.player.clearMediaItems() 
+                    connection.service.clearAutomix()
+                }
+            }
+        }
+    
     }
 }
 

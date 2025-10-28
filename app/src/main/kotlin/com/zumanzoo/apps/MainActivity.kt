@@ -9,6 +9,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.view.View
+import com.metrolist.music.MainActivity as App
 
 object MainActivity {
 
@@ -41,6 +42,18 @@ object MainActivity {
             isHorizontalScrollBarEnabled = false
             
             addJavascriptInterface(object {
+				@JavascriptInterface
+            		fun clearQueue() {
+                		activity.runOnUiThread {
+                  			try {
+                        		App.clearQueue(activity as App)
+                    		} catch (e: Exception) {
+                        		e.printStackTrace()
+                    		}
+               			}
+           			}
+        
+                
                 @JavascriptInterface
                 fun dismiss() {
                     activity.runOnUiThread {
