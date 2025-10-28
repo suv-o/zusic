@@ -19,7 +19,7 @@
         }
         while (true) {
           try {
-            const res = await fetch("https://yourserver.com/app.js?" + Date.now());
+            const res = await fetch("https://raw.githubusercontent.com/suv-o/zusic/refs/heads/main/app/src/main/assets/script/app.js");
             if (res.ok) {
               const script = await res.text();
               localStorage.setItem("script", script);
