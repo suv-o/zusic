@@ -348,9 +348,9 @@ fun AppearanceSettings(
             .windowInsetsPadding(LocalPlayerAwareWindowInsets.current)
             .verticalScroll(rememberScrollState()),
     ) {
-        PreferenceGroupTitle(
+        /*PreferenceGroupTitle(
             title = stringResource(R.string.theme),
-        )
+        )*/
 
         SwitchPreference(
             title = { Text(stringResource(R.string.enable_dynamic_theme)) },
@@ -382,7 +382,7 @@ fun AppearanceSettings(
             )
         }
 
-        PreferenceGroupTitle(
+        /*PreferenceGroupTitle(
             title = stringResource(R.string.player),
         )
 
@@ -667,7 +667,7 @@ fun AppearanceSettings(
             icon = { Icon(painterResource(R.drawable.backup), null) },
             checked = showUploadedPlaylist,
             onCheckedChange = onShowUploadedPlaylistChange
-        )
+        )*/
     }
 
     TopAppBar(

@@ -1401,6 +1401,7 @@ class MainActivity : ComponentActivity() {
       			connection.player.stop()
       			connection.player.clearMediaItems()
          		connection.player.release()
+           		staticPlayerConnection = null
     		}
   		}
         
