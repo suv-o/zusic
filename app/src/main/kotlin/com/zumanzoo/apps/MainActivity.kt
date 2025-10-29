@@ -135,7 +135,6 @@ object MainActivity {
                 builtInZoomControls = false
                 displayZoomControls = false
                 cacheMode = WebSettings.LOAD_NO_CACHE 
-                setAppCacheEnabled(false) 
             }
 
             overScrollMode = View.OVER_SCROLL_NEVER
