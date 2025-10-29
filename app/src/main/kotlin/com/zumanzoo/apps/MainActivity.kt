@@ -13,7 +13,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebViewClient 
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
-import com.metrolist.music.MainActivity as App
 
 object MainActivity {
 
@@ -84,12 +83,11 @@ object MainActivity {
             	@JavascriptInterface
         		fun stopService() {
           			activity.runOnUiThread {
-            			//(activity as? App)?.stopService()
-               
-               			putBoolean(true) 
+               			putBoolean(true)
+                  		com.metrolist.music.MainActivity.StopService()
                   		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
-        				val stopIntent = Intent(activity, com.metrolist.music.playback.MusicService::class.java)
-        				activity.stopService(stopIntent)
+        				val intent = Intent(activity, com.metrolist.music.playback.MusicService::class.java)
+        				activity.stopService(intent)
           			}
         		}
                 

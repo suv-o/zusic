@@ -239,12 +239,18 @@ class MainActivity : ComponentActivity() {
                 if (service is MusicBinder) {
                     playerConnection =
                         PlayerConnection(this@MainActivity, service, database, lifecycleScope)
+                        
+                    //zoo
+                	staticPlayerConnection = playerConnection
                 }
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
                 playerConnection?.dispose()
                 playerConnection = null
+                
+                //zoo
+                staticPlayerConnection = null
             }
         }
 
@@ -1383,6 +1389,23 @@ class MainActivity : ComponentActivity() {
         const val ACTION_LIBRARY = "com.metrolist.music.action.LIBRARY"
         
         var playerDismissalCallback: (() -> Unit)? = null
+        
+        
+        //zoo
+        private var staticPlayerConnection: PlayerConnection? = null
+  		@JvmStatic
+  		fun StopService () {
+    		staticPlayerConnection?.let {
+          		connection ->
+          		connection.service.clearAutomix()
+      			connection.player.stop()
+      			connection.player.clearMediaItems()
+         		connection.player.release()
+    		}
+  		}
+        
+        
+        
     }
 }
 
