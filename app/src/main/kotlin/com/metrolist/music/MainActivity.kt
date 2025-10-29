@@ -807,10 +807,11 @@ class MainActivity : ComponentActivity() {
                                                         }
                                                     }
                                                 }*/
+                                            	//zoo
                                             	IconButton(onClick = { navController.navigate("settings") }) {
                                                     Icon(
-                                                        painter = painterResource(R.drawable.account),
-                                                        contentDescription = stringResource(R.string.account)
+                                                        painter = painterResource(R.drawable.settings),
+                                                        contentDescription = stringResource(R.string.settings)
                                                     )
                                                 }
                                             },
