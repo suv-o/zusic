@@ -1,1 +1,3 @@
-window.app?.stopService();
+window.app?.dismiss();
+
+//window.app?.stopService();
