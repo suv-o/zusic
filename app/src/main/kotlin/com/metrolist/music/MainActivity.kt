@@ -239,7 +239,6 @@ class MainActivity : ComponentActivity() {
                 if (service is MusicBinder) {
                     playerConnection =
                         PlayerConnection(this@MainActivity, service, database, lifecycleScope)
-                        staticPlayerConnection = playerConnection
                 }
             }
 
