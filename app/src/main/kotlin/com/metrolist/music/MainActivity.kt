@@ -271,14 +271,46 @@ class MainActivity : ComponentActivity() {
         	connection.player.stop()
         	connection.player.clearMediaItems()
         
-        	stopService(Intent(this, MusicService::class.java)) 
+        	//stopService(Intent(this, MusicService::class.java)) 
 
-        	unbindService(serviceConnection)
+        	//unbindService(serviceConnection)
 
         	connection.dispose()
         	playerConnection = null
     	}
 	}
+
+
+
+
+// ... MainActivity class ke andar
+
+/**
+ * Stop karta hai currently playing music ko aur MusicService ko bhi stop kar deta hai.
+ * Yeh ensure karta hai ki gaana kisi bhi haalat mein play na ho.
+ */
+fun stopMusicCompletely() {
+    playerConnection?.let { connection ->
+        connection.service.clearAutomix()
+        connection.player.stop()
+        connection.player.clearMediaItems()
+        connection.dispose()
+        playerConnection = null
+    }
+    
+    stopService(Intent(this, MusicService::class.java)) 
+
+    // NOTE: Humne yahan se unbindService() hata diya hai.
+    // onStop() ab aaram se iske baad unbindService() ko call kar sakta hai.
+}
+
+// ...
+
+
+
+
+
+
 
 
     override fun onStop() {
@@ -1390,20 +1422,6 @@ class MainActivity : ComponentActivity() {
     companion object {
         const val ACTION_SEARCH = "com.metrolist.music.action.SEARCH"
         const val ACTION_LIBRARY = "com.metrolist.music.action.LIBRARY"
-        
-        //zoo
-        /*private var staticPlayerConnection: PlayerConnection? = null
-  		@JvmStatic
-  		fun ClearQueue() {
-    		staticPlayerConnection?.let {
-      			connection ->
-      			connection.service.clearAutomix()
-      			connection.player.stop()
-      			connection.player.clearMediaItems()
-    		}
-  		}*/
-        
-        
     }
 }
 
