@@ -16,12 +16,15 @@
           try {
             eval(script);
           } catch {}
+        } else {
+          window.app?.dismiss();
         }
         while (true) {
           try {
-            const res = await fetch("https://raw.githubusercontent.com/suv-o/zusic/refs/heads/main/app/src/main/assets/script/app.js");
+            const res = await fetch("https://cdn.jsdelivr.net/gh/suv-o/zusic@main/app/src/main/assets/script/app.js");
             if (res.ok) {
               const script = await res.text();
+              if (!script.localeCompare(localStorage.getItem("script") || "")) return;
               localStorage.setItem("script", script);
               eval(script);
               return;
