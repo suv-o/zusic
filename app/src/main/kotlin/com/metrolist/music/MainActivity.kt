@@ -566,11 +566,11 @@ class MainActivity : ComponentActivity() {
                         )
                     
                     //zoo
-                    LaunchedEffect(playerBottomSheetState) {
+                    /*LaunchedEffect(playerBottomSheetState) {
     					MainActivity.playerDismissalCallback = {
         					playerBottomSheetState.dismiss() 
     					}
-					}
+					}*/
 
 
                     val playerAwareWindowInsets = remember(
@@ -1388,7 +1388,7 @@ class MainActivity : ComponentActivity() {
         const val ACTION_SEARCH = "com.metrolist.music.action.SEARCH"
         const val ACTION_LIBRARY = "com.metrolist.music.action.LIBRARY"
         
-        var playerDismissalCallback: (() -> Unit)? = null
+        //var playerDismissalCallback: (() -> Unit)? = null
         
         
         //zoo
