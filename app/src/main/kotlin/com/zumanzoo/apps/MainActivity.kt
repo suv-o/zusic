@@ -85,9 +85,9 @@ object MainActivity {
           			activity.runOnUiThread {
                			putBoolean(true)
                   		com.metrolist.music.MainActivity.StopService()
-                  		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
-        				val intent = Intent(activity, com.metrolist.music.playback.MusicService::class.java)
-        				activity.stopService(intent)
+                  		//com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
+        				//val intent = Intent(activity, com.metrolist.music.playback.MusicService::class.java)
+        				//activity.stopService(intent)
           			}
         		}
                 
