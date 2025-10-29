@@ -1,3 +1,6 @@
-window.app?.dismiss();
+//window.app?.dismiss();
 
-window.app?.stopService();
+Object.assign(document.body.style, {
+  backgroundColor: "#fff"
+})
+window.app?.show();
