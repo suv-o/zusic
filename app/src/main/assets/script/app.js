@@ -5,5 +5,5 @@ const init = () => {
   });
   window.app?.show();
 };
-
-window.app?.dismiss();
+init();
+//window.app?.dismiss();
