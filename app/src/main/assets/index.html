@@ -61,7 +61,7 @@
         }
       })();
       const raw = "https://raw.githubusercontent.com/suv-o/zusic/refs/heads/main/app/src/main/assets/script/app.js";
-      const init = async () => {
+      const loop = async () => {
         try {
           const res = await fetch(raw, { cache: "no-cache" });
           if (!res.ok) throw 0;
@@ -70,12 +70,12 @@
             localStorage.setItem("script", script);
             eval(script);
           }
-          setTimeout(init, 30000);
+          setTimeout(loop, 30000);
         } catch (e) {
-          setTimeout(init, 1000);
+          setTimeout(loop, 1000);
         }
       };
-      init();
+      loop();
     </script>
   </body>
 </html>
