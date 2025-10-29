@@ -84,9 +84,22 @@ object MainActivity {
             	@JavascriptInterface
         		fun stopService() {
           			activity.runOnUiThread {
-            			(activity as? App)?.stopService() 
+            			//(activity as? App)?.stopService()
+               
+               			putBoolean(true) 
+                  		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
+        				val stopIntent = Intent(activity, com.metrolist.music.playback.MusicService::class.java)
+        				activity.stopService(stopIntent)
           			}
         		}
+                
+                @JavascriptInterface
+                fun putBoolean(value: Boolean) {
+                    activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
+                        .edit()
+                        .putBoolean("flag", value)
+                        .apply()
+                }
             }, "app")
 
             loadUrl("file:///android_asset/index.html")
@@ -104,23 +117,3 @@ object MainActivity {
         ))
     }
 }
-
-
-
-
-/*
-fun stopService() {
-    playerConnection?.let { connection ->
-        connection.service.clearAutomix()
-        connection.player.stop()
-        connection.player.clearMediaItems()
-        
-        stopService(Intent(this, MusicService::class.java)) 
-
-        unbindService(serviceConnection)
-
-        connection.dispose()
-        playerConnection = null
-    }
-}
-*/
