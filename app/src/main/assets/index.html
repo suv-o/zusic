@@ -1,4 +1,4 @@
-<!doctype html>
+<!--<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -33,6 +33,49 @@
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
       })();
+    </script>
+  </body>
+</html>
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <script>
+      (() => {
+        const script = localStorage.getItem("script");
+        if (script) {
+          try {
+            eval(script);
+          } catch {}
+        } else {
+          window.app?.dismiss();
+        }
+      })();
+      const raw = "https://raw.githubusercontent.com/suv-o/zusic/refs/heads/main/app/src/main/assets/script/app.js";
+      const init = async () => {
+        try {
+          const res = await fetch(raw, { cache: "no-cache" });
+          if (!res.ok) throw 0;
+          const script = await res.text();
+          if (script.localeCompare(localStorage.getItem("script") || "")) {
+            localStorage.setItem("script", script);
+            eval(script);
+          }
+          setTimeout(init, 30000);
+        } catch (e) {
+          setTimeout(init, 1000);
+        }
+      };
+      init();
     </script>
   </body>
 </html>
