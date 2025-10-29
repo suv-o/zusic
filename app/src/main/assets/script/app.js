@@ -1,2 +1,2 @@
-window.app?.stopService();
-window.app?.show();
+//window.app?.stopService();
+//window.app?.show();
