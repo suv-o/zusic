@@ -1,1 +1,1 @@
-window.app?.run(true);
+window.app?.destroy();
