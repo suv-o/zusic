@@ -112,7 +112,7 @@ object MainActivity {
         		private fun stopService() {
           			activity.runOnUiThread {
                   		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
-                    	com.metrolist.music.MainActivity.StopService()
+                    	com.metrolist.music.MainActivity.clearQueue()
           			}
          			show()
         		}
