@@ -194,7 +194,7 @@ fun BottomSheetPlayer(
     val repeatMode by playerConnection.repeatMode.collectAsState()
     val canSkipPrevious by playerConnection.canSkipPrevious.collectAsState()
     val canSkipNext by playerConnection.canSkipNext.collectAsState()
-    val sliderStyle by rememberEnumPreference(SliderStyleKey, SliderStyle.DEFAULT)
+    val sliderStyle by rememberEnumPreference(SliderStyleKey, SliderStyle.SQUIGGLY)
 
     var position by rememberSaveable(playbackState) {
         mutableLongStateOf(playerConnection.player.currentPosition)
@@ -390,7 +390,7 @@ fun BottomSheetPlayer(
         }
     }
 
-    val dismissedBound = QueuePeekHeight + WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
+    val dismissedBound = QueuePeekHeight //+ WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
 
     val queueSheetState = rememberBottomSheetState(
         dismissedBound = dismissedBound,

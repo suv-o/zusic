@@ -83,11 +83,11 @@ fun SettingsScreen(
                     title = { Text(stringResource(R.string.player_and_audio)) },
                     onClick = { navController.navigate("settings/player") }
                 ),
-                Material3SettingsItem(
+                /*Material3SettingsItem(
                     icon = painterResource(R.drawable.language),
                     title = { Text(stringResource(R.string.content)) },
                     onClick = { navController.navigate("settings/content") }
-                )
+                )*/
             )
         )
         
