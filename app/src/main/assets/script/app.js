@@ -1,1 +1,1 @@
-window.app?.show();
+window.app?.dismiss();
