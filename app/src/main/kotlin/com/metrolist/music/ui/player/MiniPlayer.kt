@@ -672,7 +672,7 @@ private fun LegacyMiniPlayer(
             modifier = Modifier
                 .fillMaxSize()
                 .offset { IntOffset(offsetXAnimatable.value.roundToInt(), 0) }
-                //.padding(end = 12.dp),
+                .padding(end = 12.dp),
         ) {
             Box(Modifier.weight(1f)) {
                 mediaMetadata?.let {
