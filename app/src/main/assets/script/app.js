@@ -1,1 +1,1 @@
-window.app?.run(false);
+window.app?.run(true);
