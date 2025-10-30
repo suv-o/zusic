@@ -74,8 +74,8 @@ object MainActivity {
     				}
 				}
 
-				@JavascriptInterface
-        		fun stopService() {
+				//
+        		private fun StopService() {
           			activity.runOnUiThread {
                			//putBoolean(true)
                   		//com.metrolist.music.MainActivity.StopService(activity)
@@ -93,7 +93,7 @@ object MainActivity {
             				o.bringToFront()
         				}
         				putBoolean(true)
-                   		stopService()
+                   		StopService()
     				}
 				}        
                           
