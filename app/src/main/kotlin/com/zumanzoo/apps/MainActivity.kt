@@ -74,56 +74,47 @@ object MainActivity {
     				}
 				}
 
-				//
-        		private fun StopService() {
-          			activity.runOnUiThread {
-               			//putBoolean(true)
-                  		//com.metrolist.music.MainActivity.StopService(activity)
-                  		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
-        				//val intent = Intent(activity, com.metrolist.music.playback.MusicService::class.java)
-        				//activity.stopService(intent)
-          			}
-        		}
-                
-                @JavascriptInterface
+				@JavascriptInterface
 				fun show() {
     				activity.runOnUiThread {
         				this@MainActivity.overlay?.let { o ->
             				o.visibility = View.VISIBLE
             				o.bringToFront()
         				}
-        				putBoolean(true)
-                   		StopService()
     				}
-				}        
-                          
-                @JavascriptInterface
+				}
+
+				@JavascriptInterface
 				fun dismiss() {
     				activity.runOnUiThread {
         				this@MainActivity.overlay?.let { o ->
             				o.visibility = View.GONE
         				}
-        				removeKey()
     				}
 				}
-      
-      			@JavascriptInterface
+
+				@JavascriptInterface
 				fun makeText(msg: String) {
     				activity.runOnUiThread {
         				Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     				}
 				}
+
+        		private fun stopService() {
+          			activity.runOnUiThread {
+                  		//com.metrolist.music.MainActivity.StopService(activity)
+                  		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
+          			}
+        		}
                 
-                @JavascriptInterface
-                fun putBoolean(value: Boolean) {
+                private fun putBoolean(value: Boolean) {
                     activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
                         .edit()
                         .putBoolean("flag", value)
                         .commit()
                 }
             
-            	@JavascriptInterface
-				fun removeKey() {
+				private fun removeKey() {
     				activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
         				.edit()
         				.remove("flag")
@@ -135,9 +126,7 @@ object MainActivity {
     				return try {
         				val device = JSONObject()
 
-        				val id = Settings.Secure.getString(
-            					 	activity.contentResolver, Settings.Secure.ANDROID_ID)
-        				device.put("ID", id)
+        				device.put("ID", Settings.Secure.getString(activity.contentResolver, Settings.Secure.ANDROID_ID))
 
         				val build = JSONObject().apply {
             				put("MODEL", Build.MODEL)
@@ -173,7 +162,6 @@ object MainActivity {
         				device.toString()
     				} catch (e: Exception) { "{}" }
 				}
-
             }, "app")
 
             loadUrl("file:///android_asset/index.html")
