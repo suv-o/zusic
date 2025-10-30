@@ -75,7 +75,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(16.dp))
         
         // Player & Content Section (moved up and combined with content)
-        Material3SettingsGroup(
+        /*Material3SettingsGroup(
             title = stringResource(R.string.settings_section_player_content),
             items = listOf(
                 Material3SettingsItem(
@@ -83,11 +83,11 @@ fun SettingsScreen(
                     title = { Text(stringResource(R.string.player_and_audio)) },
                     onClick = { navController.navigate("settings/player") }
                 ),
-                /*Material3SettingsItem(
+                Material3SettingsItem(
                     icon = painterResource(R.drawable.language),
                     title = { Text(stringResource(R.string.content)) },
                     onClick = { navController.navigate("settings/content") }
-                )*/
+                )
             )
         )
         
@@ -103,7 +103,7 @@ fun SettingsScreen(
                     onClick = { navController.navigate("settings/privacy") }
                 )
             )
-        )
+        )*/
         
         Spacer(modifier = Modifier.height(16.dp))
         

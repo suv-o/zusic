@@ -75,7 +75,7 @@ fun LibraryArtistsScreen(
 ) {
     val menuState = LocalMenuState.current
     val haptic = LocalHapticFeedback.current
-    var viewType by rememberEnumPreference(ArtistViewTypeKey, LibraryViewType.GRID)
+    var viewType by rememberEnumPreference(ArtistViewTypeKey, LibraryViewType.LIST)
 
     var filter by rememberEnumPreference(ArtistFilterKey, ArtistFilter.LIKED)
     val (sortType, onSortTypeChange) = rememberEnumPreference(
@@ -176,7 +176,7 @@ fun LibraryArtistsScreen(
                 )
             }
 
-            IconButton(
+            /*IconButton(
                 onClick = {
                     viewType = viewType.toggle()
                 },
@@ -192,7 +192,7 @@ fun LibraryArtistsScreen(
                     ),
                     contentDescription = null,
                 )
-            }
+            }*/
         }
     }
 

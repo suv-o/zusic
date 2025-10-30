@@ -581,7 +581,7 @@ private fun LegacyMiniPlayer(
                 }
             )
             .height(MiniPlayerHeight)
-            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
+            //.windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
             // NEW: Clip the shape BEFORE applying the background.
             // This ensures that the background is applied to the clipped, rounded shape,
             // preventing sharp edges when the width is reduced.

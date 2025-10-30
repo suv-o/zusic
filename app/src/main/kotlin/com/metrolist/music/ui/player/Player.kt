@@ -390,7 +390,7 @@ fun BottomSheetPlayer(
         }
     }
 
-    val dismissedBound = QueuePeekHeight //+ WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
+    val dismissedBound = QueuePeekHeight + WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
 
     val queueSheetState = rememberBottomSheetState(
         dismissedBound = dismissedBound,

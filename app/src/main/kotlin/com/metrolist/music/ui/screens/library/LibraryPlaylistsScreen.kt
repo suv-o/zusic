@@ -96,7 +96,7 @@ fun LibraryPlaylistsScreen(
 
     val coroutineScope = rememberCoroutineScope()
 
-    var viewType by rememberEnumPreference(PlaylistViewTypeKey, LibraryViewType.GRID)
+    var viewType by rememberEnumPreference(PlaylistViewTypeKey, LibraryViewType.LIST)
     val (sortType, onSortTypeChange) = rememberEnumPreference(
         PlaylistSortTypeKey,
         PlaylistSortType.CREATE_DATE
@@ -241,7 +241,7 @@ fun LibraryPlaylistsScreen(
                 color = MaterialTheme.colorScheme.secondary,
             )
 
-            IconButton(
+            /*IconButton(
                 onClick = {
                     viewType = viewType.toggle()
                 },
@@ -257,7 +257,7 @@ fun LibraryPlaylistsScreen(
                     ),
                     contentDescription = null,
                 )
-            }
+            }*/
         }
     }
 
