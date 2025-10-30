@@ -130,14 +130,13 @@ fun BackupAndRestore(
                 restoreLauncher.launch(arrayOf("application/octet-stream"))
             },
         )
-        /*
         PreferenceEntry(
             title = {Text(stringResource(R.string.import_online))},
             icon = { Icon(painterResource(R.drawable.playlist_add), null) },
             onClick = {
                 importM3uLauncherOnline.launch(arrayOf("audio/*"))
             }
-        )*/
+        )
         PreferenceEntry(
             title = { Text(stringResource(R.string.import_csv)) },
             icon = { Icon(painterResource(R.drawable.playlist_add), null) },

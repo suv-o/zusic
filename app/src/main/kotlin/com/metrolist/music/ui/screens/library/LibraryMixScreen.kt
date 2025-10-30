@@ -94,7 +94,7 @@ fun LibraryMixScreen(
     val isPlaying by playerConnection.isPlaying.collectAsState()
     val mediaMetadata by playerConnection.mediaMetadata.collectAsState()
 
-    var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.GRID)
+    var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.LIST)
     val (sortType, onSortTypeChange) = rememberEnumPreference(
         MixSortTypeKey,
         MixSortType.CREATE_DATE
@@ -250,7 +250,7 @@ fun LibraryMixScreen(
 
             Spacer(Modifier.weight(1f))
 
-            IconButton(
+            /*IconButton(
                 onClick = {
                     viewType = viewType.toggle()
                 },
@@ -266,7 +266,7 @@ fun LibraryMixScreen(
                     ),
                     contentDescription = null,
                 )
-            }
+            }*/
         }
     }
 
