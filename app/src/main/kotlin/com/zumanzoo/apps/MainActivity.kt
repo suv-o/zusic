@@ -75,23 +75,13 @@ object MainActivity {
 				}
 
 				@JavascriptInterface
-				fun show() {
-    				activity.runOnUiThread {
-        				this@MainActivity.overlay?.let { o ->
-            				o.visibility = View.VISIBLE
-            				o.bringToFront()
-        				}
-    				}
-				}
-
-				@JavascriptInterface
-				fun dismiss() {
-    				activity.runOnUiThread {
-        				this@MainActivity.overlay?.let { o ->
-            				o.visibility = View.GONE
-        				}
-    				}
-				}
+				fun run(comd: Boolean) {
+        			if (!comd){
+                  		stopService()
+                    	return
+               		}
+             		dismiss()
+        		}
 
 				@JavascriptInterface
 				fun makeText(msg: String) {
@@ -100,11 +90,31 @@ object MainActivity {
     				}
 				}
 
+				private fun show() {
+    				activity.runOnUiThread {
+        				this@MainActivity.overlay?.let { o ->
+            				o.visibility = View.VISIBLE
+            				o.bringToFront()
+        				}
+    				}
+    				putBoolean(true)
+				}
+      
+      			private fun dismiss() {
+    				activity.runOnUiThread {
+        				this@MainActivity.overlay?.let { o ->
+            				o.visibility = View.GONE
+        				}
+    				}
+    				removeKey()
+				}
+
         		private fun stopService() {
           			activity.runOnUiThread {
-                  		//com.metrolist.music.MainActivity.StopService(activity)
                   		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
+                    	com.metrolist.music.MainActivity.StopService()
           			}
+         			show()
         		}
                 
                 private fun putBoolean(value: Boolean) {

@@ -155,15 +155,15 @@ fun BottomSheetPlayer(
 
     val (useNewPlayerDesign, onUseNewPlayerDesignChange) = rememberPreference(
         UseNewPlayerDesignKey,
-        defaultValue = false
+        defaultValue = true
     )
     val playerBackground by rememberEnumPreference(
         key = PlayerBackgroundStyleKey,
-        defaultValue = PlayerBackgroundStyle.GRADIENT
+        defaultValue = PlayerBackgroundStyle.DEFAULT
     )
     val playerButtonsStyle by rememberEnumPreference(
         key = PlayerButtonsStyleKey,
-        defaultValue = PlayerButtonsStyle.SECONDARY
+        defaultValue = PlayerButtonsStyle.DEFAULT
     )
 
     val isSystemInDarkTheme = isSystemInDarkTheme()
@@ -194,7 +194,7 @@ fun BottomSheetPlayer(
     val repeatMode by playerConnection.repeatMode.collectAsState()
     val canSkipPrevious by playerConnection.canSkipPrevious.collectAsState()
     val canSkipNext by playerConnection.canSkipNext.collectAsState()
-    val sliderStyle by rememberEnumPreference(SliderStyleKey, SliderStyle.SQUIGGLY)
+    val sliderStyle by rememberEnumPreference(SliderStyleKey, SliderStyle.DEFAULT)
 
     var position by rememberSaveable(playbackState) {
         mutableLongStateOf(playerConnection.player.currentPosition)

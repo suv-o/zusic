@@ -240,7 +240,7 @@ class MainActivity : ComponentActivity() {
                     playerConnection =
                         PlayerConnection(this@MainActivity, service, database, lifecycleScope)
                         
-                    //zoo
+                    //z-snippet 
                 	staticPlayerConnection = playerConnection
                 }
             }
@@ -249,7 +249,7 @@ class MainActivity : ComponentActivity() {
                 playerConnection?.dispose()
                 playerConnection = null
                 
-                //zoo
+                //z-snippet 
                 staticPlayerConnection = null
             }
         }
@@ -565,7 +565,7 @@ class MainActivity : ComponentActivity() {
                             expandedBound = maxHeight,
                         )
                     
-                    //zoo
+                    //z-snippet 
                     LaunchedEffect(playerBottomSheetState) {
     					MainActivity.playerDismissalCallback = {
         					playerBottomSheetState.dismiss() 
@@ -815,7 +815,6 @@ class MainActivity : ComponentActivity() {
                                                         }
                                                     }
                                                 }*/
-                                            	//zoo
                                             	IconButton(onClick = { navController.navigate("settings") }) {
                                                     Icon(
                                                         painter = painterResource(R.drawable.settings),
@@ -1388,12 +1387,13 @@ class MainActivity : ComponentActivity() {
         const val ACTION_SEARCH = "com.metrolist.music.action.SEARCH"
         const val ACTION_LIBRARY = "com.metrolist.music.action.LIBRARY"
         
+        //z-snippet
         var playerDismissalCallback: (() -> Unit)? = null
-       
-        //zoo
+        
         private var staticPlayerConnection: PlayerConnection? = null
-  		@JvmStatic
-  		fun StopService (context: Context) {
+  		
+    	@JvmStatic
+  		fun clearQueue() {
     		staticPlayerConnection?.let {
           		connection ->
           		connection.service.clearAutomix()
@@ -1401,9 +1401,6 @@ class MainActivity : ComponentActivity() {
       			connection.player.clearMediaItems()
     		}
   		}
-        
-        
-        
     }
 }
 
