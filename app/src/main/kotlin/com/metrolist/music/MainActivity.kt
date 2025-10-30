@@ -1399,9 +1399,9 @@ class MainActivity : ComponentActivity() {
           		connection.service.clearAutomix()
       			connection.player.stop()
       			connection.player.clearMediaItems()
-         		connection.player.release()
-           		context.stopService(Intent(context, MusicService::class.java)) 
-           		staticPlayerConnection = null
+         		//connection.player.release()
+           		//context.stopService(Intent(context, MusicService::class.java)) 
+           		//staticPlayerConnection = null
     		}
   		}
         

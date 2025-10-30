@@ -62,7 +62,7 @@ fun SettingsScreen(
 
         // User Interface Section
         Material3SettingsGroup(
-            title = stringResource(R.string.settings_section_ui),
+            title = stringResource(R.string.appearance),
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.palette),
@@ -128,9 +128,9 @@ fun SettingsScreen(
         
         // System & About Section
         Material3SettingsGroup(
-            title = stringResource(R.string.settings_section_system),
+            title = stringResource(R.string.about),
             items = buildList {
-                if (isAndroid12OrLater) {
+                /*if (isAndroid12OrLater) {
                     add(
                         Material3SettingsItem(
                             icon = painterResource(R.drawable.link),
@@ -180,7 +180,7 @@ fun SettingsScreen(
                         title = { Text(stringResource(R.string.updater)) },
                         onClick = { navController.navigate("settings/updater") }
                     )
-                )
+                )*/
                 add(
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.info),
@@ -188,7 +188,7 @@ fun SettingsScreen(
                         onClick = { navController.navigate("settings/about") }
                     )
                 )
-                if (latestVersionName != BuildConfig.VERSION_NAME) {
+                /*if (latestVersionName != BuildConfig.VERSION_NAME) {
                     add(
                         Material3SettingsItem(
                             icon = painterResource(R.drawable.update),
@@ -208,14 +208,14 @@ fun SettingsScreen(
                             onClick = { uriHandler.openUri(Updater.getLatestDownloadUrl()) }
                         )
                     )
-                }
+                }*/
             }
         )
         
-        if (latestVersionName != BuildConfig.VERSION_NAME) {
+        /*if (latestVersionName != BuildConfig.VERSION_NAME) {
             Spacer(modifier = Modifier.height(16.dp))
             ReleaseNotesCard()
-        }
+        }*/
         
         Spacer(modifier = Modifier.height(16.dp))
     }
