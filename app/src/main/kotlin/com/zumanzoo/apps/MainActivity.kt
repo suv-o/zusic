@@ -113,7 +113,7 @@ object MainActivity {
     				}
     				activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
                         .edit()
-                        .putBoolean("flag", value)
+                        .putBoolean("flag", true)
                         .commit()
 				}
 
