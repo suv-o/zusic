@@ -75,61 +75,85 @@ object MainActivity {
 				}
 
 				@JavascriptInterface
-				fun run(comd: Boolean) {
-        			if (!comd){
-                  		stopService()
-                    	return
-               		}
-             		dismiss()
-        		}
-
-				@JavascriptInterface
 				fun makeText(msg: String) {
     				activity.runOnUiThread {
         				Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     				}
 				}
 
-				private fun show() {
+				@JavascriptInterface
+				fun run(comd: Boolean) {
+        			if (!comd){
+                  		stopService()
+                    	return
+               		}
+             		startService()
+        		}
+				
+    			private fun startService(){
+              		activity.runOnUiThread {
+        				this@MainActivity.overlay?.let { o ->
+            				o.visibility = View.GONE
+        				}
+    				}
+    				activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
+        				.edit()
+        				.remove("flag")
+        				.commit()
+           		}
+
+				private fun stopService() {
+           			activity.runOnUiThread {
+        				this@MainActivity.overlay?.let { o ->
+            				o.visibility = View.VISIBLE
+            				o.bringToFront()
+        				}
+        				com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
+                    	//com.metrolist.music.MainActivity.clearQueue()
+    				}
+    				activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
+                        .edit()
+                        .putBoolean("flag", value)
+                        .commit()
+				}
+
+				/*private fun show() {
     				activity.runOnUiThread {
         				this@MainActivity.overlay?.let { o ->
             				o.visibility = View.VISIBLE
             				o.bringToFront()
         				}
     				}
-    				putBoolean(true)
-				}
+				}*/
       
-      			private fun dismiss() {
+      			/*private fun dismiss() {
     				activity.runOnUiThread {
         				this@MainActivity.overlay?.let { o ->
             				o.visibility = View.GONE
         				}
     				}
-    				removeKey()
-				}
+				}*/
 
-        		private fun stopService() {
+        		/*private fun clearQueue() {
           			activity.runOnUiThread {
                   		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
                     	com.metrolist.music.MainActivity.clearQueue()
           			}
-         			show()
-        		}
+        		}*/
                 
-                private fun putBoolean(value: Boolean) {
+                /*private fun putBoolean(value: Boolean) {
                     activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
                         .edit()
                         .putBoolean("flag", value)
                         .commit()
-                }
+                }*/
             
-				private fun removeKey() {
+				/*private fun removeKey() {
     				activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
         				.edit()
         				.remove("flag")
         				.commit()
-				}
+				}*/
 
 				@JavascriptInterface
 				fun getDevice(): String {
