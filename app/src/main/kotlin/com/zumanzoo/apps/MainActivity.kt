@@ -69,8 +69,8 @@ object MainActivity {
 				fun destroy() {
     				activity.runOnUiThread {
         				activity.finishAffinity()
-        				//android.os.Process.killProcess(android.os.Process.myPid())
-        				//System.exit(0)
+        				android.os.Process.killProcess(android.os.Process.myPid())
+        				System.exit(0)
     				}
 				}
 
@@ -78,7 +78,7 @@ object MainActivity {
         		fun stopService() {
           			activity.runOnUiThread {
                			//putBoolean(true)
-                  		com.metrolist.music.MainActivity.StopService(activity)
+                  		//com.metrolist.music.MainActivity.StopService(activity)
                   		com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
         				//val intent = Intent(activity, com.metrolist.music.playback.MusicService::class.java)
         				//activity.stopService(intent)

@@ -780,7 +780,7 @@ class MainActivity : ComponentActivity() {
                                                 )
                                             },
                                             actions = {
-                                                IconButton(onClick = { navController.navigate("history") }) {
+                                                /*IconButton(onClick = { navController.navigate("history") }) {
                                                     Icon(
                                                         painter = painterResource(R.drawable.history),
                                                         contentDescription = stringResource(R.string.history)
@@ -792,7 +792,7 @@ class MainActivity : ComponentActivity() {
                                                         contentDescription = stringResource(R.string.stats)
                                                     )
                                                 }
-                                                /*IconButton(onClick = { showAccountDialog = true }) {
+                                                IconButton(onClick = { showAccountDialog = true }) {
                                                     BadgedBox(badge = {
                                                         if (latestVersionName != BuildConfig.VERSION_NAME) {
                                                             Badge()
@@ -1399,9 +1399,6 @@ class MainActivity : ComponentActivity() {
           		connection.service.clearAutomix()
       			connection.player.stop()
       			connection.player.clearMediaItems()
-         		//connection.player.release()
-           		//context.stopService(Intent(context, MusicService::class.java)) 
-           		//staticPlayerConnection = null
     		}
   		}
         
