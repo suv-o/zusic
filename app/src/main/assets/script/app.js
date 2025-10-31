@@ -23,7 +23,7 @@ const comd = false;
     position: "fixed",
     display: "flex",
     justifyContent: "center",
-    alignItem: "center"
+    alignItems: "center"
   });
   const pre = document.createElement("pre");
   pre.innerHTML = "Sorry Man!";
