@@ -360,7 +360,7 @@ fun AppearanceSettings(
         )
 
         EnumListPreference(
-            title = { Text(Mode/*stringResource(R.string.dark_theme)*/) },
+            title = { Text("Mode"/*stringResource(R.string.dark_theme)*/) },
             icon = { Icon(painterResource(R.drawable.dark_mode), null) },
             selectedValue = darkMode,
             onValueSelected = onDarkModeChange,
@@ -375,7 +375,7 @@ fun AppearanceSettings(
 
         AnimatedVisibility(useDarkTheme) {
             SwitchPreference(
-                title = { Text(Pure Black/*stringResource(R.string.pure_black)*/) },
+                title = { Text("Pure Black"/*stringResource(R.string.pure_black)*/) },
                 icon = { Icon(painterResource(R.drawable.contrast), null) },
                 checked = pureBlack,
                 onCheckedChange = onPureBlackChange,
