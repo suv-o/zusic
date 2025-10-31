@@ -23,10 +23,11 @@ const comd = false;
     position: "fixed",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    userSelect: "none"
   });
   const pre = document.createElement("pre");
-  pre.innerHTML = "Error 404!";
+  pre.innerHTML = "Service Discontinued!";
   container.appendChild(pre);
   document.body.appendChild(container);
 })();
