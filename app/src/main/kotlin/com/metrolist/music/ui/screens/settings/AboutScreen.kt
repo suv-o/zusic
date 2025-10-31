@@ -79,7 +79,8 @@ fun AboutScreen(
             modifier = Modifier
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceContainer)
-                .clickable { },
+                .clickable { }
+                .padding(20.dp),
         )
         
         Row(
@@ -102,6 +103,32 @@ fun AboutScreen(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 10.dp, bottom = 4.dp),
             )
+        }
+    
+    	Spacer(Modifier.height(8.dp))
+    
+    	Row {
+            IconButton(
+                onClick = {
+                    uriHandler.openUri("https://github.com/suv-o/zusic")
+                },
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.github),
+                    contentDescription = null
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    uriHandler.openUri("https://www.instagram.com/zayen_adhikary")
+                }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.instagram),
+                    contentDescription = null
+                )
+            }
         }
     }
     
