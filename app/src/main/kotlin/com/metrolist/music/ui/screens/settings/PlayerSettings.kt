@@ -136,12 +136,12 @@ fun PlayerSettings(
             )
         )
 
-        PreferenceGroupTitle(
+        /*PreferenceGroupTitle(
             title = stringResource(R.string.player)
-        )
+        )*/
 
         EnumListPreference(
-            title = { Text(stringResource(R.string.audio_quality)) },
+            title = { Text("Streaming Quality"/*stringResource(R.string.audio_quality)*/) },
             icon = { Icon(painterResource(R.drawable.graphic_eq), null) },
             selectedValue = audioQuality,
             onValueSelected = onAudioQualityChange,
@@ -154,21 +154,21 @@ fun PlayerSettings(
             }
         )
 
-        SliderPreference(
+        /*SliderPreference(
             title = { Text(stringResource(R.string.history_duration)) },
             icon = { Icon(painterResource(R.drawable.history), null) },
             value = historyDuration,
             onValueChange = onHistoryDurationChange,
-        )
+        )*/
 
         SwitchPreference(
-            title = { Text(stringResource(R.string.skip_silence)) },
+            title = { Text("Skip Silence"/*stringResource(R.string.skip_silence)*/) },
             icon = { Icon(painterResource(R.drawable.fast_forward), null) },
             checked = skipSilence,
             onCheckedChange = onSkipSilenceChange
         )
 
-        SwitchPreference(
+        /*SwitchPreference(
             title = { Text(stringResource(R.string.audio_normalization)) },
             icon = { Icon(painterResource(R.drawable.volume_up), null) },
             checked = audioNormalization,
@@ -181,17 +181,17 @@ fun PlayerSettings(
             icon = { Icon(painterResource(R.drawable.graphic_eq), null) },
             checked = audioOffload,
             onCheckedChange = onAudioOffloadChange
-        )
+        )*/
 
         SwitchPreference(
-            title = { Text(stringResource(R.string.seek_seconds_addup)) },
+            title = { Text("Progressive Seek"/*stringResource(R.string.seek_seconds_addup)*/) },
             description = stringResource(R.string.seek_seconds_addup_description),
             icon = { Icon(painterResource(R.drawable.arrow_forward), null) },
             checked = seekExtraSeconds,
             onCheckedChange = onSeekExtraSeconds
         )
 
-        PreferenceGroupTitle(
+        /*PreferenceGroupTitle(
             title = stringResource(R.string.queue)
         )
 
@@ -252,7 +252,7 @@ fun PlayerSettings(
             icon = { Icon(painterResource(R.drawable.clear_all), null) },
             checked = stopMusicOnTaskClear,
             onCheckedChange = onStopMusicOnTaskClearChange
-        )
+        )*/
     }
 
     TopAppBar(

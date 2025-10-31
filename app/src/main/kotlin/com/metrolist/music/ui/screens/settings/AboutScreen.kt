@@ -80,7 +80,7 @@ fun AboutScreen(
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceContainer)
                 .clickable { }
-                .padding(20.dp),
+                .padding(15.dp),
         )
         
         Row(
@@ -90,7 +90,7 @@ fun AboutScreen(
                 text = "Zusic",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 10.dp, bottom = 4.dp),
+                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
             )
         }
     
@@ -99,9 +99,22 @@ fun AboutScreen(
         ) {
             Text(
                 text = BuildConfig.VERSION_NAME,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary,
+                //fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 10.dp, bottom = 4.dp),
+            )
+        }
+    
+    	Row(
+            verticalAlignment = Alignment.Top,
+        ) {
+            Text(
+                text = "by suv-o & zoo™",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary,
+                //fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),
             )
         }
     
