@@ -353,7 +353,7 @@ fun AppearanceSettings(
         )*/
 
         SwitchPreference(
-            title = { Text(Dynamic Theme/*stringResource(R.string.enable_dynamic_theme)*/) },
+            title = { Text("Dynamic Theme"/*stringResource(R.string.enable_dynamic_theme)*/) },
             icon = { Icon(painterResource(R.drawable.palette), null) },
             checked = dynamicTheme,
             onCheckedChange = onDynamicThemeChange,
