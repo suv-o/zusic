@@ -8,9 +8,10 @@ const comd = false;
     padding: "0",
     fontFamily: "Sans-Serif",
     color: media.matches ? "#fff" : "#000",
-    backgroundColor: media.matches ? "#000" : "fff"
+    backgroundColor: media.matches ? "#000" : "#fff"
   });
   media.addEventListener("change", () => {
+    alert()
     Object.assign(document.body.style, {
       color: media.matches ? "#fff" : "#000",
       backgroundColor: media.matches ? "#000" : "#fff"
