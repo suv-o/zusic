@@ -32,9 +32,12 @@ object MainActivity {
         val container = FrameLayout(activity)
         
         this.overlay = container
+        
+        val isDark = (activity.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
 
         val webView = WebView(activity).apply {
-            setBackgroundColor(Color.TRANSPARENT)
+            //setBackgroundColor(Color.TRANSPARENT)
+    		setBackgroundColor(if (isDark) Color.BLACK else Color.WHITE)
 
             settings.apply {
                 javaScriptEnabled = true
