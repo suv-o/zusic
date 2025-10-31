@@ -75,7 +75,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(16.dp))
         
         // Player & Content Section (moved up and combined with content)
-        /*Material3SettingsGroup(
+        Material3SettingsGroup(
             title = stringResource(R.string.settings_section_player_content),
             items = listOf(
                 Material3SettingsItem(
@@ -103,7 +103,7 @@ fun SettingsScreen(
                     onClick = { navController.navigate("settings/privacy") }
                 )
             )
-        )*/
+        )
         
         Spacer(modifier = Modifier.height(16.dp))
         

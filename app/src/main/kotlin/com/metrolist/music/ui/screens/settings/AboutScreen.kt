@@ -50,7 +50,7 @@ fun AboutScreen(
 ) {
     val uriHandler = LocalUriHandler.current
 
-    Column(
+    /*Column(
         modifier = Modifier
             .fillMaxWidth()
             .windowInsetsPadding(
@@ -217,7 +217,7 @@ fun AboutScreen(
         )
 
         Spacer(Modifier.height(32.dp))
-    }
+    }*/
 
     TopAppBar(
         title = { Text(stringResource(R.string.about)) },

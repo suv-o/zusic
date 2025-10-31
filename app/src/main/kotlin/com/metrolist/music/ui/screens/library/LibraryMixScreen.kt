@@ -232,7 +232,7 @@ fun LibraryMixScreen(
     val headerContent = @Composable {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             SortHeader(
                 sortType = sortType,
