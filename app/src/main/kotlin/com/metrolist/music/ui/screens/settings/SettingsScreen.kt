@@ -76,14 +76,14 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(16.dp))
         
         // Player & Content Section (moved up and combined with content)
-        Material3SettingsGroup(
+        /*Material3SettingsGroup(
             //title = stringResource(R.string.settings_section_player_content),
             title = "Music & Playback",
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.play),
                     title = { Text("Player & Audio"/*stringResource(R.string.player_and_audio)*/) },
-                    onClick = { navController.navigate("settings/player") }
+         /*           onClick = { navController.navigate("settings/player") }
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.language),
@@ -91,12 +91,12 @@ fun SettingsScreen(
                     onClick = { navController.navigate("settings/content") }
                 )
             )
-        )
+        )*/
         
-        Spacer(modifier = Modifier.height(16.dp))
+        //Spacer(modifier = Modifier.height(16.dp))
         
         // Privacy & Security Section
-        Material3SettingsGroup(
+        /*Material3SettingsGroup(
             title = stringResource(R.string.settings_section_privacy),
             items = listOf(
                 Material3SettingsItem(
@@ -105,14 +105,14 @@ fun SettingsScreen(
                     onClick = { navController.navigate("settings/privacy") }
                 )
             )
-        )
+        )*/
         
-        Spacer(modifier = Modifier.height(16.dp))
+        //Spacer(modifier = Modifier.height(16.dp))
         
         // Storage & Data Section
         Material3SettingsGroup(
             //title = stringResource(R.string.settings_section_storage),
-            title = "Storage",
+            title = "Storage & Data",
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.storage),

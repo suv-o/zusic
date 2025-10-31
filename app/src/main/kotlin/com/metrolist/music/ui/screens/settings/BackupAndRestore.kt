@@ -147,7 +147,7 @@ fun BackupAndRestore(
     }
 
     TopAppBar(
-        title = { Text(stringResource(R.string.backup_restore)) },
+        title = { Text("Backup & Restore"/*stringResource(R.string.backup_restore)*/) },
         navigationIcon = {
             IconButton(
                 onClick = navController::navigateUp,

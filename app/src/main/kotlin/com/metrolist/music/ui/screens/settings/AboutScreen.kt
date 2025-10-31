@@ -50,6 +50,63 @@ fun AboutScreen(
 ) {
     val uriHandler = LocalUriHandler.current
 
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .windowInsetsPadding(
+                LocalPlayerAwareWindowInsets.current.only(
+                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+                )
+            )
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(
+            Modifier.windowInsetsPadding(
+                LocalPlayerAwareWindowInsets.current.only(
+                    WindowInsetsSides.Top
+                )
+            )
+        )
+        
+        Image(
+            painter = painterResource(R.drawable.small_icon),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(
+                MaterialTheme.colorScheme.onBackground,
+                BlendMode.SrcIn
+            ),
+            modifier = Modifier
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
+                .clickable { },
+        )
+        
+        Row(
+            verticalAlignment = Alignment.Top,
+        ) {
+            Text(
+                text = "Zusic",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 10.dp, bottom = 4.dp),
+            )
+        }
+    
+    	Row(
+            verticalAlignment = Alignment.Top,
+        ) {
+            Text(
+                text = BuildConfig.VERSION_NAME,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 10.dp, bottom = 4.dp),
+            )
+        }
+    }
+    
+    
+    
     /*Column(
         modifier = Modifier
             .fillMaxWidth()
