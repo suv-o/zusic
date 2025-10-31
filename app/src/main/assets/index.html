@@ -6,7 +6,18 @@
     <meta name="color-scheme" content="dark light" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <style></style>
+    <style>
+      :root {
+        --Bg: #fff;
+        --onBg: #000;
+      }
+      @media only screen and (prefers-color-scheme: dark) {
+        :root {
+          --Bg: #000;
+          --onBg: #fff;
+        }
+      }
+    </style>
   </head>
   <body>
     <script>

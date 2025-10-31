@@ -7,15 +7,8 @@ const comd = false;
     margin: "0",
     padding: "0",
     fontFamily: "Sans-Serif",
-    color: media.matches ? "#fff" : "#000",
-    backgroundColor: media.matches ? "#000" : "#fff"
-  });
-  media.addEventListener("change", () => {
-    alert()
-    Object.assign(document.body.style, {
-      color: media.matches ? "#fff" : "#000",
-      backgroundColor: media.matches ? "#000" : "#fff"
-    });
+    color: "var(--onBg, #fff)",
+    backgroundColor: "var(--Bg, #000)"
   });
   const container = document.createElement("div");
   Object.assign(container.style, {
