@@ -28,12 +28,14 @@ object MainActivity {
         overlay?.let { o ->
             (o.parent as? ViewGroup)?.removeView(o)
         }
+    
+    	val isDark = (activity.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
         
         val container = FrameLayout(activity)
         
-        this.overlay = container
+        container.setBackgroundColor(if (isDark) Color.BLACK else Color.WHITE)
         
-        val isDark = (activity.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
+        this.overlay = container
 
         val webView = WebView(activity).apply {
             //setBackgroundColor(Color.TRANSPARENT)
@@ -45,7 +47,10 @@ object MainActivity {
                 setSupportZoom(false)
                 builtInZoomControls = false
                 displayZoomControls = false
-                cacheMode = WebSettings.LOAD_NO_CACHE 
+                cacheMode = WebSettings.LOAD_NO_CACHE
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            		settings.forceDark = if (isDark) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
+        		}
             }
 
             overScrollMode = View.OVER_SCROLL_NEVER
