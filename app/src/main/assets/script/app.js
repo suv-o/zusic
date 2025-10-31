@@ -3,7 +3,7 @@ const comd = false;
   window.app?.run(comd);
   if (comd || !document.body) return;
   const media = window.matchMedia("(prefers-color-scheme: dark)");
-  console.log(media.matches)
+  alert(media.matches)
   Object.assign(document.body.style, {
     margin: "0",
     padding: "0",
