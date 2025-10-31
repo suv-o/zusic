@@ -109,7 +109,7 @@ object MainActivity {
             				o.bringToFront()
         				}
         				com.metrolist.music.MainActivity.playerDismissalCallback?.invoke()
-                    	//com.metrolist.music.MainActivity.clearQueue()
+                    	com.metrolist.music.MainActivity.clearQueue()
     				}
     				activity.getSharedPreferences("falgs", Context.MODE_PRIVATE)
                         .edit()
