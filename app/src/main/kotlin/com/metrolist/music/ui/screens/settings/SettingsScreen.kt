@@ -98,7 +98,7 @@ fun SettingsScreen(
         // Storage & Data Section
         Material3SettingsGroup(
             //title = stringResource(R.string.settings_section_storage),
-            title = "Storage & Data",
+            title = "Storage",
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.storage),

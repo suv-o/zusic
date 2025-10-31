@@ -98,8 +98,8 @@ fun AboutScreen(
             verticalAlignment = Alignment.Top,
         ) {
             Text(
-                text = BuildConfig.VERSION_NAME,
-                style = MaterialTheme.typography.labelSmall,
+                text = "V${BuildConfig.VERSION_NAME}",
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.secondary,
                 //fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 10.dp, bottom = 4.dp),
@@ -111,7 +111,7 @@ fun AboutScreen(
         ) {
             Text(
                 text = "by suv-o & zoo™",
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.secondary,
                 //fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),

@@ -256,7 +256,7 @@ fun PlayerSettings(
     }
 
     TopAppBar(
-        title = { Text(stringResource(R.string.player_and_audio)) },
+        title = { Text("Player"/*stringResource(R.string.player_and_audio)*/) },
         navigationIcon = {
             IconButton(
                 onClick = navController::navigateUp,
