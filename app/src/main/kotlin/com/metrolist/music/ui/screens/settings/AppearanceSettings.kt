@@ -353,29 +353,29 @@ fun AppearanceSettings(
         )*/
 
         SwitchPreference(
-            title = { Text(stringResource(R.string.enable_dynamic_theme)) },
+            title = { Text(Dynamic Theme/*stringResource(R.string.enable_dynamic_theme)*/) },
             icon = { Icon(painterResource(R.drawable.palette), null) },
             checked = dynamicTheme,
             onCheckedChange = onDynamicThemeChange,
         )
 
         EnumListPreference(
-            title = { Text(stringResource(R.string.dark_theme)) },
+            title = { Text(Mode/*stringResource(R.string.dark_theme)*/) },
             icon = { Icon(painterResource(R.drawable.dark_mode), null) },
             selectedValue = darkMode,
             onValueSelected = onDarkModeChange,
             valueText = {
                 when (it) {
-                    DarkMode.ON -> stringResource(R.string.dark_theme_on)
-                    DarkMode.OFF -> stringResource(R.string.dark_theme_off)
-                    DarkMode.AUTO -> stringResource(R.string.dark_theme_follow_system)
+                    DarkMode.ON -> "Dark"//stringResource(R.string.dark_theme_on)
+                    DarkMode.OFF -> "Light"//stringResource(R.string.dark_theme_off)
+                    DarkMode.AUTO -> "System"//stringResource(R.string.dark_theme_follow_system)
                 }
             },
         )
 
         AnimatedVisibility(useDarkTheme) {
             SwitchPreference(
-                title = { Text(stringResource(R.string.pure_black)) },
+                title = { Text(Pure Black/*stringResource(R.string.pure_black)*/) },
                 icon = { Icon(painterResource(R.drawable.contrast), null) },
                 checked = pureBlack,
                 onCheckedChange = onPureBlackChange,

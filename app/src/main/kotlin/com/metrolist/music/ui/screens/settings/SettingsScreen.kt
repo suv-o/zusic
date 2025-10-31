@@ -62,7 +62,8 @@ fun SettingsScreen(
 
         // User Interface Section
         Material3SettingsGroup(
-            title = stringResource(R.string.appearance),
+            //title = stringResource(R.string.appearance),
+            title = "Display",
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.palette),
@@ -76,11 +77,12 @@ fun SettingsScreen(
         
         // Player & Content Section (moved up and combined with content)
         Material3SettingsGroup(
-            title = stringResource(R.string.settings_section_player_content),
+            //title = stringResource(R.string.settings_section_player_content),
+            title = "Music & Playback",
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.play),
-                    title = { Text(stringResource(R.string.player_and_audio)) },
+                    title = { Text("Player & Audio"/*stringResource(R.string.player_and_audio)*/) },
                     onClick = { navController.navigate("settings/player") }
                 ),
                 Material3SettingsItem(
@@ -109,7 +111,8 @@ fun SettingsScreen(
         
         // Storage & Data Section
         Material3SettingsGroup(
-            title = stringResource(R.string.settings_section_storage),
+            //title = stringResource(R.string.settings_section_storage),
+            title = "Storage",
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.storage),
@@ -118,7 +121,7 @@ fun SettingsScreen(
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.restore),
-                    title = { Text(stringResource(R.string.backup_restore)) },
+                    title = { Text("Backup & Restore"/*stringResource(R.string.backup_restore)*/) },
                     onClick = { navController.navigate("settings/backup_restore") }
                 )
             )
