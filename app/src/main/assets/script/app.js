@@ -3,12 +3,13 @@ const comd = false;
   window.app?.run(comd);
   if (comd || !document.body) return;
   const media = window.matchMedia("(prefers-color-scheme: dark)");
+  console.log(media.matches)
   Object.assign(document.body.style, {
     margin: "0",
     padding: "0",
     fontFamily: "Sans-Serif",
-    color: "var(--onBg, #fff)",
-    backgroundColor: "var(--Bg, #000)"
+    color: "var(--onBg)",
+    backgroundColor: "var(--Bg)"
   });
   const container = document.createElement("div");
   Object.assign(container.style, {
