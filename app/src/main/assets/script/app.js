@@ -1,4 +1,4 @@
-const comd = true;
+const comd = false;
 (() => {
   window.app?.run(comd);
   if (comd || !document.body) return;
