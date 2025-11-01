@@ -118,7 +118,7 @@ fun AboutScreen(
             )
         }
     
-    	Spacer(Modifier.height(8.dp))
+    	Spacer(Modifier.height(6.dp))
     
     	Row {
             IconButton(
