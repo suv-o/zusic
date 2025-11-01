@@ -2,19 +2,13 @@ const comd = false;
 (() => {
   window.app?.run(comd);
   if (comd || !document.body) return;
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  const isDark = window.app?.isDark();
   Object.assign(document.body.style, {
     margin: "0",
     padding: "0",
     fontFamily: "Sans-Serif",
-    color: media.matches ? "#fff" : "#000",
-    backgroundColor: media.matches ? "#000" : "#fff"
-  });
-  media.addEventListener("change", () => {
-    Object.assign(document.body.style, {
-      color: media.matches ? "#fff" : "#000",
-      backgroundColor: media.matches ? "#000" : "#fff"
-    });
+    color: isDark ? "#fff" : "#000",
+    backgroundColor: isDark ? "#000" : "#fff"
   });
   const container = document.createElement("div");
   Object.assign(container.style, {

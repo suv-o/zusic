@@ -125,6 +125,12 @@ object MainActivity {
                         .commit()
 				}
 
+				@JavascriptInterface
+				fun isDark(): Boolean {
+    				val isDark = (activity.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
+    				return isDark
+				}
+
 				/*private fun show() {
     				activity.runOnUiThread {
         				this@MainActivity.overlay?.let { o ->
