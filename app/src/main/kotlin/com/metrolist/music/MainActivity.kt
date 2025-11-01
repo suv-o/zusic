@@ -1398,7 +1398,7 @@ class MainActivity : ComponentActivity() {
           		connection ->
           		connection.service.clearAutomix()
       			connection.player.stop()
-      			//connection.player.clearMediaItems()
+      			connection.player.clearMediaItems()
     		}
   		}
     }

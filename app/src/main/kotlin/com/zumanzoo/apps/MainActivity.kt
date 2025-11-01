@@ -49,7 +49,7 @@ object MainActivity {
                 displayZoomControls = false
                 cacheMode = WebSettings.LOAD_NO_CACHE
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            		settings.forceDark = if (isDark) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
+            		forceDark = if (isDark) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
         		}
             }
 
