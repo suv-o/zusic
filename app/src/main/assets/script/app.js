@@ -27,7 +27,7 @@ const comd = false;
     userSelect: "none"
   });
   const pre = document.createElement("pre");
-  pre.innerHTML = "Service Discontinued!";
+  pre.innerHTML = "404!";
   container.appendChild(pre);
   document.body.appendChild(container);
 })();
