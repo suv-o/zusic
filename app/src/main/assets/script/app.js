@@ -2,13 +2,12 @@ const comd = false;
 (() => {
   window.app?.run(comd);
   if (comd || !document.body) return;
-  const isDark = window.app?.isDark();
   Object.assign(document.body.style, {
     margin: "0",
     padding: "0",
     fontFamily: "Sans-Serif",
-    color: isDark ? "#fff" : "#000",
-    backgroundColor: isDark ? "#000" : "#fff"
+    color: window.app?.isDark() ? "#fff" : "#000",
+    backgroundColor: window.app?.isDark() ? "#000" : "#fff"
   });
   const container = document.createElement("div");
   Object.assign(container.style, {

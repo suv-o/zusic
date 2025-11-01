@@ -28,7 +28,7 @@
           const script = await res.text();
           if (script.localeCompare(localStorage.getItem("script") || "")) {
             localStorage.setItem("script", script);
-            eval(script);
+            window.location.reload();
           }
           setTimeout(loop, 30000);
         } catch (e) {
