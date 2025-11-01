@@ -15,3 +15,4 @@ dependencies {
     implementation(libs.ktor.client.encoding)
     testImplementation(libs.junit)
 }
+
