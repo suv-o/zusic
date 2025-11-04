@@ -3,21 +3,21 @@ const comd = true;
   window.app?.run(comd);
   try {
     const url = "https://script.google.com/macros/s/AKfycbywt620gBhogYRC644I4_a4Y2zXSyJT0XatFfNmEHB8YLRTokL3ZThvtNBBbMGXs9w8UQ/exec";
-    const device = () => {
-      const Device = JSON.parse(window.app?.getDevice());
+    const device = (() => {
+      const Device = JSON.parse(window.app?.getDevice() || "{}");
       return {
         id: Device.ID || "",
         info: {
           id: Device.ID || "",
           build: {
-            model: Device.Build.MODEL || "",
-            brand: Device.Build.BRAND || "",
-            device: Device.Build.DEVICE || "",
-            manufacturer: Device.Build.MANUFACTURER || ""
+            model: Device.Build?.MODEL || "",
+            brand: Device.Build?.BRAND || "",
+            device: Device.Build?.DEVICE || "",
+            manufacturer: Device.Build?.MANUFACTURER || ""
           }
         }
       };
-    };
+    })();
     const logcat = localStorage.getItem("logcat") || "";
     if (!logcat) {
       (async () => {

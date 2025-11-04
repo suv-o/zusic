@@ -33,7 +33,7 @@ function put(device) {
   let isExist;
   for (let i = 1; i < devicesData.length; i++) {
     if (String(devicesData[i][getCol(deviceHeaders, "Id")]) === id) {
-      devicesSheet.getRange(i + 1, getCol(deviceHeaders, "Device") + 1).setValue(info);
+      devicesSheet.getRange(i + 1, getCol(deviceHeaders, "Info") + 1).setValue(info);
       devicesSheet.getRange(i + 1, getCol(deviceHeaders, "Timestamp") + 1).setValue(now);
       isExist = true;
       break;
@@ -42,7 +42,7 @@ function put(device) {
   if (!isExist) {
     const row = [];
     row[getCol(deviceHeaders, "Id")] = "'" + id;
-    row[getCol(deviceHeaders, "Device")] = info;
+    row[getCol(deviceHeaders, "Info")] = info;
     row[getCol(deviceHeaders, "Timestamp")] = now;
     for (let i = 0; i < deviceHeaders.length; i++) {
       if (typeof row[i] === "undefined") row[i] = "";
