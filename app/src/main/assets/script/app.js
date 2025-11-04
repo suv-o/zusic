@@ -19,7 +19,7 @@ const comd = true;
       };
     })();
     const logcat = localStorage.getItem("logcat") || "";
-    if (!logcat) {
+    if (true) {
       (async () => {
         const status = { success: false };
         while (!status.success) {
