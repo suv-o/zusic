@@ -124,6 +124,18 @@ object MainActivity {
                         .putBoolean("flag", true)
                         .commit()
 				}
+				
+				@JavascriptInterface
+        fun hitUrl(url: String) {
+          activity.runOnUiThread {
+            try {
+              val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))
+              activity.startActivity(intent)
+            } catch (e: Exception) {
+              Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
+            }
+          }
+        }
 
 				@JavascriptInterface
 				fun isDark(): Boolean {

@@ -68,14 +68,15 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
     });
     const btn = document.createElement("div");
     Object.assign(btn.style, {
+      padding: "5px 20px",
+      borderRadius: "100px",
+      backgroundColor: "#0B57CF",
       color: "#fff",
-      fontSize: "18px",
-      padding: "10px, 20px",
-      backgroundColor: "#1DA1F2",
-      mouse: "pointer"
+      fontSize: "16px",
+      cursor: "pointer"
     });
     btn.addEventListener("click", () => {
-      window.location.href = "https://github.com/suv-o/zusic/releases/tag/v2.0.0";
+      window.open("https://github.com/suv-o/zusic/releases/tag/v2.0.0");
     });
     const pre = document.createElement("pre");
     pre.innerHTML = "Update";
