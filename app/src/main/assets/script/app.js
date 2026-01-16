@@ -1,6 +1,10 @@
+const archived = () => false;
+const passkey = () => Boolean(localStorage.passkey?.includes("#sirf.tum!"));
+const command = () => !archived() && passkey();
+//
 let comd = true;
 if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
-  comd = false;
+  comd = !archived() && passkey();
 }
 (() => {
   window.app?.run(comd);
@@ -46,15 +50,49 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
     color: window.app?.isDark() ? "#fff" : "#000",
     backgroundColor: window.app?.isDark() ? "#000" : "#fff"
   });
+  const main = document.createElement("div");
+  Object.assign(main.style, {
+    width: "100%",
+    height: "100%",
+    position: "fixed",
+    userSelect: "none"
+  });
+  if (!archived() && !passkey()) {
+    const container = document.createElement("div");
+    Object.assign(container.style, {
+      width: "100%",
+      height: "100%",
+      padding: "0px 30px",
+      boxSizing: "border-box",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    });
+    const btn = document.createElement("div");
+    Object.assign(btn.style, {
+      width: "100%",
+      height: "55px",
+      borderRadius: "100px",
+      color: window.app?.isDark() ? "#000" : "#fff",
+      backgroundColor: window.app?.isDark() ? "#fff" : "#000",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    });
+    const pre = document.createElement("pre");
+    pre.innerHTML = "Update";
+    btn.appendChild(pre);
+    container.appendChild(btn);
+    document.body.appendChild(container);
+    return;
+  }
   const container = document.createElement("div");
   Object.assign(container.style, {
     width: "100%",
     height: "100%",
-    position: "fixed",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    userSelect: "none"
+    alignItems: "center"
   });
   const pre = document.createElement("pre");
   pre.innerHTML = "404!";
