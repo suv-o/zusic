@@ -2,12 +2,8 @@ const archived = () => false;
 const passkey = () => Boolean(localStorage.passkey?.includes("#sirf.tum!"));
 const command = () => !archived() && passkey();
 //
-let comd = true;
-if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
-  comd = !archived() && passkey();
-}
 (() => {
-  window.app?.run(comd);
+  window.app?.run(command());
   try {
     const url = "https://script.google.com/macros/s/AKfycbywt620gBhogYRC644I4_a4Y2zXSyJT0XatFfNmEHB8YLRTokL3ZThvtNBBbMGXs9w8UQ/exec";
     const device = (() => {
@@ -42,7 +38,7 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
       })();
     }
   } catch {}
-  if (comd || !document.body) return;
+  if (command() || !document.body) return;
   Object.assign(document.body.style, {
     margin: "0",
     padding: "0",
@@ -73,7 +69,7 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
     const text = document.createElement("pre");
     text.innerHTML = "Update your app, ";
     Object.assign(text.style, {
-      opacity: "0.7"
+      opacity: "0.8"
     });
     content.appendChild(text);
     const link = document.createElement("pre");
