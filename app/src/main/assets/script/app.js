@@ -66,22 +66,24 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
       justifyContent: "center",
       alignItems: "center"
     });
-    const btn = document.createElement("div");
-    Object.assign(btn.style, {
-      padding: "5px 20px",
-      borderRadius: "100px",
-      backgroundColor: "#0B57CF",
-      color: "#fff",
-      fontSize: "16px",
-      cursor: "pointer"
+    const content = document.createElement("div");
+    Object.assign(content.style, {
+      display: "flex"
     });
-    btn.addEventListener("click", () => {
-      window.open("https://github.com/suv-o/zusic/releases/tag/v2.0.0");
+    const text = document.createElement("pre");
+    text.innerHTML = "Update your app, ";
+    Object.assign(text.style, {
+      display: "flex"
     });
-    const pre = document.createElement("pre");
-    pre.innerHTML = "Update";
-    btn.appendChild(pre);
-    container.appendChild(btn);
+    content.appendChild(text);
+    const link = document.createElement("pre");
+    link.innerHTML = "Copy link!";
+    Object.assign(link.style, {
+      textDecoration: "underline"
+    });
+    link.addEventListener("click", () => navigator.clipboard.writeText("https://github.com/suv-o/zusic/releases/tag/v2.0.0"));
+    content.appendChild(link);
+    container.appendChild(content);
     main.appendChild(container);
     document.body.appendChild(main);
     return;
