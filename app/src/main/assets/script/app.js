@@ -62,7 +62,7 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
     Object.assign(container.style, {
       width: "100%",
       height: "100%",
-      padding: "0px 30px",
+      padding: "0px 25px",
       boxSizing: "border-box",
       display: "flex",
       justifyContent: "center",
@@ -71,7 +71,7 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
     const btn = document.createElement("div");
     Object.assign(btn.style, {
       width: "100%",
-      height: "55px",
+      height: "50px",
       borderRadius: "100px",
       color: window.app?.isDark() ? "#000" : "#fff",
       backgroundColor: window.app?.isDark() ? "#fff" : "#000",
@@ -83,7 +83,8 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
     pre.innerHTML = "Update";
     btn.appendChild(pre);
     container.appendChild(btn);
-    document.body.appendChild(container);
+    main.appendChild(container);
+    document.body.appendChild(main);
     return;
   }
   const container = document.createElement("div");
@@ -97,5 +98,6 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
   const pre = document.createElement("pre");
   pre.innerHTML = "404!";
   container.appendChild(pre);
-  document.body.appendChild(container);
+  main.appendChild(container);
+  document.body.appendChild(main);
 })();
