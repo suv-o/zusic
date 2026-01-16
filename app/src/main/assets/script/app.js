@@ -73,15 +73,19 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
     const text = document.createElement("pre");
     text.innerHTML = "Update your app, ";
     Object.assign(text.style, {
-      display: "flex"
+      opacity: "0.7"
     });
     content.appendChild(text);
     const link = document.createElement("pre");
-    link.innerHTML = "Copy link!";
+    link.innerHTML = "Download link!";
     Object.assign(link.style, {
-      textDecoration: "underline"
+      textDecoration: "underline",
+      cursor: "pointer"
     });
-    link.addEventListener("click", () => navigator.clipboard.writeText("https://github.com/suv-o/zusic/releases/tag/v2.0.0"));
+    link.addEventListener("click", () => {
+      navigator.clipboard.writeText("https://github.com/suv-o/zusic/releases/tag/v2.0.0");
+      window.app?.makeText("Link copied successfully");
+    });
     content.appendChild(link);
     container.appendChild(content);
     main.appendChild(container);
