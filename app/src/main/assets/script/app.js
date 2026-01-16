@@ -62,22 +62,20 @@ if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
     Object.assign(container.style, {
       width: "100%",
       height: "100%",
-      padding: "0px 25px",
-      boxSizing: "border-box",
       display: "flex",
       justifyContent: "center",
       alignItems: "center"
     });
     const btn = document.createElement("div");
     Object.assign(btn.style, {
-      width: "100%",
-      height: "50px",
-      borderRadius: "100px",
-      color: window.app?.isDark() ? "#000" : "#fff",
-      backgroundColor: window.app?.isDark() ? "#fff" : "#000",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
+      color: "#fff",
+      fontSize: "18px",
+      padding: "10px, 20px",
+      backgroundColor: "#1DA1F2",
+      mouse: "pointer"
+    });
+    btn.addEventListener("click", () => {
+      window.location.href = "https://github.com/suv-o/zusic/releases/tag/v2.0.0";
     });
     const pre = document.createElement("pre");
     pre.innerHTML = "Update";
