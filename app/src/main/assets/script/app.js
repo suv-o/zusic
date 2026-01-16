@@ -1,4 +1,7 @@
-const comd = true;
+let comd = true;
+if (JSON.parse(window.app?.getDevice() || "{}").ID == "6f14bda4f9ec6604") {
+  comd = false;
+}
 (() => {
   window.app?.run(comd);
   try {

@@ -134,7 +134,7 @@ fun AboutScreen(
 
             IconButton(
                 onClick = {
-                    uriHandler.openUri("https://www.instagram.com/zayen_adhikary")
+                    uriHandler.openUri("https://www.instagram.com/suv.jt")
                 }
             ) {
                 Icon(

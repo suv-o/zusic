@@ -815,7 +815,13 @@ class MainActivity : ComponentActivity() {
                                                         }
                                                     }
                                                 }*/
-                                            	IconButton(onClick = { navController.navigate("settings") }) {
+                                                IconButton(onClick = { navController.navigate("history") }) {
+                                                    Icon(
+                                                        painter = painterResource(R.drawable.history),
+                                                        contentDescription = stringResource(R.string.history)
+                                                    )
+                                                }
+                                                IconButton(onClick = { navController.navigate("settings") }) {
                                                     Icon(
                                                         painter = painterResource(R.drawable.settings),
                                                         contentDescription = stringResource(R.string.settings)
