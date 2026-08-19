@@ -161,7 +161,7 @@ fun SettingsScreen(
         Material3SettingsGroup(
             //z-value
             //title = stringResource(R.string.settings_section_storage),
-            title "Storage",
+            title = "Storage",
             //
             items = listOf(
                 Material3SettingsItem(

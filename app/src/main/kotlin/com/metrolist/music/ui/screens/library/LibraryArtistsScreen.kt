@@ -87,8 +87,12 @@ fun LibraryArtistsScreen(
     val haptic = LocalHapticFeedback.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
-    var viewType by rememberEnumPreference(ArtistViewTypeKey, LibraryViewType.GRID)
-
+    
+    //z-value
+    //var viewType by rememberEnumPreference(ArtistViewTypeKey, LibraryViewType.GRID)
+    var viewType by rememberEnumPreference(ArtistViewTypeKey, LibraryViewType.LIST)
+    //
+    
     var filter by rememberEnumPreference(ArtistFilterKey, ArtistFilter.LIKED)
     val (sortType, onSortTypeChange) = rememberEnumPreference(
         ArtistSortTypeKey,

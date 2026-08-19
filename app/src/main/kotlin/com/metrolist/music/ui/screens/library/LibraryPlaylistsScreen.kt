@@ -114,8 +114,12 @@ fun LibraryPlaylistsScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val coroutineScope = rememberCoroutineScope()
-
-    var viewType by rememberEnumPreference(PlaylistViewTypeKey, LibraryViewType.GRID)
+    
+    //z-value
+    //var viewType by rememberEnumPreference(PlaylistViewTypeKey, LibraryViewType.GRID)
+    var viewType by rememberEnumPreference(PlaylistViewTypeKey, LibraryViewType.LIST)
+    //
+    
     val (sortType, onSortTypeChange) = rememberEnumPreference(
         PlaylistSortTypeKey,
         PlaylistSortType.CREATE_DATE

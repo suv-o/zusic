@@ -96,8 +96,12 @@ fun LibraryAlbumsScreen(
     val playerConnection = LocalPlayerConnection.current ?: return
     val isPlaying by playerConnection.isEffectivelyPlaying.collectAsStateWithLifecycle()
     val mediaMetadata by playerConnection.mediaMetadata.collectAsStateWithLifecycle()
-
-    var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.GRID)
+    
+    //z-value
+    //var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.GRID)
+    var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.LIST)
+    //
+    
     var filter by rememberEnumPreference(AlbumFilterKey, AlbumFilter.LIKED)
     val (sortType, onSortTypeChange) =
         rememberEnumPreference(
