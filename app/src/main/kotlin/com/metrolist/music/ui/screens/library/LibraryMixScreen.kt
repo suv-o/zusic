@@ -126,8 +126,12 @@ fun LibraryMixScreen(
     val playerConnection = LocalPlayerConnection.current ?: return
     val isPlaying by playerConnection.isEffectivelyPlaying.collectAsStateWithLifecycle()
     val mediaMetadata by playerConnection.mediaMetadata.collectAsStateWithLifecycle()
-
-    var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.GRID)
+    
+    //z-value
+    //var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.GRID)
+    var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.LIST)
+    //
+    
     val (sortType, onSortTypeChange) =
         rememberEnumPreference(
             MixSortTypeKey,
