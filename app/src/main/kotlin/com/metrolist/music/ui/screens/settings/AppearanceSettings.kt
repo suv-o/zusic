@@ -147,7 +147,7 @@ fun AppearanceSettings(
     val (enableHighRefreshRate, onEnableHighRefreshRateChange) =
         rememberPreference(
             EnableHighRefreshRateKey,
-            //z-comment
+            //z-value
             //defaultValue = true,
             defaultValue = false,
             //
@@ -168,7 +168,7 @@ fun AppearanceSettings(
     val (useNewPlayerDesign, onUseNewPlayerDesignChange) =
         rememberPreference(
             UseNewPlayerDesignKey,
-            //z-comment
+            //z-value
             //defaultValue = true,
             defaultValue = false,
             //
@@ -189,7 +189,7 @@ fun AppearanceSettings(
     val (useNewMiniPlayerDesign, onUseNewMiniPlayerDesignChange) =
         rememberPreference(
             UseNewMiniPlayerDesignKey,
-            //z-comment
+            //z-value
             //defaultValue = true,
             defaultValue = false,
             //
@@ -207,7 +207,7 @@ fun AppearanceSettings(
     val (playerBackground, onPlayerBackgroundChange) =
         rememberEnumPreference(
             PlayerBackgroundStyleKey,
-            //z-comment
+            //z-value
             //defaultValue = PlayerBackgroundStyle.DEFAULT,
             defaultValue = PlayerBackgroundStyle.GRADIENT
             //

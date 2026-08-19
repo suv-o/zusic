@@ -60,7 +60,10 @@ fun CastButton(
     
     val (enableGoogleCast) = rememberPreference(
         key = EnableGoogleCastKey,
-        defaultValue = true
+        //z-value
+        //defaultValue = true
+        defaultValue = false
+        //
     )
     
     // Get cast state from service
