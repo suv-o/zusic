@@ -240,7 +240,7 @@ fun BottomSheetPlayer(
         key = PlayerBackgroundStyleKey,
         //z-value
         //defaultValue = PlayerBackgroundStyle.DEFAULT,
-        defaultValue = PlayerBackgroundStyle.GRADIENT
+        defaultValue = PlayerBackgroundStyle.BLUR
         //
     )
     val playerButtonsStyle by rememberEnumPreference(
