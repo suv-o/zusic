@@ -218,7 +218,8 @@ fun BottomSheetPlayer(
 
     val (useNewPlayerDesign, onUseNewPlayerDesignChange) =
         rememberPreference(
-            //z-comment
+            key = UseNewPlayerDesignKey,
+            //z-value
             //defaultValue = true,
             defaultValue = false,
             //
