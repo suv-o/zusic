@@ -245,7 +245,6 @@ class MainActivity : ComponentActivity() {
 		            connection.service.clearAutomix()
 			          connection.player.stop()
 			          connection.player.clearMediaItems()
-			          
 			          //connection.service.stopForeground(android.app.Service.STOP_FOREGROUND_REMOVE)
                 //connection.service.stopSelf()
 		        }

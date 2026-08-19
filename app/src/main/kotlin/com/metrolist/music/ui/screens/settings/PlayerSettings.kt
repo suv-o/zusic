@@ -150,7 +150,10 @@ fun PlayerSettings(
 
     val (enableGoogleCast, onEnableGoogleCastChange) = rememberPreference(
         key = EnableGoogleCastKey,
-        defaultValue = true
+        //z-value
+        //defaultValue = true
+        defaultValue = false
+        //
     )
 
     val (seekExtraSeconds, onSeekExtraSeconds) = rememberPreference(
@@ -300,6 +303,8 @@ fun PlayerSettings(
                     },
                     onClick = { showAudioQualityDialog = true }
                 ))
+                
+                //
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.linear_scale),
                     title = { Text(stringResource(R.string.crossfade)) },

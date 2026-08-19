@@ -90,13 +90,18 @@ fun SettingsScreen(
 
         // Player & Content Section (moved up and combined with content)
         Material3SettingsGroup(
-            title = stringResource(R.string.settings_section_player_content),
+            //z-value
+            //title = stringResource(R.string.settings_section_player_content),
+            title = "Player",
+            //
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.play),
-                    title = { Text(stringResource(R.string.player_and_audio)) },
+                    title = { Text("Player"/*stringResource(R.string.player_and_audio)*/) },
                     onClick = { navController.navigate("settings/player") }
                 ),
+                //z-comment
+                /*
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.radio),
                     title = { Text(stringResource(R.string.stream_sources)) },
@@ -111,12 +116,15 @@ fun SettingsScreen(
                     icon = painterResource(R.drawable.translate),
                     title = { Text(stringResource(R.string.ai_lyrics_translation)) },
                     onClick = { navController.navigate("settings/ai") }
-                )
+                )*/
+                //
             )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        //z-comment 
+        /*
         // Android Auto Section — only shown if Android Auto is installed
         if (hasAndroidAuto) {
             Material3SettingsGroup(
@@ -144,12 +152,17 @@ fun SettingsScreen(
                 )
             )
         )
-
+        
         Spacer(modifier = Modifier.height(16.dp))
-
+        */
+        //
+        
         // Storage & Data Section
         Material3SettingsGroup(
+            //z-value
             title = stringResource(R.string.settings_section_storage),
+            title "Storage",
+            //
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.storage),
@@ -168,8 +181,13 @@ fun SettingsScreen(
 
         // System & About Section
         Material3SettingsGroup(
-            title = stringResource(R.string.settings_section_system),
+            //z-value
+            //title = stringResource(R.string.settings_section_system),
+            title = "About",
+            //
             items = buildList {
+                //z-comment
+                /*
                 if (isAndroid12OrLater) {
                     add(
                         Material3SettingsItem(
@@ -231,6 +249,8 @@ fun SettingsScreen(
                         onClick = { showChangelog.value = true }
                     )
                 )
+                */
+                //
                 add(
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.info),
@@ -238,6 +258,8 @@ fun SettingsScreen(
                         onClick = { navController.navigate("settings/about") }
                     )
                 )
+                //z-comment
+                /*
                 if (BuildConfig.UPDATER_AVAILABLE && latestVersionName != BuildConfig.VERSION_NAME) {
                     val releaseInfo = Updater.getCachedLatestRelease()
                     val downloadUrl = releaseInfo?.let { Updater.getDownloadUrlForCurrentVariant(it) }
@@ -264,12 +286,18 @@ fun SettingsScreen(
                         )
                     }
                 }
+                */
+                //
             }
         )
-    if (BuildConfig.UPDATER_AVAILABLE && latestVersionName != BuildConfig.VERSION_NAME) {
+        //z-comment
+        /*
+        if (BuildConfig.UPDATER_AVAILABLE && latestVersionName != BuildConfig.VERSION_NAME) {
             Spacer(modifier = Modifier.height(16.dp))
             ReleaseNotesCard()
         }
+        */
+        //
 
         Spacer(modifier = Modifier.height(16.dp))
     }

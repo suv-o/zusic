@@ -147,7 +147,10 @@ fun AppearanceSettings(
     val (enableHighRefreshRate, onEnableHighRefreshRateChange) =
         rememberPreference(
             EnableHighRefreshRateKey,
-            defaultValue = true,
+            //z-comment
+            //defaultValue = true,
+            defaultValue = false,
+            //
         )
     val (enableLandscapeScaling, onEnableLandscapeScalingChange) =
         rememberPreference(
@@ -165,7 +168,10 @@ fun AppearanceSettings(
     val (useNewPlayerDesign, onUseNewPlayerDesignChange) =
         rememberPreference(
             UseNewPlayerDesignKey,
-            defaultValue = true,
+            //z-comment
+            //defaultValue = true,
+            defaultValue = false,
+            //
         )
     val (miniPlayerBackground, onMiniPlayerBackgroundChange) =
         rememberEnumPreference(
@@ -183,7 +189,10 @@ fun AppearanceSettings(
     val (useNewMiniPlayerDesign, onUseNewMiniPlayerDesignChange) =
         rememberPreference(
             UseNewMiniPlayerDesignKey,
-            defaultValue = true,
+            //z-comment
+            //defaultValue = true,
+            defaultValue = false,
+            //
         )
     val (hidePlayerThumbnail, onHidePlayerThumbnailChange) =
         rememberPreference(
@@ -198,7 +207,10 @@ fun AppearanceSettings(
     val (playerBackground, onPlayerBackgroundChange) =
         rememberEnumPreference(
             PlayerBackgroundStyleKey,
-            defaultValue = PlayerBackgroundStyle.DEFAULT,
+            //z-comment
+            //defaultValue = PlayerBackgroundStyle.DEFAULT,
+            defaultValue = PlayerBackgroundStyle.GRADIENT
+            //
         )
 
     val (defaultOpenTab, onDefaultOpenTabChange) =
