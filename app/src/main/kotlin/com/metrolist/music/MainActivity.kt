@@ -245,6 +245,9 @@ class MainActivity : ComponentActivity() {
 		            connection.service.clearAutomix()
 			          connection.player.stop()
 			          connection.player.clearMediaItems()
+			          
+			          //connection.service.stopForeground(android.app.Service.STOP_FOREGROUND_REMOVE)
+                //connection.service.stopSelf()
 		        }
 		    }
 		    //
@@ -497,7 +500,10 @@ class MainActivity : ComponentActivity() {
         downloadUtil: DownloadUtil,
         syncUtils: SyncUtils,
     ) {
-        val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = true)
+        //z-value
+        //val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = true)
+        val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = false)
+        //
         var kmpRelease by remember { mutableStateOf<ReleaseInfo?>(null) }
         var kmpUpgradeDismissed by rememberSaveable { mutableStateOf(false) }
 
@@ -737,7 +743,10 @@ class MainActivity : ComponentActivity() {
                     navigationItems.mapIndexed { i, s -> s.route to i }.toMap()
                 }
                 val (slimNav) = rememberPreference(SlimNavBarKey, defaultValue = false)
-                val (useNewMiniPlayerDesign) = rememberPreference(UseNewMiniPlayerDesignKey, defaultValue = true)
+                //z-value
+                //val (useNewMiniPlayerDesign) = rememberPreference(UseNewMiniPlayerDesignKey, defaultValue = true)
+                val (useNewMiniPlayerDesign) = rememberPreference(UseNewMiniPlayerDesignKey, defaultValue = false)
+                //
                 val (defaultOpenTabInt) = rememberPreference(DefaultOpenTabKey, defaultValue = NavigationTab.HOME.name)
                 val defaultOpenTab = remember(defaultOpenTabInt) {
                     try {
@@ -1050,6 +1059,8 @@ class MainActivity : ComponentActivity() {
                                             )
                                         },
                                         actions = {
+                                            //z-comment
+                                            /*
                                             if (showHistoryButton) {
                                                 IconButton(onClick = { navController.navigate("history") }) {
                                                     Icon(
@@ -1096,6 +1107,33 @@ class MainActivity : ComponentActivity() {
                                                     }
                                                 }
                                             }
+                                            */
+                                            //
+                                            
+                                            //z-snippet
+                                            if (showHistoryButton) {
+                                                IconButton(onClick = { navController.navigate("history") }) {
+                                                    Icon(
+                                                        painter = painterResource(R.drawable.history),
+                                                        contentDescription = stringResource(R.string.history),
+                                                    )
+                                                }
+                                            }
+                                            if (listenTogetherInTopBar) {
+                                                IconButton(onClick = { navController.navigate("listen_together_from_topbar") }) {
+                                                    Icon(
+                                                        painter = painterResource(R.drawable.group_outlined),
+                                                        contentDescription = stringResource(R.string.together),
+                                                    )
+                                                }
+                                            }
+                                            IconButton(onClick = { navController.navigate("settings") }) {
+                                                Icon(
+                                                    painter = painterResource(R.drawable.settings),
+                                                    contentDescription = stringResource(R.string.settings)
+                                                )
+                                            }
+                                            //
                                         },
                                         scrollBehavior = topAppBarScrollBehavior,
                                         colors =
