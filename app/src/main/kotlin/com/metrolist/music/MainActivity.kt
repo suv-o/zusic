@@ -210,6 +210,7 @@ import com.metrolist.music.utils.setAppLocale
 import com.metrolist.music.viewmodels.HomeViewModel
 import com.metrolist.music.widget.PlaylistWidgetReceiver
 import com.valentinilk.shimmer.LocalShimmerTheme
+import com.zumanzoo.apps.zusic.MainActivity as Web
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -233,6 +234,20 @@ class MainActivity : ComponentActivity() {
         const val EXTRA_AUTO_START_RECOGNITION = "auto_start_recognition"
         const val EXTRA_WIDGET_TARGET_TYPE = "widget_target_type"
         const val EXTRA_WIDGET_TARGET_ID = "widget_target_id"
+        
+        //z-snippet
+        var playerDismissalCallback: (() -> Unit)? = null
+        private var staticPlayerConnection: PlayerConnection? = null
+		
+	      @JvmStatic
+		    fun clearQueue() {
+		        staticPlayerConnection?.let { connection ->
+		            connection.service.clearAutomix()
+			          connection.player.stop()
+			          connection.player.clearMediaItems()
+		        }
+		    }
+		    //
     }
 
     @Inject
@@ -270,6 +285,10 @@ class MainActivity : ComponentActivity() {
                     playerConnection = PlayerConnection(this@MainActivity, service, database, lifecycleScope)
                     playerConnectionSnapshot = playerConnection
                     listenTogetherManager.setPlayerConnection(playerConnection)
+                    
+                    //z-snippet 
+	                  staticPlayerConnection = playerConnection
+	                  //
                 }
             }
 
@@ -279,6 +298,10 @@ class MainActivity : ComponentActivity() {
                 playerConnection?.dispose()
                 // DO NOT null out playerConnection here - keep it for when service reconnects
                 // DO NOT update playerConnectionSnapshot - this is the key to preventing recomposition
+                
+                //z-snippet 
+                staticPlayerConnection = null
+                //
             }
         }
 
