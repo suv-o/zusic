@@ -2601,9 +2601,13 @@ fun HomeScreen(
                         }
                     }
                 },
+                //z -comment
+                /*
                 onRecognitionClick = {
                     navController.navigate("recognition")
                 },
+                */
+                //
             )
         }
     }

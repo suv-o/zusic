@@ -226,8 +226,12 @@ fun BottomSheetPlayer(
         )
     val (hidePlayerThumbnail, onHidePlayerThumbnailChange) = rememberPreference(HidePlayerThumbnailKey, false)
     val (hideStatusBarOnFullscreen) = rememberPreference(HideStatusBarOnFullscreenKey, false)
-    val cropAlbumArt by rememberPreference(CropAlbumArtKey, false)
-
+    
+    //z-value
+    //val cropAlbumArt by rememberPreference(CropAlbumArtKey, false)
+    val cropAlbumArt by rememberPreference(CropAlbumArtKey, true)
+    //
+    
     var showInlineLyrics by rememberSaveable {
         mutableStateOf(false)
     }
@@ -240,6 +244,7 @@ fun BottomSheetPlayer(
         key = PlayerBackgroundStyleKey,
         //z-value
         //defaultValue = PlayerBackgroundStyle.DEFAULT,
+        //defaultValue = PlayerBackgroundStyle.GRADIENT
         defaultValue = PlayerBackgroundStyle.BLUR
         //
     )
