@@ -328,6 +328,8 @@ fun StorageSettings(
                         Switch(
                             checked = enableSongCache,
                             onCheckedChange = onEnableSongCacheChange,
+                            //z-comment
+                            /*
                             thumbContent = {
                                 Icon(
                                     painter = painterResource(
@@ -337,6 +339,8 @@ fun StorageSettings(
                                     modifier = Modifier.size(SwitchDefaults.IconSize)
                                 )
                             }
+                            */
+                            //
                         )
                     },
                     onClick = { onEnableSongCacheChange(!enableSongCache) }

@@ -977,9 +977,8 @@ fun AppearanceSettings(
             .padding(horizontal = 16.dp),
     ) {
         Material3SettingsGroup(
-            //z-value
+            //z-comment
             //title = stringResource(R.string.theme),
-            title = "",
             //
             items =
                 buildList {

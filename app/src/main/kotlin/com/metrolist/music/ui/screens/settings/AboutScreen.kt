@@ -252,7 +252,7 @@ private fun SocialLinkRow(
 
             Text(
                 text = label,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -552,21 +552,6 @@ fun AboutScreen(
     }
     */
 
-    TopAppBar(
-        title = { Text(stringResource(R.string.about)) },
-        navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.arrow_back),
-                    contentDescription = stringResource(R.string.cd_back),
-                )
-            }
-        }
-    )
-
     /*
      * NEW ABOUT PAGE
      * ------------------------------------------------------------
@@ -580,25 +565,37 @@ fun AboutScreen(
      *
      * The complete previous About UI above has intentionally NOT been
      * removed. It is still kept inside the existing block comment.
+     *
+     * Everything below is wrapped in one outer Box so the TopAppBar is
+     * guaranteed to draw ABOVE the scrolling content (it's emitted last,
+     * and Box stacks children in emission order). Previously the
+     * TopAppBar and the scrolling Column were composed as plain siblings,
+     * which let the "About" title get scrolled up and covered by the
+     * card content instead of staying pinned above it.
      */
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .windowInsetsPadding(
-                windowInsets.only(
-                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+    Box(Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(
+                    windowInsets.only(
+                        WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+                    )
+                )
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
+        ) {
+            Spacer(
+                Modifier.windowInsetsPadding(
+                    windowInsets.only(WindowInsetsSides.Top)
                 )
             )
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp),
-    ) {
-        Spacer(
-            Modifier.windowInsetsPadding(
-                windowInsets.only(WindowInsetsSides.Top)
-            )
-        )
 
-        Spacer(Modifier.height(12.dp))
+            // Reserves space for the TopAppBar (64.dp) drawn on top of this
+            // Column, so cards don't render underneath it at rest.
+            Spacer(Modifier.height(64.dp))
+
+            Spacer(Modifier.height(12.dp))
 
         // ---------------------------------------------------------
         // 1 + 2 — Application information
@@ -617,8 +614,8 @@ fun AboutScreen(
             ) {
                 // 1 — Application icon
                 Surface(
-                    modifier = Modifier.size(82.dp),
-                    shape = RoundedCornerShape(24.dp),
+                    modifier = Modifier.size(72.dp),
+                    shape = RoundedCornerShape(22.dp),
                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                     tonalElevation = 2.dp,
                 ) {
@@ -651,29 +648,29 @@ fun AboutScreen(
 
                     Text(
                         text = appName,
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
 
-                    Spacer(Modifier.height(7.dp))
+                    Spacer(Modifier.height(6.dp))
 
                     // Build variant (e.g. "universal") + version number (e.g. "3.0.0"),
                     // shown as two plain labels side by side like the reference image
                     // instead of a single combined "TYPE • vX.X.X" string.
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Text(
                             text = BuildConfig.ARCHITECTURE.lowercase(Locale.getDefault()),
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Text(
                             text = BuildConfig.VERSION_NAME,
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -697,23 +694,23 @@ fun AboutScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(245.dp),
+                        .height(215.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     /*
                      * Replace R.drawable.about_icon with your own photo resource.
                      *
-                     * The reference image uses a spiky sunburst silhouette
-                     * (not a soft cookie-bump shape) with a lighter "sticker
-                     * halo" layer showing behind the photo — recreated below
-                     * with two stacked shapes of the same silhouette.
+                     * The reference image uses a soft, rounded blob/scallop
+                     * silhouette (Cookie9Sided) with a lighter "sticker halo"
+                     * layer showing behind the photo — recreated below with
+                     * two stacked shapes of the same silhouette.
                      */
-                    val photoShape = MaterialShapes.VerySunny.toShape()
+                    val photoShape = MaterialShapes.Cookie9Sided.toShape()
 
                     // Halo layer — larger, near-white, sits behind the photo
                     // to recreate the peeled-sticker outline from the screenshot.
                     Surface(
-                        modifier = Modifier.size(232.dp),
+                        modifier = Modifier.size(200.dp),
                         shape = photoShape,
                         color = MaterialTheme.colorScheme.surfaceContainerLow,
                         shadowElevation = 2.dp,
@@ -723,7 +720,7 @@ fun AboutScreen(
                         painter = painterResource(R.drawable.about_icon),
                         contentDescription = "Developer photo",
                         modifier = Modifier
-                            .size(200.dp)
+                            .size(172.dp)
                             .clip(photoShape),
                         contentScale = ContentScale.Crop,
                     )
@@ -745,17 +742,17 @@ fun AboutScreen(
                     ) {
                         Text(
                             text = "Subhajit",
-                            style = MaterialTheme.typography.headlineSmall,
+                            style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
 
-                        Spacer(Modifier.height(2.dp))
+                        Spacer(Modifier.height(3.dp))
 
                         Text(
                             text = "Developer",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -771,7 +768,7 @@ fun AboutScreen(
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x = (-14).dp, y = 235.dp)
+                    .offset(x = (-14).dp, y = 205.dp)
                     .size(58.dp),
                 shape = CircleShape,
                 color = MaterialTheme.colorScheme.primaryContainer,
@@ -826,10 +823,29 @@ fun AboutScreen(
             }
         }
 
-        Spacer(Modifier.height(32.dp))
-    }
+            Spacer(Modifier.height(32.dp))
+        }
 
-    Box(Modifier.fillMaxSize()) {
+        // Drawn after (= above) the scrolling Column, so it always stays
+        // pinned over the content instead of being scrolled/covered.
+        TopAppBar(
+            title = { Text(stringResource(R.string.about)) },
+            navigationIcon = {
+                IconButton(
+                    onClick = navController::navigateUp,
+                    onLongClick = navController::backToMain,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.arrow_back),
+                        contentDescription = stringResource(R.string.cd_back),
+                    )
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Horizontal)),
+        )
+
         SnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier
@@ -837,5 +853,4 @@ fun AboutScreen(
                 .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
         )
     }
-
 }

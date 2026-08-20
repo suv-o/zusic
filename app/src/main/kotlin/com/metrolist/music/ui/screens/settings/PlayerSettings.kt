@@ -287,7 +287,9 @@ fun PlayerSettings(
         )
 
         Material3SettingsGroup(
-            title = stringResource(R.string.player),
+            //z-comment
+            //title = stringResource(R.string.player),
+            //
             items = buildList {
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.graphic_eq),
@@ -313,6 +315,8 @@ fun PlayerSettings(
                         Switch(
                             checked = crossfadeEnabled,
                             onCheckedChange = onCrossfadeEnabledChange,
+                            //z-comment
+                            /*
                             thumbContent = {
                                 Icon(
                                     painter = painterResource(
@@ -322,6 +326,8 @@ fun PlayerSettings(
                                     modifier = Modifier.size(SwitchDefaults.IconSize)
                                 )
                             }
+                            */
+                            //
                         )
                     },
                     onClick = { onCrossfadeEnabledChange(!crossfadeEnabled) }
@@ -364,6 +370,7 @@ fun PlayerSettings(
                         onClick = { onCrossfadeGaplessChange(!crossfadeGapless) }
                     ))
                 }
+                //z-comment
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.history),
                     title = { Text(stringResource(R.string.history_duration)) },
@@ -386,6 +393,8 @@ fun PlayerSettings(
                         Switch(
                             checked = skipSilence,
                             onCheckedChange = onSkipSilenceChange,
+                            //z-comment
+                            /*
                             thumbContent = {
                                 Icon(
                                     painter = painterResource(
@@ -395,6 +404,8 @@ fun PlayerSettings(
                                     modifier = Modifier.size(SwitchDefaults.IconSize)
                                 )
                             }
+                            */
+                            //
                         )
                     },
                     onClick = { onSkipSilenceChange(!skipSilence) }
@@ -408,6 +419,8 @@ fun PlayerSettings(
                             checked = skipSilenceInstant,
                             onCheckedChange = { onSkipSilenceInstantChange(it) },
                             enabled = skipSilence,
+                            //z-comment
+                            /*
                             thumbContent = {
                                 Icon(
                                     painter = painterResource(
@@ -417,6 +430,8 @@ fun PlayerSettings(
                                     modifier = Modifier.size(SwitchDefaults.IconSize)
                                 )
                             }
+                            */
+                            //
                         )
                     },
                     onClick = { if (skipSilence) onSkipSilenceInstantChange(!skipSilenceInstant) }
@@ -428,6 +443,8 @@ fun PlayerSettings(
                         Switch(
                             checked = audioNormalization,
                             onCheckedChange = onAudioNormalizationChange,
+                            //z-comment
+                            /*
                             thumbContent = {
                                 Icon(
                                     painter = painterResource(
@@ -437,6 +454,8 @@ fun PlayerSettings(
                                     modifier = Modifier.size(SwitchDefaults.IconSize)
                                 )
                             }
+                            */
+                            //
                         )
                     },
                     onClick = { onAudioNormalizationChange(!audioNormalization) }
@@ -451,6 +470,8 @@ fun PlayerSettings(
                         onClick = { showLoudnessLevelDialog = true }
                     ))
                 }
+                //z-comment
+                /*
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.graphic_eq),
                     title = { Text(stringResource(R.string.audio_offload)) },
@@ -550,6 +571,8 @@ fun PlayerSettings(
                         onClick = { onEnableGoogleCastChange(!enableGoogleCast) }
                     ))
                 }
+                */
+                //
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.arrow_forward),
                     title = { Text(stringResource(R.string.seek_seconds_addup)) },
@@ -558,6 +581,8 @@ fun PlayerSettings(
                         Switch(
                             checked = seekExtraSeconds,
                             onCheckedChange = onSeekExtraSeconds,
+                            //z-comment
+                            /*
                             thumbContent = {
                                 Icon(
                                     painter = painterResource(
@@ -567,6 +592,8 @@ fun PlayerSettings(
                                     modifier = Modifier.size(SwitchDefaults.IconSize)
                                 )
                             }
+                            */
+                            //
                         )
                     },
                     onClick = { onSeekExtraSeconds(!seekExtraSeconds) }
@@ -1094,6 +1121,8 @@ fun PlayerSettings(
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
+        */
+        //
     }
 
     TopAppBar(
