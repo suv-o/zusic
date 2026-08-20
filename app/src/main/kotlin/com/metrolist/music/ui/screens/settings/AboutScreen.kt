@@ -84,7 +84,7 @@ private data class CommunityLink(
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val leadDeveloper = Contributor(
-    name = "Suvjt Adhikary",
+    name = "Subhajit Adhikary",
     role = "Developer",
     githubHandle = "suv-o",
     polygon = MaterialShapes.Cookie9Sided
@@ -223,18 +223,6 @@ fun AboutScreen(
                         )
                     }
                     
-                    /*IconButton(
-                        onClick = { uriHandler.openUri("https://github.com/suv-o/zusic") },
-                        onLongClick = {}
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.github),
-                            contentDescription = "GitHub",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            //modifier = Modifier.size(24.dp)
-                        )
-                    }*/
-                    
                     Surface(
                         onClick = { uriHandler.openUri("https://github.com/suv-o/zusic") },
                         shape = CircleShape,
@@ -254,7 +242,8 @@ fun AboutScreen(
             }
 
             Spacer(Modifier.height(40.dp))
-
+            
+            /*
             Box(
                 modifier = Modifier
                     .size(160.dp)
@@ -296,7 +285,7 @@ fun AboutScreen(
                         Text(
                             text = leadDeveloper.name,
                             style = MaterialTheme.typography.headlineMedium,
-                            //fontWeight = FontWeight.Black,
+                            fontWeight = FontWeight.Black,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         
@@ -305,7 +294,7 @@ fun AboutScreen(
                         Text(
                             text = leadDeveloper.role,
                             style = MaterialTheme.typography.titleMedium,
-                            //fontWeight = FontWeight.SemiBold,
+                            fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -314,7 +303,8 @@ fun AboutScreen(
                 Surface(
                     onClick = { uriHandler.openUri("https://github.com/suv-o") },
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primaryContainer,
+                    //color = MaterialTheme.colorScheme.primaryContainer,
+                    color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
                     shadowElevation = 6.dp,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -326,11 +316,83 @@ fun AboutScreen(
                             painter = painterResource(R.drawable.github),
                             contentDescription = "GitHub",
                             modifier = Modifier.size(28.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            //tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
                 }
             }
+            */
+            
+                        // Merged Developer Image & Info Card
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                // Background Card
+                Card(
+                    shape = RoundedCornerShape(32.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 80.dp) // Image ke aadhe hisse (160/2) ke barabar space chhora
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 24.dp, end = 24.dp, top = 96.dp, bottom = 24.dp), // Image ke niche se text start
+                        horizontalAlignment = Alignment.CenterHorizontally 
+                    ) {
+                        Text(
+                            text = leadDeveloper.name,
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Black,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        
+                        Spacer(Modifier.height(8.dp))
+                        
+                        Text(
+                            text = leadDeveloper.role,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant 
+                        )
+                    }
+                }
+
+                // Overlapping Developer Image with Outline
+                val developerShape = leadDeveloper.polygon?.toShape() ?: CircleShape
+                Box(
+                    modifier = Modifier
+                        .size(160.dp)
+                        // 1. Outline ka color (App ke background jaisa cutout effect dega)
+                        .background(color = MaterialTheme.colorScheme.background, shape = developerShape)
+                        // 2. Outline ki thickness (6.dp)
+                        .padding(6.dp)
+                        // 3. Andar wali image ko wapas shape main clip karna
+                        .clip(developerShape)
+                        // 4. Fallback App Icon ke liye theme-aware background
+                        .background(appIconBgColor),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.app_icon),
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        colorFilter = ColorFilter.tint(appIconTintColor)
+                    )
+                    AsyncImage(
+                        model = leadDeveloper.avatarUrl,
+                        contentDescription = leadDeveloper.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+            
 
             Spacer(Modifier.height(24.dp))
 
@@ -373,8 +435,8 @@ fun AboutScreen(
                                 Spacer(Modifier.width(20.dp))
                                 Text(
                                     text = link.label,
-                                    style = MaterialTheme.typography.titleLarge,
-                                    //fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                             }

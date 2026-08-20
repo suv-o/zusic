@@ -435,6 +435,8 @@ fun ListenTogetherSettings(
                                     onCheckedChange = { autoApprovalJoins = it },
                                     // Only disable for guests in a room (hosts can always change)
                                     enabled = roomState == null || role != RoomRole.GUEST,
+                                    //z-comment
+                                    /*
                                     thumbContent = {
                                         Icon(
                                             painter =
@@ -445,6 +447,8 @@ fun ListenTogetherSettings(
                                             modifier = Modifier.size(SwitchDefaults.IconSize),
                                         )
                                     },
+                                    */
+                                    //
                                 )
                             },
                             // Allow clicking to see disabled state, but only change if enabled
@@ -462,6 +466,8 @@ fun ListenTogetherSettings(
                                     onCheckedChange = { autoApproveSuggestions = it },
                                     // Only disable for guests in a room (hosts can always change)
                                     enabled = roomState == null || role != RoomRole.GUEST,
+                                    //z-comment
+                                    /*
                                     thumbContent = {
                                         Icon(
                                             painter =
@@ -472,6 +478,8 @@ fun ListenTogetherSettings(
                                             modifier = Modifier.size(SwitchDefaults.IconSize),
                                         )
                                     },
+                                    */
+                                    //
                                 )
                             },
                             // Allow clicking to see disabled state, but only change if enabled
@@ -487,6 +495,8 @@ fun ListenTogetherSettings(
                                 Switch(
                                     checked = syncHostVolume,
                                     onCheckedChange = { syncHostVolume = it },
+                                    //z-comment
+                                    /*
                                     thumbContent = {
                                         Icon(
                                             painter =
@@ -497,6 +507,8 @@ fun ListenTogetherSettings(
                                             modifier = Modifier.size(SwitchDefaults.IconSize),
                                         )
                                     },
+                                    */
+                                    //
                                 )
                             },
                             onClick = { syncHostVolume = !syncHostVolume },
