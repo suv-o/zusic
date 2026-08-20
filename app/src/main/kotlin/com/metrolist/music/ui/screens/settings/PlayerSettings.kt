@@ -1130,7 +1130,7 @@ fun PlayerSettings(
     TopAppBar(
         //z-value
         //title = { Text(stringResource(R.string.player_and_audio)) },
-        title = "Player",
+        title = { Text("Player") },
         //
         navigationIcon = {
             IconButton(
