@@ -305,8 +305,6 @@ fun PlayerSettings(
                     },
                     onClick = { showAudioQualityDialog = true }
                 ))
-                
-                //
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.linear_scale),
                     title = { Text(stringResource(R.string.crossfade)) },
@@ -370,7 +368,6 @@ fun PlayerSettings(
                         onClick = { onCrossfadeGaplessChange(!crossfadeGapless) }
                     ))
                 }
-                //z-comment
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.history),
                     title = { Text(stringResource(R.string.history_duration)) },
@@ -410,32 +407,34 @@ fun PlayerSettings(
                     },
                     onClick = { onSkipSilenceChange(!skipSilence) }
                 ))
-                add(Material3SettingsItem(
-                    icon = painterResource(R.drawable.skip_next),
-                    title = { Text(stringResource(R.string.skip_silence_instant)) },
-                    description = { Text(stringResource(R.string.skip_silence_instant_desc)) },
-                    trailingContent = {
-                        Switch(
-                            checked = skipSilenceInstant,
-                            onCheckedChange = { onSkipSilenceInstantChange(it) },
-                            enabled = skipSilence,
-                            //z-comment
-                            /*
-                            thumbContent = {
-                                Icon(
-                                    painter = painterResource(
-                                        id = if (skipSilenceInstant) R.drawable.check else R.drawable.close
-                                    ),
+                if (skipSilence){
+                    add(Material3SettingsItem(
+                        icon = painterResource(R.drawable.skip_next),
+                        title = { Text(stringResource(R.string.skip_silence_instant)) },
+                        description = { Text(stringResource(R.string.skip_silence_instant_desc)) },
+                        trailingContent = {
+                            Switch(
+                                checked = skipSilenceInstant,
+                                onCheckedChange = { onSkipSilenceInstantChange(it) },
+                                enabled = skipSilence,
+                                //z-comment
+                                /*
+                                thumbContent = {
+                                    Icon(
+                                        painter = painterResource(
+                                            id = if (skipSilenceInstant) R.drawable.check else R.drawable.close
+                                        ),
                                     contentDescription = null,
                                     modifier = Modifier.size(SwitchDefaults.IconSize)
-                                )
-                            }
-                            */
-                            //
-                        )
-                    },
-                    onClick = { if (skipSilence) onSkipSilenceInstantChange(!skipSilenceInstant) }
-                ))
+                                    )
+                                }
+                                */
+                                //
+                            )
+                        },
+                        onClick = { if (skipSilence) onSkipSilenceInstantChange(!skipSilenceInstant) }
+                    ))
+                }
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.volume_up),
                     title = { Text(stringResource(R.string.audio_normalization)) },
@@ -1129,7 +1128,10 @@ fun PlayerSettings(
     }
 
     TopAppBar(
-        title = { Text(stringResource(R.string.player_and_audio)) },
+        //z-value
+        //title = { Text(stringResource(R.string.player_and_audio)) },
+        title = "Player",
+        //
         navigationIcon = {
             IconButton(
                 onClick = navController::navigateUp,

@@ -76,7 +76,10 @@ fun SettingsScreen(
 
         // User Interface Section
         Material3SettingsGroup(
-            title = stringResource(R.string.settings_section_ui),
+            //z-value
+            //title = stringResource(R.string.settings_section_ui),
+            title = "Display",
+            //
             items = listOf(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.palette),

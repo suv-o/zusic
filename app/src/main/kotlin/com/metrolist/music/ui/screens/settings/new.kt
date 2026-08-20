@@ -6,6 +6,7 @@
 package com.metrolist.music.ui.screens.settings
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,13 +25,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -39,6 +43,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,10 +53,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -82,7 +91,6 @@ private data class Contributor(
     val avatarUrl: String = "https://github.com/$githubHandle.png",
     val githubUrl: String = "https://github.com/$githubHandle",
     val sponsorUrl: String? = null,
-    val instagramUrl: String? = null,
     val polygon: RoundedPolygon? = null,
     val favoriteSongVideoId: String? = null
 )
@@ -98,7 +106,6 @@ private val leadDeveloper = Contributor(
     name = "Mo Agamy",
     roleRes = R.string.credits_lead_developer,
     githubHandle = "mostafaalagamy",
-    instagramUrl = "https://www.instagram.com/mostafaalagamy",
     polygon = MaterialShapes.Cookie9Sided,
     favoriteSongVideoId = "Mh2JWGWvy_Y"
 )
@@ -110,9 +117,9 @@ private val collaborators = listOf(
 )
 
 private val communityLinks = listOf(
-    CommunityLink(R.string.credits_view_repo, R.drawable.github, "https://github.com/MetrolistGroup/Metrolist"),
-    CommunityLink(R.string.credits_telegram, R.drawable.telegram, "https://t.me/metrolistapp"),
     CommunityLink(R.string.credits_discord, R.drawable.discord, "https://discord.com/invite/zrdbeRG2Mt"),
+    CommunityLink(R.string.credits_telegram, R.drawable.telegram, "https://t.me/metrolistapp"),
+    CommunityLink(R.string.credits_view_repo, R.drawable.github, "https://github.com/MetrolistGroup/Metrolist"),
     CommunityLink(R.string.credits_license_name, R.drawable.info, "https://github.com/MetrolistGroup/Metrolist/blob/main/LICENSE")
 )
 
@@ -175,156 +182,31 @@ private fun ContributorAvatar(
     }
 }
 
-/**
- * Large "sticker" style hero avatar: a soft scalloped halo sitting behind a
- * cookie-shaped contributor photo, exactly matching the reference design —
- * big, centered, no card chrome around it.
- */
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun HeroAvatar(
-    contributor: Contributor,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val fallback = painterResource(R.drawable.about_icon)
-    Box(
-        modifier = modifier.size(240.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        // Soft scalloped halo behind the photo
-        Surface(
-            modifier = Modifier.size(232.dp),
-            shape = MaterialShapes.Cookie9Sided.toShape(),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        ) {}
-
-        Surface(
-            onClick = onClick,
-            modifier = Modifier.size(190.dp),
-            shape = contributor.polygon?.toShape() ?: CircleShape,
-            color = MaterialTheme.colorScheme.surfaceContainerHighest,
-            shadowElevation = 6.dp,
-        ) {
-            AsyncImage(
-                model = contributor.avatarUrl,
-                contentDescription = contributor.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-                placeholder = fallback,
-                fallback = fallback,
-                error = fallback,
-            )
-        }
-    }
-}
-
-/**
- * Developer identity card: name + role on a rounded surface with a circular
- * social badge floating over the top-end corner, matching the reference.
- */
-@Composable
-private fun DeveloperCard(
-    contributor: Contributor,
-    uriHandler: UriHandler,
-    modifier: Modifier = Modifier,
-) {
-    Box(modifier = modifier) {
-        ElevatedCard(
-            shape = RoundedCornerShape(28.dp),
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 22.dp)
-            ) {
-                Text(
-                    text = contributor.name,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Black,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    letterSpacing = (-0.3).sp,
-                )
-                Spacer(Modifier.height(2.dp))
-                Text(
-                    text = stringResource(contributor.roleRes),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-
-        if (contributor.instagramUrl != null) {
-            Surface(
-                onClick = { uriHandler.openUri(contributor.instagramUrl) },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .offset(x = (-14).dp, y = (-14).dp)
-                    .size(56.dp),
-                shape = CircleShape,
-                color = MaterialTheme.colorScheme.primaryContainer,
-                shadowElevation = 4.dp,
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        painter = painterResource(R.drawable.instagram),
-                        contentDescription = "Instagram",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-/**
- * A single bold, icon-led row used for community / repo links — big text,
- * a tinted rounded-square icon container, no card border between items.
- */
-@Composable
-private fun LinkRow(
-    label: String,
-    description: String?,
-    iconRes: Int,
-    onClick: () -> Unit,
+private fun DeveloperSocials(
+    uriHandler: androidx.compose.ui.platform.UriHandler
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 14.dp, horizontal = 20.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(18.dp)
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.primaryContainer,
-            modifier = Modifier.size(48.dp),
+        FilledTonalButton(
+            onClick = { uriHandler.openUri("https://metrolist.cc") },
+            modifier = Modifier.weight(1f).height(48.dp)
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    painter = painterResource(iconRes),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+            Icon(painterResource(R.drawable.language), contentDescription = null)
         }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            if (description != null) {
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+        FilledTonalButton(
+            onClick = { uriHandler.openUri("https://github.com/mostafaalagamy") },
+            modifier = Modifier.weight(1f).height(48.dp)
+        ) {
+            Icon(painterResource(R.drawable.github), contentDescription = null)
+        }
+        FilledTonalButton(
+            onClick = { uriHandler.openUri("https://www.instagram.com/mostafaalagamy") },
+            modifier = Modifier.weight(1f).height(48.dp)
+        ) {
+            Icon(painterResource(R.drawable.instagram), contentDescription = null)
         }
     }
 }
@@ -340,7 +222,7 @@ fun AboutScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val wannaPlayStr = stringResource(R.string.wanna_play_favorite_song)
     val yeahStr = stringResource(R.string.yeah)
-
+    
     val windowInsets = LocalPlayerAwareWindowInsets.current
 
     Column(
@@ -348,7 +230,7 @@ fun AboutScreen(
             .fillMaxSize()
             .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(
@@ -359,128 +241,176 @@ fun AboutScreen(
 
         Spacer(Modifier.height(16.dp))
 
-        // ---- App identity row: icon · name · version / arch ----
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(18.dp)
+        // App Header Section
+        ElevatedCard(
+            shape = RoundedCornerShape(32.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Surface(
-                shape = RoundedCornerShape(20.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(76.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp)
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Image(
+                        painter = painterResource(R.drawable.ic_logo_oval),
+                        contentDescription = null,
+                        modifier = Modifier.size(84.dp)
+                    )
+                    Image(
                         painter = painterResource(R.drawable.about_icon),
                         contentDescription = stringResource(R.string.metrolist),
-                        modifier = Modifier.size(46.dp)
+                        modifier = Modifier.size(64.dp)
                     )
                 }
-            }
+        
+                Spacer(Modifier.width(20.dp))
+        
+                Column {
+                    val metrolistName = stringResource(R.string.metrolist)
+                        .lowercase(Locale.getDefault())
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
-            Column {
-                val appName = stringResource(R.string.metrolist)
-                    .lowercase(Locale.getDefault())
-                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-
-                Text(
-                    text = appName,
-                    style = MaterialTheme.typography.displaySmall,
-                    fontWeight = FontWeight.Black,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    letterSpacing = (-0.5).sp
-                )
-
-                Spacer(Modifier.height(4.dp))
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = BuildConfig.ARCHITECTURE.lowercase(Locale.getDefault()),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Text(
-                        text = BuildConfig.VERSION_NAME,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
+                        text = metrolistName,
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Black,
                         color = MaterialTheme.colorScheme.onSurface,
+                        letterSpacing = (-0.5).sp
                     )
-                    if (BuildConfig.DEBUG) {
-                        Spacer(Modifier.width(10.dp))
+            
+                    Spacer(Modifier.height(8.dp))
+            
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         Surface(
-                            shape = RoundedCornerShape(6.dp),
-                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                            shape = RoundedCornerShape(8.dp),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                         ) {
                             Text(
-                                text = "DEBUG",
-                                style = MaterialTheme.typography.labelSmall,
+                                text = BuildConfig.VERSION_NAME,
+                                style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
+                        }
+                        
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                        ) {
+                            Text(
+                                text = BuildConfig.ARCHITECTURE.uppercase(),
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+
+                        if (BuildConfig.DEBUG) {
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
+                            ) {
+                                Text(
+                                    text = "DEBUG",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                )
+                            }
                         }
                     }
                 }
             }
         }
 
-        Spacer(Modifier.height(40.dp))
+        Spacer(Modifier.height(24.dp))
 
-        // ---- Hero sticker avatar for the lead developer ----
-        var leadClickCount by remember(leadDeveloper.name) { mutableIntStateOf(0) }
-        HeroAvatar(
-            contributor = leadDeveloper,
-            onClick = {
-                handleEasterEggClick(
-                    clickCount = leadClickCount,
-                    favoriteSongVideoId = leadDeveloper.favoriteSongVideoId,
-                    coroutineScope = coroutineScope,
-                    snackbarHostState = snackbarHostState,
-                    playerConnection = playerConnection,
-                    wannaPlayStr = wannaPlayStr,
-                    yeahStr = yeahStr,
-                    onCountUpdate = { leadClickCount = it }
-                )
-            }
-        )
-
-        Spacer(Modifier.height(28.dp))
-
-        // ---- Developer name card with overlapping Instagram badge ----
-        DeveloperCard(
-            contributor = leadDeveloper,
-            uriHandler = uriHandler,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(32.dp))
-
-        // ---- Community & repo links: bold rows, no per-item card border ----
+        // Lead Developer Hero Card
         ElevatedCard(
-            shape = RoundedCornerShape(28.dp),
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
+            shape = RoundedCornerShape(32.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                communityLinks.forEachIndexed { index, link ->
-                    LinkRow(
-                        label = stringResource(link.labelRes),
-                        description = if (link.labelRes == R.string.credits_license_name) {
-                            stringResource(R.string.credits_license_desc)
-                        } else null,
-                        iconRes = link.iconRes,
-                        onClick = { uriHandler.openUri(link.url) }
+            Column(
+                modifier = Modifier.padding(24.dp),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    var leadClickCount by remember(leadDeveloper.name) { mutableIntStateOf(0) }
+            
+                    ContributorAvatar(
+                        avatarUrl = leadDeveloper.avatarUrl,
+                        sizeDp = 110,
+                        shape = leadDeveloper.polygon?.toShape() ?: CircleShape,
+                        contentDescription = leadDeveloper.name,
+                        onClick = {
+                            handleEasterEggClick(
+                                clickCount = leadClickCount,
+                                favoriteSongVideoId = leadDeveloper.favoriteSongVideoId,
+                                coroutineScope = coroutineScope,
+                                snackbarHostState = snackbarHostState,
+                                playerConnection = playerConnection,
+                                wannaPlayStr = wannaPlayStr,
+                                yeahStr = yeahStr,
+                                onCountUpdate = { leadClickCount = it }
+                            )
+                        }
                     )
+
+                    Column(
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = leadDeveloper.name,
+                            style = MaterialTheme.typography.headlineLarge,
+                            fontWeight = FontWeight.Black,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            lineHeight = 38.sp,
+                            letterSpacing = (-0.5).sp
+                        )
+                        Text(
+                            text = stringResource(R.string.credits_lead_developer),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+                
+                Spacer(Modifier.height(24.dp))
+                
+                DeveloperSocials(uriHandler)
+                
+                Spacer(Modifier.height(16.dp))
+                
+                Button(
+                    onClick = { uriHandler.openUri("https://buymeacoffee.com/mostafaalagamy") },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    Icon(painterResource(R.drawable.buymeacoffee), contentDescription = null, modifier = Modifier.size(20.dp))
+                    Spacer(Modifier.width(12.dp))
+                    Text(stringResource(R.string.buy_mo_a_coffee), fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                 }
             }
         }
 
         Spacer(Modifier.height(32.dp))
-
-        // ---- Collaborators ----
+        
+        // Collaborators section - back to Material3SettingsGroup
         Material3SettingsGroup(
             title = stringResource(R.string.credits_collaborators_section),
             items = collaborators.map { contributor ->
@@ -543,15 +473,32 @@ fun AboutScreen(
             }
         )
 
-        Spacer(Modifier.height(48.dp))
+        Spacer(Modifier.height(32.dp))
 
+        // Community & Info using standard Group
+        Material3SettingsGroup(
+            title = stringResource(R.string.community_and_info),
+            items = communityLinks.map { link ->
+                Material3SettingsItem(
+                    icon = painterResource(link.iconRes),
+                    title = { Text(stringResource(link.labelRes), fontWeight = FontWeight.SemiBold) },
+                    description = if (link.labelRes == R.string.credits_license_name) {
+                        { Text(stringResource(R.string.credits_license_desc)) }
+                    } else null,
+                    onClick = { uriHandler.openUri(link.url) }
+                )
+            }
+        )
+
+        Spacer(Modifier.height(48.dp))
+        
         Text(
             text = stringResource(R.string.stands_with_palestine),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-
+        
         Spacer(Modifier.height(48.dp))
     }
 
