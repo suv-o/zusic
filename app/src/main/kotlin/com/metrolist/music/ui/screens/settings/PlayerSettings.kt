@@ -287,9 +287,7 @@ fun PlayerSettings(
         )
 
         Material3SettingsGroup(
-            //z-comment
-            //title = stringResource(R.string.player),
-            //
+            title = stringResource(R.string.player),
             items = buildList {
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.graphic_eq),

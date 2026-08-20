@@ -26,8 +26,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -61,11 +61,7 @@ import com.metrolist.music.R
 import com.metrolist.music.ui.component.IconButton
 import com.metrolist.music.ui.utils.backToMain
 
-// Ensure you have these imports from your project for the theme preference
-// import com.metrolist.music.preferences.DarkModeKey
-// import com.metrolist.music.preferences.DarkMode
-// import com.metrolist.music.preferences.rememberEnumPreference
-
+// Imports for theme
 import com.metrolist.music.constants.DarkModeKey
 import com.metrolist.music.ui.screens.settings.DarkMode
 import com.metrolist.music.utils.rememberEnumPreference
@@ -106,7 +102,6 @@ fun AboutScreen(
     val uriHandler = LocalUriHandler.current
     val windowInsets = LocalPlayerAwareWindowInsets.current
     
-    // Theme Logic integrated from Player.kt
     val isSystemDark = isSystemInDarkTheme()
     val darkTheme by rememberEnumPreference(DarkModeKey, defaultValue = DarkMode.ON)
     val isDarkTheme = remember(darkTheme, isSystemDark) {
@@ -137,17 +132,18 @@ fun AboutScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
+                .padding(paddingValues) // Double padding removed for scroll fix
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(16.dp))
 
-            // 1. App Header Elevated Card (Original Style)
-            ElevatedCard(
+            Card(
                 shape = RoundedCornerShape(32.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
@@ -181,12 +177,12 @@ fun AboutScreen(
                             color = MaterialTheme.colorScheme.onSurface
                         )
 
-                        Spacer(Modifier.height(4.dp))
+                        Spacer(Modifier.height(8.dp)) // Increased Gap
 
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Surface(
                                 shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
                             ) {
                                 Text(
                                     text = BuildConfig.BUILD_TYPE.lowercase(),
@@ -199,7 +195,7 @@ fun AboutScreen(
                             
                             Surface(
                                 shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f)
                             ) {
                                 Text(
                                     text = BuildConfig.VERSION_NAME,
@@ -216,32 +212,37 @@ fun AboutScreen(
 
             Spacer(Modifier.height(40.dp))
 
-            // 2. Developer Image
             val fallback = painterResource(R.drawable.app_icon)
-            AsyncImage(
-                model = leadDeveloper.avatarUrl,
-                contentDescription = leadDeveloper.name,
-                placeholder = fallback,
-                fallback = fallback,
-                error = fallback,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(160.dp)
-                    .clip(leadDeveloper.polygon?.toShape() ?: CircleShape)
-            )
+            Surface(
+                shape = leadDeveloper.polygon?.toShape() ?: CircleShape,
+                color = MaterialTheme.colorScheme.surfaceVariant, // Outline Color
+                modifier = Modifier.size(160.dp)
+            ) {
+                AsyncImage(
+                    model = leadDeveloper.avatarUrl,
+                    contentDescription = leadDeveloper.name,
+                    placeholder = fallback,
+                    fallback = fallback,
+                    error = fallback,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(6.dp) // Padding creates the outline
+                        .clip(leadDeveloper.polygon?.toShape() ?: CircleShape)
+                )
+            }
 
             Spacer(Modifier.height(32.dp))
 
-            // 3. Developer Card (Elevated Original Style)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 12.dp)
             ) {
-                ElevatedCard(
+                Card(
                     shape = RoundedCornerShape(32.dp),
-                    colors = CardDefaults.elevatedCardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -256,7 +257,9 @@ fun AboutScreen(
                             fontWeight = FontWeight.Black,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(Modifier.height(4.dp))
+                        
+                        Spacer(Modifier.height(8.dp)) // Increased Gap
+                        
                         Text(
                             text = leadDeveloper.role,
                             style = MaterialTheme.typography.titleMedium,
@@ -289,11 +292,10 @@ fun AboutScreen(
 
             Spacer(Modifier.height(24.dp))
 
-            // 4. Social Links Card (Elevated Original Style)
-            ElevatedCard(
+            Card(
                 shape = RoundedCornerShape(32.dp),
-                colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
