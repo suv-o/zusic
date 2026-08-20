@@ -28,6 +28,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
@@ -40,6 +41,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -49,9 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -70,17 +70,13 @@ import com.metrolist.music.R
 import com.metrolist.music.playback.PlayerConnection
 import com.metrolist.music.playback.queues.YouTubeQueue
 import com.metrolist.music.ui.component.IconButton
+import com.metrolist.music.ui.component.Material3SettingsGroup
+import com.metrolist.music.ui.component.Material3SettingsItem
 import com.metrolist.music.ui.utils.backToMain
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-
-/*
- * ================================================================
- * CONTRIBUTOR DATA
- * ================================================================
- */
 
 private data class Contributor(
     val name: String,
@@ -93,21 +89,12 @@ private data class Contributor(
     val favoriteSongVideoId: String? = null
 )
 
-
 private data class CommunityLink(
     val labelRes: Int,
     val iconRes: Int,
     val url: String
 )
 
-
-/*
- * ================================================================
- * ORIGINAL LEAD DEVELOPER DATA
- *
- * Kept intact so the existing project logic does not get removed.
- * ================================================================
- */
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val leadDeveloper = Contributor(
@@ -118,14 +105,6 @@ private val leadDeveloper = Contributor(
     favoriteSongVideoId = "Mh2JWGWvy_Y"
 )
 
-
-/*
- * ================================================================
- * ORIGINAL COLLABORATORS
- *
- * Kept intact.
- * ================================================================
- */
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val collaborators = listOf(
@@ -147,14 +126,6 @@ private val collaborators = listOf(
     ),
 )
 
-
-/*
- * ================================================================
- * ORIGINAL COMMUNITY LINKS
- *
- * Kept intact.
- * ================================================================
- */
 
 private val communityLinks = listOf(
     CommunityLink(
@@ -179,14 +150,6 @@ private val communityLinks = listOf(
     )
 )
 
-
-/*
- * ================================================================
- * EASTER EGG
- *
- * Original functionality kept intact.
- * ================================================================
- */
 
 private fun handleEasterEggClick(
     clickCount: Int,
@@ -229,21 +192,16 @@ private fun handleEasterEggClick(
 
 
 /*
- * ================================================================
- * DEVELOPER AVATAR
+ * Existing avatar implementation.
  *
- * This is the existing image system.
- *
- * Remote GitHub image:
- *     https://github.com/<username>.png
+ * GitHub image:
+ * https://github.com/<username>.png
  *
  * Fallback:
- *     R.drawable.about_icon
+ * R.drawable.about_icon
  *
- * Existing Cookie9Sided shape is also supported.
- * ================================================================
+ * Existing shape system is preserved.
  */
-
 @Composable
 private fun ContributorAvatar(
     avatarUrl: String,
@@ -262,8 +220,7 @@ private fun ContributorAvatar(
         enabled = onClick != null,
         modifier = modifier.size(sizeDp.dp),
         shape = shape,
-        color =
-            MaterialTheme.colorScheme.surfaceContainerHighest,
+        color = MaterialTheme.colorScheme.surfaceContainerHighest,
         tonalElevation = 4.dp,
     ) {
         AsyncImage(
@@ -280,13 +237,9 @@ private fun ContributorAvatar(
 
 
 /*
- * ================================================================
- * ORIGINAL DEVELOPER SOCIALS
- *
- * Kept intact.
- * ================================================================
+ * Existing developer social helper.
+ * Kept untouched.
  */
-
 @Composable
 private fun DeveloperSocials(
     uriHandler: androidx.compose.ui.platform.UriHandler
@@ -295,12 +248,9 @@ private fun DeveloperSocials(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
         FilledTonalButton(
             onClick = {
-                uriHandler.openUri(
-                    "https://metrolist.cc"
-                )
+                uriHandler.openUri("https://metrolist.cc")
             },
             modifier = Modifier
                 .weight(1f)
@@ -350,36 +300,8 @@ private fun DeveloperSocials(
 /*
  * ================================================================
  * ABOUT SCREEN
- *
- * NEW UI
- *
- * Reference hierarchy:
- *
- *      About
- *
- *   ┌─────────────────────────────┐
- *   │ [APP ICON]  Zusic           │
- *   │             universal 3.0.0 │
- *   └─────────────────────────────┘
- *
- *
- *             [ DEVELOPER IMAGE ]
- *
- *   ┌─────────────────────────────┐
- *   │ Subhajit              [GH]  │
- *   │ Developer                   │
- *   └─────────────────────────────┘
- *
- *
- *   ┌─────────────────────────────┐
- *   │ [IG]        Instagram       │
- *   │                             │
- *   │ [TG]        Telegram        │
- *   └─────────────────────────────┘
- *
  * ================================================================
  */
-
 @OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalMaterial3ExpressiveApi::class
@@ -388,13 +310,6 @@ private fun DeveloperSocials(
 fun AboutScreen(
     navController: NavController,
 ) {
-
-    /*
-     * ------------------------------------------------------------
-     * Existing project dependencies
-     * ------------------------------------------------------------
-     */
-
     val uriHandler = LocalUriHandler.current
 
     val playerConnection =
@@ -423,27 +338,26 @@ fun AboutScreen(
 
 
     /*
-     * ------------------------------------------------------------
-     * ABOUT SCREEN CONTENT
-     * ------------------------------------------------------------
-     */
-
-    /*
-     * YOUR INFORMATION
+     * ============================================================
+     * YOUR PROFILE CONFIGURATION
+     * ============================================================
      *
-     * Replace YOUR_GITHUB_USERNAME with your actual GitHub
-     * username.
-     *
-     * GitHub automatically provides:
-     *
-     * https://github.com/USERNAME.png
-     *
-     * which is used as the developer avatar.
+     * Change only these values.
      */
 
     val developerName = "Subhajit"
 
     val developerRole = "Developer"
+
+    /*
+     * Example:
+     *
+     * developerGithubUsername = "subhajit"
+     *
+     * GitHub avatar automatically becomes:
+     *
+     * https://github.com/subhajit.png
+     */
 
     val developerGithubUsername =
         "YOUR_GITHUB_USERNAME"
@@ -451,19 +365,17 @@ fun AboutScreen(
     val developerAvatarUrl =
         "https://github.com/$developerGithubUsername.png"
 
-    /*
-     * Repository opened by the floating GitHub button.
-     *
-     * Replace this with your actual repository URL.
-     */
 
+    /*
+     * GitHub repository opened by the floating GitHub button.
+     */
     val repositoryUrl =
         "https://github.com/MetrolistGroup/Metrolist"
 
-    /*
-     * Other social links.
-     */
 
+    /*
+     * Social links.
+     */
     val instagramUrl =
         "https://www.instagram.com/"
 
@@ -472,27 +384,24 @@ fun AboutScreen(
 
 
     /*
-     * Developer easter egg click counter.
-     *
-     * Existing easter egg behaviour remains available.
+     * Existing easter egg state.
      */
-
     var developerClickCount by remember {
         mutableIntStateOf(0)
     }
 
 
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * ROOT
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                Color(0xFFF8F8F8)
+                MaterialTheme.colorScheme.background
             )
     ) {
 
@@ -531,7 +440,7 @@ fun AboutScreen(
             )
 
             Spacer(
-                modifier = Modifier.height(8.dp)
+                Modifier.height(8.dp)
             )
 
             Row(
@@ -550,7 +459,6 @@ fun AboutScreen(
                     modifier =
                         Modifier.size(48.dp)
                 ) {
-
                     Icon(
                         painter =
                             painterResource(
@@ -560,16 +468,13 @@ fun AboutScreen(
                             stringResource(
                                 R.string.cd_back
                             ),
-                        tint =
-                            Color(0xFF333333),
                         modifier =
                             Modifier.size(28.dp)
                     )
                 }
 
                 Spacer(
-                    modifier =
-                        Modifier.width(8.dp)
+                    Modifier.width(8.dp)
                 )
 
                 Text(
@@ -581,7 +486,7 @@ fun AboutScreen(
                     fontWeight =
                         FontWeight.Normal,
                     color =
-                        Color(0xFF333333),
+                        MaterialTheme.colorScheme.onBackground,
                     letterSpacing =
                         (-0.6).sp
                 )
@@ -591,17 +496,18 @@ fun AboutScreen(
             /*
              * ====================================================
              * APPLICATION CARD
+             * ====================================================
              *
              * Reference:
              *
-             * [ APP ICON ]   Zusic
-             *                universal   3.0.0
-             * ====================================================
+             * ┌───────────────────────────────────┐
+             * │ [ICON]    Zusic                    │
+             * │           universal   3.0.0        │
+             * └───────────────────────────────────┘
              */
 
             Spacer(
-                modifier =
-                    Modifier.height(48.dp)
+                Modifier.height(48.dp)
             )
 
             Surface(
@@ -610,7 +516,7 @@ fun AboutScreen(
                 shape =
                     RoundedCornerShape(32.dp),
                 color =
-                    Color.White,
+                    MaterialTheme.colorScheme.surface,
                 tonalElevation = 0.dp,
                 shadowElevation = 8.dp
             ) {
@@ -626,7 +532,6 @@ fun AboutScreen(
                         Alignment.CenterVertically
                 ) {
 
-
                     /*
                      * Application icon
                      */
@@ -637,12 +542,6 @@ fun AboutScreen(
                         contentAlignment =
                             Alignment.Center
                     ) {
-
-                        /*
-                         * Existing application icon.
-                         *
-                         * Kept from original AboutScreen.
-                         */
 
                         Image(
                             painter =
@@ -681,8 +580,7 @@ fun AboutScreen(
 
 
                     Spacer(
-                        modifier =
-                            Modifier.width(24.dp)
+                        Modifier.width(24.dp)
                     )
 
 
@@ -695,21 +593,37 @@ fun AboutScreen(
                             Modifier.weight(1f)
                     ) {
 
+                        val appName =
+                            stringResource(
+                                R.string.metrolist
+                            )
+                                .lowercase(
+                                    Locale.getDefault()
+                                )
+                                .replaceFirstChar {
+                                    if (it.isLowerCase()) {
+                                        it.titlecase(
+                                            Locale.getDefault()
+                                        )
+                                    } else {
+                                        it.toString()
+                                    }
+                                }
+
                         Text(
-                            text = "Zusic",
+                            text = appName,
                             fontSize = 42.sp,
                             lineHeight = 44.sp,
                             fontWeight =
                                 FontWeight.Black,
                             color =
-                                Color.Black,
+                                MaterialTheme.colorScheme.onSurface,
                             letterSpacing =
                                 (-1.5).sp
                         )
 
                         Spacer(
-                            modifier =
-                                Modifier.height(5.dp)
+                            Modifier.height(5.dp)
                         )
 
                         Row(
@@ -722,34 +636,33 @@ fun AboutScreen(
                                     BuildConfig
                                         .ARCHITECTURE
                                         .lowercase(
-                                            Locale
-                                                .getDefault()
+                                            Locale.getDefault()
                                         ),
                                 fontSize = 25.sp,
                                 lineHeight = 30.sp,
                                 fontWeight =
                                     FontWeight.Bold,
                                 color =
-                                    Color(0xFF555555),
+                                    MaterialTheme.colorScheme
+                                        .onSurfaceVariant,
                                 letterSpacing =
                                     (-0.7).sp
                             )
 
                             Spacer(
-                                modifier =
-                                    Modifier.width(12.dp)
+                                Modifier.width(12.dp)
                             )
 
                             Text(
                                 text =
-                                    BuildConfig
-                                        .VERSION_NAME,
+                                    BuildConfig.VERSION_NAME,
                                 fontSize = 25.sp,
                                 lineHeight = 30.sp,
                                 fontWeight =
                                     FontWeight.Bold,
                                 color =
-                                    Color(0xFF555555),
+                                    MaterialTheme.colorScheme
+                                        .onSurfaceVariant,
                                 letterSpacing =
                                     (-0.7).sp
                             )
@@ -762,23 +675,22 @@ fun AboutScreen(
             /*
              * ====================================================
              * DEVELOPER IMAGE
+             * ====================================================
              *
-             * This is intentionally outside the developer card.
+             * The image is intentionally outside the card.
              *
-             * Remote GitHub image:
-             *     https://github.com/USERNAME.png
+             * Remote:
+             * https://github.com/USERNAME.png
              *
              * Fallback:
-             *     R.drawable.about_icon
+             * R.drawable.about_icon
              *
              * Shape:
-             *     Existing Cookie9Sided
-             * ====================================================
+             * Cookie9Sided
              */
 
             Spacer(
-                modifier =
-                    Modifier.height(42.dp)
+                Modifier.height(42.dp)
             )
 
             Box(
@@ -809,13 +721,6 @@ fun AboutScreen(
                         ),
 
                     onClick = {
-
-                        /*
-                         * Existing easter egg retained.
-                         *
-                         * It uses the original lead developer
-                         * song configuration.
-                         */
 
                         handleEasterEggClick(
                             clickCount =
@@ -853,12 +758,11 @@ fun AboutScreen(
             /*
              * ====================================================
              * DEVELOPER CARD
-             *
-             * The card overlaps the bottom of the image.
-             *
-             * Top-right:
-             *     Floating GitHub button
              * ====================================================
+             *
+             * Image overlaps this card.
+             *
+             * GitHub button is floating at top-right.
              */
 
             Box(
@@ -877,7 +781,7 @@ fun AboutScreen(
                     shape =
                         RoundedCornerShape(32.dp),
                     color =
-                        Color.White,
+                        MaterialTheme.colorScheme.surface,
                     tonalElevation = 0.dp,
                     shadowElevation = 10.dp
                 ) {
@@ -887,9 +791,8 @@ fun AboutScreen(
                             Modifier.fillMaxSize()
                     ) {
 
-
                         /*
-                         * Developer information
+                         * Developer details
                          */
 
                         Column(
@@ -899,7 +802,7 @@ fun AboutScreen(
                                 )
                                 .padding(
                                     start = 36.dp,
-                                    end = 100.dp
+                                    end = 110.dp
                                 )
                         ) {
 
@@ -911,14 +814,14 @@ fun AboutScreen(
                                 fontWeight =
                                     FontWeight.Black,
                                 color =
-                                    Color.Black,
+                                    MaterialTheme.colorScheme
+                                        .onSurface,
                                 letterSpacing =
                                     (-1.2).sp
                             )
 
                             Spacer(
-                                modifier =
-                                    Modifier.height(2.dp)
+                                Modifier.height(2.dp)
                             )
 
                             Text(
@@ -929,7 +832,8 @@ fun AboutScreen(
                                 fontWeight =
                                     FontWeight.Bold,
                                 color =
-                                    Color(0xFF555555),
+                                    MaterialTheme.colorScheme
+                                        .onSurfaceVariant,
                                 letterSpacing =
                                     (-0.7).sp
                             )
@@ -937,9 +841,9 @@ fun AboutScreen(
 
 
                         /*
-                         * ====================================================
-                         * FLOATING GITHUB BUTTON
-                         * ====================================================
+                         * ==================================================
+                         * GITHUB FLOATING BUTTON
+                         * ==================================================
                          */
 
                         Surface(
@@ -960,7 +864,8 @@ fun AboutScreen(
                             shape =
                                 CircleShape,
                             color =
-                                Color(0xFFD7E5F9),
+                                MaterialTheme.colorScheme
+                                    .primaryContainer,
                             tonalElevation = 0.dp,
                             shadowElevation = 7.dp
                         ) {
@@ -978,7 +883,8 @@ fun AboutScreen(
                                     contentDescription =
                                         "GitHub",
                                     tint =
-                                        Color.Black,
+                                        MaterialTheme.colorScheme
+                                            .onPrimaryContainer,
                                     modifier =
                                         Modifier.size(50.dp)
                                 )
@@ -992,18 +898,17 @@ fun AboutScreen(
             /*
              * ====================================================
              * SOCIAL LINKS CARD
-             *
-             * Reference:
-             *
-             * [ icon ]    Instagram
-             *
-             * [ icon ]    Telegram
              * ====================================================
+             *
+             * ┌─────────────────────────────┐
+             * │ [IG]     Instagram          │
+             * │                             │
+             * │ [TG]     Telegram           │
+             * └─────────────────────────────┘
              */
 
             Spacer(
-                modifier =
-                    Modifier.height(4.dp)
+                Modifier.height(4.dp)
             )
 
             Surface(
@@ -1012,7 +917,7 @@ fun AboutScreen(
                 shape =
                     RoundedCornerShape(34.dp),
                 color =
-                    Color.White,
+                    MaterialTheme.colorScheme.surface,
                 tonalElevation = 0.dp,
                 shadowElevation = 10.dp
             ) {
@@ -1026,9 +931,9 @@ fun AboutScreen(
 
 
                     /*
-                     * ------------------------------------------------
-                     * Instagram
-                     * ------------------------------------------------
+                     * ==================================================
+                     * INSTAGRAM
+                     * ==================================================
                      */
 
                     Surface(
@@ -1041,7 +946,8 @@ fun AboutScreen(
                             .fillMaxWidth()
                             .height(104.dp),
                         color =
-                            Color.Transparent
+                            androidx.compose.ui.graphics
+                                .Color.Transparent
                     ) {
 
                         Row(
@@ -1054,11 +960,6 @@ fun AboutScreen(
                                 Alignment.CenterVertically
                         ) {
 
-
-                            /*
-                             * Instagram icon box
-                             */
-
                             Surface(
                                 modifier =
                                     Modifier.size(64.dp),
@@ -1067,7 +968,8 @@ fun AboutScreen(
                                         18.dp
                                     ),
                                 color =
-                                    Color(0xFFD7E5F9),
+                                    MaterialTheme.colorScheme
+                                        .primaryContainer,
                                 tonalElevation = 0.dp
                             ) {
 
@@ -1084,7 +986,8 @@ fun AboutScreen(
                                         contentDescription =
                                             "Instagram",
                                         tint =
-                                            Color.Black,
+                                            MaterialTheme.colorScheme
+                                                .onPrimaryContainer,
                                         modifier =
                                             Modifier.size(
                                                 34.dp
@@ -1093,12 +996,9 @@ fun AboutScreen(
                                 }
                             }
 
-
                             Spacer(
-                                modifier =
-                                    Modifier.width(34.dp)
+                                Modifier.width(34.dp)
                             )
-
 
                             Text(
                                 text =
@@ -1108,7 +1008,8 @@ fun AboutScreen(
                                 fontWeight =
                                     FontWeight.Bold,
                                 color =
-                                    Color.Black,
+                                    MaterialTheme.colorScheme
+                                        .onSurface,
                                 letterSpacing =
                                     (-1).sp
                             )
@@ -1117,9 +1018,9 @@ fun AboutScreen(
 
 
                     /*
-                     * ------------------------------------------------
-                     * Telegram
-                     * ------------------------------------------------
+                     * ==================================================
+                     * TELEGRAM
+                     * ==================================================
                      */
 
                     Surface(
@@ -1132,7 +1033,8 @@ fun AboutScreen(
                             .fillMaxWidth()
                             .height(104.dp),
                         color =
-                            Color.Transparent
+                            androidx.compose.ui.graphics
+                                .Color.Transparent
                     ) {
 
                         Row(
@@ -1145,11 +1047,6 @@ fun AboutScreen(
                                 Alignment.CenterVertically
                         ) {
 
-
-                            /*
-                             * Telegram icon box
-                             */
-
                             Surface(
                                 modifier =
                                     Modifier.size(64.dp),
@@ -1158,7 +1055,8 @@ fun AboutScreen(
                                         18.dp
                                     ),
                                 color =
-                                    Color(0xFFD7E5F9),
+                                    MaterialTheme.colorScheme
+                                        .primaryContainer,
                                 tonalElevation = 0.dp
                             ) {
 
@@ -1175,7 +1073,8 @@ fun AboutScreen(
                                         contentDescription =
                                             "Telegram",
                                         tint =
-                                            Color.Black,
+                                            MaterialTheme.colorScheme
+                                                .onPrimaryContainer,
                                         modifier =
                                             Modifier.size(
                                                 34.dp
@@ -1184,12 +1083,9 @@ fun AboutScreen(
                                 }
                             }
 
-
                             Spacer(
-                                modifier =
-                                    Modifier.width(34.dp)
+                                Modifier.width(34.dp)
                             )
-
 
                             Text(
                                 text =
@@ -1199,7 +1095,8 @@ fun AboutScreen(
                                 fontWeight =
                                     FontWeight.Bold,
                                 color =
-                                    Color.Black,
+                                    MaterialTheme.colorScheme
+                                        .onSurface,
                                 letterSpacing =
                                     (-1).sp
                             )
@@ -1216,8 +1113,7 @@ fun AboutScreen(
              */
 
             Spacer(
-                modifier =
-                    Modifier.height(48.dp)
+                Modifier.height(48.dp)
             )
         }
 
