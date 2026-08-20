@@ -58,11 +58,10 @@ import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.R
 import com.metrolist.music.ui.component.IconButton
 import com.metrolist.music.ui.utils.backToMain
-import java.util.Locale
 
 private data class Contributor(
     val name: String,
-    val roleRes: Int,
+    val role: String, // Changed from Int to String
     val githubHandle: String,
     val avatarUrl: String = "https://github.com/$githubHandle.png",
     val githubUrl: String = "https://github.com/$githubHandle",
@@ -70,15 +69,15 @@ private data class Contributor(
 )
 
 private data class CommunityLink(
-    val labelRes: Int,
+    val label: String, // Changed from Int to String
     val iconRes: Int,
     val url: String
 )
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val leadDeveloper = Contributor(
-    name = "Suvjt Adhikary",
-    roleRes = "Developer",
+    name = "Subhajit Adhikary",
+    role = "Developer",
     githubHandle = "suv-o",
     polygon = MaterialShapes.Cookie9Sided
 )
@@ -218,7 +217,7 @@ fun AboutScreen(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = stringResource(leadDeveloper.roleRes),
+                            text = leadDeveloper.role, // Fixed
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -287,7 +286,7 @@ fun AboutScreen(
                                 }
                                 Spacer(Modifier.width(20.dp))
                                 Text(
-                                    text = stringResource(link.labelRes),
+                                    text = link.label, // Fixed
                                     style = MaterialTheme.typography.titleLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
