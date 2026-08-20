@@ -6,6 +6,7 @@
 package com.metrolist.music.ui.screens.settings
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -61,7 +62,7 @@ import com.metrolist.music.R
 import com.metrolist.music.ui.component.IconButton
 import com.metrolist.music.ui.utils.backToMain
 
-// Imports for theme
+//
 import com.metrolist.music.constants.DarkModeKey
 import com.metrolist.music.ui.screens.settings.DarkMode
 import com.metrolist.music.utils.rememberEnumPreference
@@ -83,7 +84,7 @@ private data class CommunityLink(
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val leadDeveloper = Contributor(
-    name = "Subhajit Adhikary",
+    name = "Suvjt Adhikary",
     role = "Developer",
     githubHandle = "suv-o",
     polygon = MaterialShapes.Cookie9Sided
@@ -132,8 +133,7 @@ fun AboutScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = paddingValues.calculateTopPadding()) // Appbar padding
-                // Mini-player scroll issue fix exactly like original code
+                .padding(top = paddingValues.calculateTopPadding()) 
                 .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)) 
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp),
@@ -141,7 +141,6 @@ fun AboutScreen(
         ) {
             Spacer(Modifier.height(16.dp))
 
-            // 1. App Header Card with new text
             Card(
                 shape = RoundedCornerShape(32.dp),
                 colors = CardDefaults.cardColors(
@@ -158,7 +157,9 @@ fun AboutScreen(
                     Surface(
                         shape = RoundedCornerShape(20.dp),
                         color = appIconBgColor,
-                        modifier = Modifier.size(80.dp)
+                        modifier = Modifier
+                                   .size(60.dp)
+                                   .height(80.dp)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Image(
@@ -172,8 +173,9 @@ fun AboutScreen(
 
                     Spacer(Modifier.width(20.dp))
 
-                    Column {
-                        // Resized text slightly to fit 3 lines perfectly
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Text(
                             text = stringResource(R.string.app_name),
                             style = MaterialTheme.typography.headlineMedium, 
@@ -213,7 +215,6 @@ fun AboutScreen(
 
                         Spacer(Modifier.height(4.dp))
                         
-                        // New added line
                         Text(
                             text = "by suv-o & zoo™",
                             style = MaterialTheme.typography.labelMedium,
@@ -221,26 +222,35 @@ fun AboutScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+                    
+                    IconButton(
+                        onClick = { uriHandler.openUri("https://github.com/suv-o/zusic") }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.github),
+                            contentDescription = "GitHub",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 }
             }
 
             Spacer(Modifier.height(40.dp))
 
-            // 2. Developer Image with Theme-aware App Icon fallback
             Box(
                 modifier = Modifier
                     .size(160.dp)
-                    .clip(leadDeveloper.polygon?.toShape() ?: CircleShape),
+                    .clip(leadDeveloper.polygon?.toShape() ?: CircleShape)
+                    .background(appIconBgColor),
                 contentAlignment = Alignment.Center
             ) {
-                // Background Fallback Icon (Inverts with theme)
                 Image(
                     painter = painterResource(R.drawable.app_icon),
                     contentDescription = null,
                     modifier = Modifier.size(64.dp),
                     colorFilter = ColorFilter.tint(appIconTintColor)
                 )
-                // Actual Image loading on top
                 AsyncImage(
                     model = leadDeveloper.avatarUrl,
                     contentDescription = leadDeveloper.name,
@@ -251,7 +261,6 @@ fun AboutScreen(
 
             Spacer(Modifier.height(32.dp))
 
-            // 3. Developer Card with GitHub button fixed alignment
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -262,7 +271,7 @@ fun AboutScreen(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp) // Space for overlapping button
+                        .padding(top = 16.dp) 
                 ) {
                     Column(
                         modifier = Modifier.padding(start = 24.dp, top = 24.dp, bottom = 24.dp, end = 64.dp)
@@ -285,21 +294,20 @@ fun AboutScreen(
                     }
                 }
 
-                // Top Right GitHub Button moved perfectly inwards
                 Surface(
-                    onClick = { uriHandler.openUri(leadDeveloper.githubUrl) },
+                    onClick = { uriHandler.openUri("https://github.com/suv-o") },
                     shape = CircleShape,
                     color = MaterialTheme.colorScheme.primaryContainer,
                     shadowElevation = 6.dp,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .offset(x = (-16).dp, y = (-4).dp) // Moved inward to align with card boundaries
+                        .offset(x = (-16).dp, y = (-4).dp) 
                         .size(56.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             painter = painterResource(R.drawable.github),
-                            contentDescription = "GitHub Repository",
+                            contentDescription = "GitHub",
                             modifier = Modifier.size(28.dp),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -309,7 +317,6 @@ fun AboutScreen(
 
             Spacer(Modifier.height(24.dp))
 
-            // 4. Social Links Card
             Card(
                 shape = RoundedCornerShape(32.dp),
                 colors = CardDefaults.cardColors(
