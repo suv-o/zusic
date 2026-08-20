@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -207,6 +208,54 @@ private fun DeveloperSocials(
             modifier = Modifier.weight(1f).height(48.dp)
         ) {
             Icon(painterResource(R.drawable.instagram), contentDescription = null)
+        }
+    }
+}
+
+// ---------------------------------------------------------
+// Row used inside the new "Other links" card (section 6):
+// a small circular tinted badge on the left holding the icon,
+// and the link name on the right — matches the reference image.
+// ---------------------------------------------------------
+@Composable
+private fun SocialLinkRow(
+    iconRes: Int,
+    label: String,
+    onClick: () -> Unit,
+) {
+    Surface(
+        onClick = onClick,
+        color = Color.Transparent,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Surface(
+                modifier = Modifier.size(44.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        painter = painterResource(iconRes),
+                        contentDescription = label,
+                        modifier = Modifier.size(22.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                }
+            }
+
+            Spacer(Modifier.width(16.dp))
+
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
         }
     }
 }
@@ -609,97 +658,24 @@ fun AboutScreen(
 
                     Spacer(Modifier.height(7.dp))
 
-                    Text(
-                        text = "${BuildConfig.BUILD_TYPE.uppercase(Locale.getDefault())} • v${BuildConfig.VERSION_NAME}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-        }
-
-        Spacer(Modifier.height(18.dp))
-
-        // ---------------------------------------------------------
-        // 3 — Developer image
-        // ---------------------------------------------------------
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(245.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            /*
-             * Replace R.drawable.about_icon with your own photo resource.
-             *
-             * The Cookie9Sided shape keeps the same soft, decorative
-             * photo silhouette as the reference image.
-             */
-            Image(
-                painter = painterResource(R.drawable.about_icon),
-                contentDescription = "Developer photo",
-                modifier = Modifier
-                    .size(210.dp)
-                    .clip(MaterialShapes.Cookie9Sided.toShape()),
-                contentScale = ContentScale.Crop,
-            )
-        }
-
-        Spacer(Modifier.height(18.dp))
-
-        // ---------------------------------------------------------
-        // 5 + 4 — Developer information + Instagram
-        // ---------------------------------------------------------
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(30.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerLow,
-            tonalElevation = 1.dp,
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 18.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Text(
-                        text = "Subhajit Adhikary",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-
-                    Spacer(Modifier.height(3.dp))
-
-                    Text(
-                        text = "Developer",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-
-                // 4 — Instagram
-                Surface(
-                    onClick = {
-                        uriHandler.openUri("https://www.instagram.com/")
-                    },
-                    modifier = Modifier.size(52.dp),
-                    shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
+                    // Build variant (e.g. "universal") + version number (e.g. "3.0.0"),
+                    // shown as two plain labels side by side like the reference image
+                    // instead of a single combined "TYPE • vX.X.X" string.
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        Icon(
-                            painter = painterResource(R.drawable.instagram),
-                            contentDescription = "Instagram",
-                            modifier = Modifier.size(25.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        Text(
+                            text = BuildConfig.ARCHITECTURE.lowercase(Locale.getDefault()),
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Text(
+                            text = BuildConfig.VERSION_NAME,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                     }
                 }
@@ -709,7 +685,117 @@ fun AboutScreen(
         Spacer(Modifier.height(18.dp))
 
         // ---------------------------------------------------------
+        // 3 + 4 + 5 — Developer photo, info card, and the floating
+        // Instagram badge that overlaps the seam between them
+        // (matches the reference screenshot exactly)
+        // ---------------------------------------------------------
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column {
+                // 3 — Developer image
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(245.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    /*
+                     * Replace R.drawable.about_icon with your own photo resource.
+                     *
+                     * The reference image uses a spiky sunburst silhouette
+                     * (not a soft cookie-bump shape) with a lighter "sticker
+                     * halo" layer showing behind the photo — recreated below
+                     * with two stacked shapes of the same silhouette.
+                     */
+                    val photoShape = MaterialShapes.VerySunny.toShape()
+
+                    // Halo layer — larger, near-white, sits behind the photo
+                    // to recreate the peeled-sticker outline from the screenshot.
+                    Surface(
+                        modifier = Modifier.size(232.dp),
+                        shape = photoShape,
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
+                        shadowElevation = 2.dp,
+                    ) {}
+
+                    Image(
+                        painter = painterResource(R.drawable.about_icon),
+                        contentDescription = "Developer photo",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .clip(photoShape),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+
+                Spacer(Modifier.height(18.dp))
+
+                // 5 — Developer information
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(30.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                    tonalElevation = 1.dp,
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp, vertical = 20.dp),
+                    ) {
+                        Text(
+                            text = "Subhajit",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+
+                        Spacer(Modifier.height(2.dp))
+
+                        Text(
+                            text = "Developer",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+
+            // 4 — Instagram, floating as a circular badge that overlaps
+            // the bottom of the photo and the top-right corner of the
+            // developer card, same as the reference image.
+            Surface(
+                onClick = {
+                    uriHandler.openUri("https://www.instagram.com/")
+                },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .offset(x = (-14).dp, y = 235.dp)
+                    .size(58.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shadowElevation = 6.dp,
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.instagram),
+                        contentDescription = "Instagram",
+                        modifier = Modifier.size(26.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                }
+            }
+        }
+
+        Spacer(Modifier.height(18.dp))
+
+        // ---------------------------------------------------------
         // 6 — Other social/community links
+        // Each row = a small circular icon badge on the left + the
+        // link name on the right, same structure as the reference.
         // ---------------------------------------------------------
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -722,98 +808,21 @@ fun AboutScreen(
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
             ) {
-                // GitHub
-                Surface(
-                    onClick = {
-                        uriHandler.openUri("https://github.com/")
-                    },
-                    color = Color.Transparent,
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.github),
-                            contentDescription = "GitHub",
-                            modifier = Modifier.size(26.dp),
-                            tint = MaterialTheme.colorScheme.onSurface,
-                        )
-
-                        Spacer(Modifier.width(18.dp))
-
-                        Text(
-                            text = "GitHub",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                }
-
-                // Telegram
-                Surface(
-                    onClick = {
-                        uriHandler.openUri("https://t.me/")
-                    },
-                    color = Color.Transparent,
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.telegram),
-                            contentDescription = "Telegram",
-                            modifier = Modifier.size(26.dp),
-                            tint = MaterialTheme.colorScheme.onSurface,
-                        )
-
-                        Spacer(Modifier.width(18.dp))
-
-                        Text(
-                            text = "Telegram",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                }
-
-                // Discord
-                Surface(
-                    onClick = {
-                        uriHandler.openUri("https://discord.com/")
-                    },
-                    color = Color.Transparent,
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.discord),
-                            contentDescription = "Discord",
-                            modifier = Modifier.size(26.dp),
-                            tint = MaterialTheme.colorScheme.onSurface,
-                        )
-
-                        Spacer(Modifier.width(18.dp))
-
-                        Text(
-                            text = "Discord",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                }
+                SocialLinkRow(
+                    iconRes = R.drawable.github,
+                    label = "GitHub",
+                    onClick = { uriHandler.openUri("https://github.com/") },
+                )
+                SocialLinkRow(
+                    iconRes = R.drawable.telegram,
+                    label = "Telegram",
+                    onClick = { uriHandler.openUri("https://t.me/") },
+                )
+                SocialLinkRow(
+                    iconRes = R.drawable.discord,
+                    label = "Discord",
+                    onClick = { uriHandler.openUri("https://discord.com/") },
+                )
             }
         }
 

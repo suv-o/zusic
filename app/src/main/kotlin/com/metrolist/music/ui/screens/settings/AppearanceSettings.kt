@@ -977,9 +977,14 @@ fun AppearanceSettings(
             .padding(horizontal = 16.dp),
     ) {
         Material3SettingsGroup(
-            title = stringResource(R.string.theme),
+            //z-value
+            //title = stringResource(R.string.theme),
+            title = "",
+            //
             items =
                 buildList {
+                    //z-comment
+                    /*
                     add(
                         Material3SettingsItem(
                             icon = painterResource(R.drawable.speed),
@@ -1028,6 +1033,8 @@ fun AppearanceSettings(
                             onClick = { onEnableLandscapeScalingChange(!enableLandscapeScaling) },
                         ),
                     )
+                    */
+                    //
                     // Only show dynamic theme option when using the default/dynamic color
                     // When a custom color is selected, dynamic theme is automatically disabled
                     if (!isUsingCustomColor) {
@@ -1039,6 +1046,8 @@ fun AppearanceSettings(
                                     Switch(
                                         checked = dynamicTheme,
                                         onCheckedChange = onDynamicThemeChange,
+                                        //z-comment
+                                        /*
                                         thumbContent = {
                                             Icon(
                                                 painter =
@@ -1049,12 +1058,16 @@ fun AppearanceSettings(
                                                 modifier = Modifier.size(SwitchDefaults.IconSize),
                                             )
                                         },
+                                        */
+                                        //
                                     )
                                 },
                                 onClick = { onDynamicThemeChange(!dynamicTheme) },
                             ),
                         )
                     }
+                    //z-comment
+                    /*
                     add(
                         Material3SettingsItem(
                             icon = painterResource(R.drawable.palette),
@@ -1087,6 +1100,8 @@ fun AppearanceSettings(
                             onClick = { navController.navigate("settings/appearance/theme") },
                         ),
                     )
+                    */
+                    //
                 },
         )
 
@@ -1097,7 +1112,9 @@ fun AppearanceSettings(
                 PureBlackMiniPlayerKey,
                 defaultValue = false,
             )
-
+        
+        //z-comment
+        /*
         Material3SettingsGroup(
             title = stringResource(id = R.string.mini_player),
             items =
@@ -1885,7 +1902,8 @@ fun AppearanceSettings(
                 ),
         )
         Spacer(modifier = Modifier.height(16.dp))
-
+        */
+        //
         if (showExperimentalLyricsBetaDialog) {
             DefaultDialog(
                 onDismiss = { showExperimentalLyricsBetaDialog = false },
