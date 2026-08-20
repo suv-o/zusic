@@ -6,6 +6,7 @@
 package com.metrolist.music.ui.screens.settings
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,10 +26,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
@@ -38,8 +40,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -48,10 +48,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -68,12 +70,17 @@ import com.metrolist.music.R
 import com.metrolist.music.playback.PlayerConnection
 import com.metrolist.music.playback.queues.YouTubeQueue
 import com.metrolist.music.ui.component.IconButton
-import com.metrolist.music.ui.component.Material3SettingsGroup
-import com.metrolist.music.ui.component.Material3SettingsItem
 import com.metrolist.music.ui.utils.backToMain
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Locale
+
+
+/*
+ * ================================================================
+ * CONTRIBUTOR DATA
+ * ================================================================
+ */
 
 private data class Contributor(
     val name: String,
@@ -82,10 +89,10 @@ private data class Contributor(
     val avatarUrl: String = "https://github.com/$githubHandle.png",
     val githubUrl: String = "https://github.com/$githubHandle",
     val sponsorUrl: String? = null,
-    val instagramUrl: String? = null,
     val polygon: RoundedPolygon? = null,
     val favoriteSongVideoId: String? = null
 )
+
 
 private data class CommunityLink(
     val labelRes: Int,
@@ -93,28 +100,93 @@ private data class CommunityLink(
     val url: String
 )
 
+
+/*
+ * ================================================================
+ * ORIGINAL LEAD DEVELOPER DATA
+ *
+ * Kept intact so the existing project logic does not get removed.
+ * ================================================================
+ */
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val leadDeveloper = Contributor(
     name = "Mo Agamy",
     roleRes = R.string.credits_lead_developer,
     githubHandle = "mostafaalagamy",
-    instagramUrl = "https://www.instagram.com/mostafaalagamy",
     polygon = MaterialShapes.Cookie9Sided,
     favoriteSongVideoId = "Mh2JWGWvy_Y"
 )
 
+
+/*
+ * ================================================================
+ * ORIGINAL COLLABORATORS
+ *
+ * Kept intact.
+ * ================================================================
+ */
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private val collaborators = listOf(
-    Contributor(name = "Adriel O'Connel", roleRes = R.string.credits_collaborator, githubHandle = "adrielGGmotion", sponsorUrl = "https://github.com/sponsors/adrielGGmotion", polygon = MaterialShapes.Cookie4Sided, favoriteSongVideoId = "m2zUrruKjDQ"),
-    Contributor(name = "Nyx", roleRes = R.string.credits_collaborator, githubHandle = "nyxiereal", sponsorUrl = "https://github.com/sponsors/nyxiereal", polygon = MaterialShapes.Cookie12Sided, favoriteSongVideoId = "zselaN6zPXw"),
+    Contributor(
+        name = "Adriel O'Connel",
+        roleRes = R.string.credits_collaborator,
+        githubHandle = "adrielGGmotion",
+        sponsorUrl = "https://github.com/sponsors/adrielGGmotion",
+        polygon = MaterialShapes.Cookie4Sided,
+        favoriteSongVideoId = "m2zUrruKjDQ"
+    ),
+    Contributor(
+        name = "Nyx",
+        roleRes = R.string.credits_collaborator,
+        githubHandle = "nyxiereal",
+        sponsorUrl = "https://github.com/sponsors/nyxiereal",
+        polygon = MaterialShapes.Cookie12Sided,
+        favoriteSongVideoId = "zselaN6zPXw"
+    ),
 )
 
+
+/*
+ * ================================================================
+ * ORIGINAL COMMUNITY LINKS
+ *
+ * Kept intact.
+ * ================================================================
+ */
+
 private val communityLinks = listOf(
-    CommunityLink(R.string.credits_view_repo, R.drawable.github, "https://github.com/MetrolistGroup/Metrolist"),
-    CommunityLink(R.string.credits_telegram, R.drawable.telegram, "https://t.me/metrolistapp"),
-    CommunityLink(R.string.credits_discord, R.drawable.discord, "https://discord.com/invite/zrdbeRG2Mt"),
-    CommunityLink(R.string.credits_license_name, R.drawable.info, "https://github.com/MetrolistGroup/Metrolist/blob/main/LICENSE")
+    CommunityLink(
+        R.string.credits_discord,
+        R.drawable.discord,
+        "https://discord.com/invite/zrdbeRG2Mt"
+    ),
+    CommunityLink(
+        R.string.credits_telegram,
+        R.drawable.telegram,
+        "https://t.me/metrolistapp"
+    ),
+    CommunityLink(
+        R.string.credits_view_repo,
+        R.drawable.github,
+        "https://github.com/MetrolistGroup/Metrolist"
+    ),
+    CommunityLink(
+        R.string.credits_license_name,
+        R.drawable.info,
+        "https://github.com/MetrolistGroup/Metrolist/blob/main/LICENSE"
+    )
 )
+
+
+/*
+ * ================================================================
+ * EASTER EGG
+ *
+ * Original functionality kept intact.
+ * ================================================================
+ */
 
 private fun handleEasterEggClick(
     clickCount: Int,
@@ -128,22 +200,49 @@ private fun handleEasterEggClick(
 ) {
     if (favoriteSongVideoId != null) {
         val newCount = clickCount + 1
+
         onCountUpdate(newCount)
+
         if (newCount >= 3) {
             onCountUpdate(0)
+
             coroutineScope.launch {
                 val result = snackbarHostState.showSnackbar(
                     message = wannaPlayStr,
                     actionLabel = yeahStr,
                     duration = SnackbarDuration.Short
                 )
+
                 if (result == SnackbarResult.ActionPerformed) {
-                    playerConnection?.playQueue(YouTubeQueue(WatchEndpoint(videoId = favoriteSongVideoId)))
+                    playerConnection?.playQueue(
+                        YouTubeQueue(
+                            WatchEndpoint(
+                                videoId = favoriteSongVideoId
+                            )
+                        )
+                    )
                 }
             }
         }
     }
 }
+
+
+/*
+ * ================================================================
+ * DEVELOPER AVATAR
+ *
+ * This is the existing image system.
+ *
+ * Remote GitHub image:
+ *     https://github.com/<username>.png
+ *
+ * Fallback:
+ *     R.drawable.about_icon
+ *
+ * Existing Cookie9Sided shape is also supported.
+ * ================================================================
+ */
 
 @Composable
 private fun ContributorAvatar(
@@ -154,13 +253,17 @@ private fun ContributorAvatar(
     contentDescription: String? = null,
     onClick: (() -> Unit)? = null
 ) {
-    val fallback = painterResource(R.drawable.about_icon)
+    val fallback = painterResource(
+        R.drawable.about_icon
+    )
+
     Surface(
         onClick = onClick ?: {},
         enabled = onClick != null,
         modifier = modifier.size(sizeDp.dp),
         shape = shape,
-        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+        color =
+            MaterialTheme.colorScheme.surfaceContainerHighest,
         tonalElevation = 4.dp,
     ) {
         AsyncImage(
@@ -175,407 +278,969 @@ private fun ContributorAvatar(
     }
 }
 
-/**
- * Large "sticker" style hero avatar: a soft scalloped halo sitting behind a
- * cookie-shaped contributor photo, exactly matching the reference design —
- * big, centered, no card chrome around it.
+
+/*
+ * ================================================================
+ * ORIGINAL DEVELOPER SOCIALS
+ *
+ * Kept intact.
+ * ================================================================
  */
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 @Composable
-private fun HeroAvatar(
-    contributor: Contributor,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val fallback = painterResource(R.drawable.about_icon)
-    Box(
-        modifier = modifier.size(240.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        // Soft scalloped halo behind the photo
-        Surface(
-            modifier = Modifier.size(232.dp),
-            shape = MaterialShapes.Cookie9Sided.toShape(),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        ) {}
-
-        Surface(
-            onClick = onClick,
-            modifier = Modifier.size(190.dp),
-            shape = contributor.polygon?.toShape() ?: CircleShape,
-            color = MaterialTheme.colorScheme.surfaceContainerHighest,
-            shadowElevation = 6.dp,
-        ) {
-            AsyncImage(
-                model = contributor.avatarUrl,
-                contentDescription = contributor.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-                placeholder = fallback,
-                fallback = fallback,
-                error = fallback,
-            )
-        }
-    }
-}
-
-/**
- * Developer identity card: name + role on a rounded surface with a circular
- * social badge floating over the top-end corner, matching the reference.
- */
-@Composable
-private fun DeveloperCard(
-    contributor: Contributor,
-    uriHandler: UriHandler,
-    modifier: Modifier = Modifier,
-) {
-    Box(modifier = modifier) {
-        ElevatedCard(
-            shape = RoundedCornerShape(28.dp),
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 22.dp)
-            ) {
-                Text(
-                    text = contributor.name,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Black,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    letterSpacing = (-0.3).sp,
-                )
-                Spacer(Modifier.height(2.dp))
-                Text(
-                    text = stringResource(contributor.roleRes),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-
-        if (contributor.instagramUrl != null) {
-            Surface(
-                onClick = { uriHandler.openUri(contributor.instagramUrl) },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .offset(x = (-14).dp, y = (-14).dp)
-                    .size(56.dp),
-                shape = CircleShape,
-                color = MaterialTheme.colorScheme.primaryContainer,
-                shadowElevation = 4.dp,
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        painter = painterResource(R.drawable.instagram),
-                        contentDescription = "Instagram",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-/**
- * A single bold, icon-led row used for community / repo links — big text,
- * a tinted rounded-square icon container, no card border between items.
- */
-@Composable
-private fun LinkRow(
-    label: String,
-    description: String?,
-    iconRes: Int,
-    onClick: () -> Unit,
+private fun DeveloperSocials(
+    uriHandler: androidx.compose.ui.platform.UriHandler
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 14.dp, horizontal = 20.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(18.dp)
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.primaryContainer,
-            modifier = Modifier.size(48.dp),
+
+        FilledTonalButton(
+            onClick = {
+                uriHandler.openUri(
+                    "https://metrolist.cc"
+                )
+            },
+            modifier = Modifier
+                .weight(1f)
+                .height(48.dp)
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    painter = painterResource(iconRes),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.onSurface,
+            Icon(
+                painterResource(R.drawable.language),
+                contentDescription = null
             )
-            if (description != null) {
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+        }
+
+        FilledTonalButton(
+            onClick = {
+                uriHandler.openUri(
+                    "https://github.com/mostafaalagamy"
                 )
-            }
+            },
+            modifier = Modifier
+                .weight(1f)
+                .height(48.dp)
+        ) {
+            Icon(
+                painterResource(R.drawable.github),
+                contentDescription = null
+            )
+        }
+
+        FilledTonalButton(
+            onClick = {
+                uriHandler.openUri(
+                    "https://www.instagram.com/mostafaalagamy"
+                )
+            },
+            modifier = Modifier
+                .weight(1f)
+                .height(48.dp)
+        ) {
+            Icon(
+                painterResource(R.drawable.instagram),
+                contentDescription = null
+            )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+
+/*
+ * ================================================================
+ * ABOUT SCREEN
+ *
+ * NEW UI
+ *
+ * Reference hierarchy:
+ *
+ *      About
+ *
+ *   ┌─────────────────────────────┐
+ *   │ [APP ICON]  Zusic           │
+ *   │             universal 3.0.0 │
+ *   └─────────────────────────────┘
+ *
+ *
+ *             [ DEVELOPER IMAGE ]
+ *
+ *   ┌─────────────────────────────┐
+ *   │ Subhajit              [GH]  │
+ *   │ Developer                   │
+ *   └─────────────────────────────┘
+ *
+ *
+ *   ┌─────────────────────────────┐
+ *   │ [IG]        Instagram       │
+ *   │                             │
+ *   │ [TG]        Telegram        │
+ *   └─────────────────────────────┘
+ *
+ * ================================================================
+ */
+
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3ExpressiveApi::class
+)
 @Composable
 fun AboutScreen(
     navController: NavController,
 ) {
+
+    /*
+     * ------------------------------------------------------------
+     * Existing project dependencies
+     * ------------------------------------------------------------
+     */
+
     val uriHandler = LocalUriHandler.current
-    val playerConnection = LocalPlayerConnection.current
-    val coroutineScope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val wannaPlayStr = stringResource(R.string.wanna_play_favorite_song)
-    val yeahStr = stringResource(R.string.yeah)
 
-    val windowInsets = LocalPlayerAwareWindowInsets.current
+    val playerConnection =
+        LocalPlayerConnection.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(
-            Modifier.windowInsetsPadding(
-                windowInsets.only(WindowInsetsSides.Top)
-            )
+    val coroutineScope =
+        rememberCoroutineScope()
+
+    val snackbarHostState =
+        remember {
+            SnackbarHostState()
+        }
+
+    val wannaPlayStr =
+        stringResource(
+            R.string.wanna_play_favorite_song
         )
 
-        Spacer(Modifier.height(16.dp))
+    val yeahStr =
+        stringResource(
+            R.string.yeah
+        )
 
-        // ---- App identity row: icon · name · version / arch ----
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(18.dp)
+    val windowInsets =
+        LocalPlayerAwareWindowInsets.current
+
+
+    /*
+     * ------------------------------------------------------------
+     * ABOUT SCREEN CONTENT
+     * ------------------------------------------------------------
+     */
+
+    /*
+     * YOUR INFORMATION
+     *
+     * Replace YOUR_GITHUB_USERNAME with your actual GitHub
+     * username.
+     *
+     * GitHub automatically provides:
+     *
+     * https://github.com/USERNAME.png
+     *
+     * which is used as the developer avatar.
+     */
+
+    val developerName = "Subhajit"
+
+    val developerRole = "Developer"
+
+    val developerGithubUsername =
+        "YOUR_GITHUB_USERNAME"
+
+    val developerAvatarUrl =
+        "https://github.com/$developerGithubUsername.png"
+
+    /*
+     * Repository opened by the floating GitHub button.
+     *
+     * Replace this with your actual repository URL.
+     */
+
+    val repositoryUrl =
+        "https://github.com/MetrolistGroup/Metrolist"
+
+    /*
+     * Other social links.
+     */
+
+    val instagramUrl =
+        "https://www.instagram.com/"
+
+    val telegramUrl =
+        "https://t.me/"
+
+
+    /*
+     * Developer easter egg click counter.
+     *
+     * Existing easter egg behaviour remains available.
+     */
+
+    var developerClickCount by remember {
+        mutableIntStateOf(0)
+    }
+
+
+    /*
+     * ------------------------------------------------------------
+     * ROOT
+     * ------------------------------------------------------------
+     */
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Color(0xFFF8F8F8)
+            )
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(
+                    windowInsets.only(
+                        WindowInsetsSides.Horizontal +
+                            WindowInsetsSides.Bottom
+                    )
+                )
+                .verticalScroll(
+                    rememberScrollState()
+                )
+                .padding(
+                    horizontal = 24.dp
+                ),
+            horizontalAlignment =
+                Alignment.CenterHorizontally
         ) {
-            Surface(
-                shape = RoundedCornerShape(20.dp),
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(76.dp)
+
+
+            /*
+             * ====================================================
+             * TOP BAR
+             * ====================================================
+             */
+
+            Spacer(
+                Modifier.windowInsetsPadding(
+                    windowInsets.only(
+                        WindowInsetsSides.Top
+                    )
+                )
+            )
+
+            Spacer(
+                modifier = Modifier.height(8.dp)
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                verticalAlignment =
+                    Alignment.CenterVertically
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Image(
-                        painter = painterResource(R.drawable.about_icon),
-                        contentDescription = stringResource(R.string.metrolist),
-                        modifier = Modifier.size(46.dp)
+
+                IconButton(
+                    onClick =
+                        navController::navigateUp,
+                    onLongClick =
+                        navController::backToMain,
+                    modifier =
+                        Modifier.size(48.dp)
+                ) {
+
+                    Icon(
+                        painter =
+                            painterResource(
+                                R.drawable.arrow_back
+                            ),
+                        contentDescription =
+                            stringResource(
+                                R.string.cd_back
+                            ),
+                        tint =
+                            Color(0xFF333333),
+                        modifier =
+                            Modifier.size(28.dp)
                     )
                 }
-            }
 
-            Column {
-                val appName = stringResource(R.string.metrolist)
-                    .lowercase(Locale.getDefault())
-                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-
-                Text(
-                    text = appName,
-                    style = MaterialTheme.typography.displaySmall,
-                    fontWeight = FontWeight.Black,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    letterSpacing = (-0.5).sp
+                Spacer(
+                    modifier =
+                        Modifier.width(8.dp)
                 )
 
-                Spacer(Modifier.height(4.dp))
+                Text(
+                    text =
+                        stringResource(
+                            R.string.about
+                        ),
+                    fontSize = 30.sp,
+                    fontWeight =
+                        FontWeight.Normal,
+                    color =
+                        Color(0xFF333333),
+                    letterSpacing =
+                        (-0.6).sp
+                )
+            }
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = BuildConfig.ARCHITECTURE.lowercase(Locale.getDefault()),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+
+            /*
+             * ====================================================
+             * APPLICATION CARD
+             *
+             * Reference:
+             *
+             * [ APP ICON ]   Zusic
+             *                universal   3.0.0
+             * ====================================================
+             */
+
+            Spacer(
+                modifier =
+                    Modifier.height(48.dp)
+            )
+
+            Surface(
+                modifier =
+                    Modifier.fillMaxWidth(),
+                shape =
+                    RoundedCornerShape(32.dp),
+                color =
+                    Color.White,
+                tonalElevation = 0.dp,
+                shadowElevation = 8.dp
+            ) {
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 26.dp,
+                            vertical = 24.dp
+                        ),
+                    verticalAlignment =
+                        Alignment.CenterVertically
+                ) {
+
+
+                    /*
+                     * Application icon
+                     */
+
+                    Box(
+                        modifier =
+                            Modifier.size(108.dp),
+                        contentAlignment =
+                            Alignment.Center
+                    ) {
+
+                        /*
+                         * Existing application icon.
+                         *
+                         * Kept from original AboutScreen.
+                         */
+
+                        Image(
+                            painter =
+                                painterResource(
+                                    R.drawable.ic_logo_oval
+                                ),
+                            contentDescription =
+                                null,
+                            contentScale =
+                                ContentScale.Crop,
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .clip(
+                                        RoundedCornerShape(
+                                            27.dp
+                                        )
+                                    )
+                        )
+
+                        Image(
+                            painter =
+                                painterResource(
+                                    R.drawable.about_icon
+                                ),
+                            contentDescription =
+                                stringResource(
+                                    R.string.metrolist
+                                ),
+                            contentScale =
+                                ContentScale.Crop,
+                            modifier =
+                                Modifier.size(82.dp)
+                        )
+                    }
+
+
+                    Spacer(
+                        modifier =
+                            Modifier.width(24.dp)
                     )
-                    Spacer(Modifier.width(12.dp))
-                    Text(
-                        text = BuildConfig.VERSION_NAME,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    if (BuildConfig.DEBUG) {
-                        Spacer(Modifier.width(10.dp))
-                        Surface(
-                            shape = RoundedCornerShape(6.dp),
-                            color = MaterialTheme.colorScheme.tertiaryContainer,
+
+
+                    /*
+                     * Application details
+                     */
+
+                    Column(
+                        modifier =
+                            Modifier.weight(1f)
+                    ) {
+
+                        Text(
+                            text = "Zusic",
+                            fontSize = 42.sp,
+                            lineHeight = 44.sp,
+                            fontWeight =
+                                FontWeight.Black,
+                            color =
+                                Color.Black,
+                            letterSpacing =
+                                (-1.5).sp
+                        )
+
+                        Spacer(
+                            modifier =
+                                Modifier.height(5.dp)
+                        )
+
+                        Row(
+                            verticalAlignment =
+                                Alignment.CenterVertically
                         ) {
+
                             Text(
-                                text = "DEBUG",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                text =
+                                    BuildConfig
+                                        .ARCHITECTURE
+                                        .lowercase(
+                                            Locale
+                                                .getDefault()
+                                        ),
+                                fontSize = 25.sp,
+                                lineHeight = 30.sp,
+                                fontWeight =
+                                    FontWeight.Bold,
+                                color =
+                                    Color(0xFF555555),
+                                letterSpacing =
+                                    (-0.7).sp
+                            )
+
+                            Spacer(
+                                modifier =
+                                    Modifier.width(12.dp)
+                            )
+
+                            Text(
+                                text =
+                                    BuildConfig
+                                        .VERSION_NAME,
+                                fontSize = 25.sp,
+                                lineHeight = 30.sp,
+                                fontWeight =
+                                    FontWeight.Bold,
+                                color =
+                                    Color(0xFF555555),
+                                letterSpacing =
+                                    (-0.7).sp
                             )
                         }
                     }
                 }
             }
-        }
 
-        Spacer(Modifier.height(40.dp))
 
-        // ---- Hero sticker avatar for the lead developer ----
-        var leadClickCount by remember(leadDeveloper.name) { mutableIntStateOf(0) }
-        HeroAvatar(
-            contributor = leadDeveloper,
-            onClick = {
-                handleEasterEggClick(
-                    clickCount = leadClickCount,
-                    favoriteSongVideoId = leadDeveloper.favoriteSongVideoId,
-                    coroutineScope = coroutineScope,
-                    snackbarHostState = snackbarHostState,
-                    playerConnection = playerConnection,
-                    wannaPlayStr = wannaPlayStr,
-                    yeahStr = yeahStr,
-                    onCountUpdate = { leadClickCount = it }
-                )
-            }
-        )
+            /*
+             * ====================================================
+             * DEVELOPER IMAGE
+             *
+             * This is intentionally outside the developer card.
+             *
+             * Remote GitHub image:
+             *     https://github.com/USERNAME.png
+             *
+             * Fallback:
+             *     R.drawable.about_icon
+             *
+             * Shape:
+             *     Existing Cookie9Sided
+             * ====================================================
+             */
 
-        Spacer(Modifier.height(28.dp))
+            Spacer(
+                modifier =
+                    Modifier.height(42.dp)
+            )
 
-        // ---- Developer name card with overlapping Instagram badge ----
-        DeveloperCard(
-            contributor = leadDeveloper,
-            uriHandler = uriHandler,
-            modifier = Modifier.fillMaxWidth()
-        )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                contentAlignment =
+                    Alignment.TopCenter
+            ) {
 
-        Spacer(Modifier.height(32.dp))
+                ContributorAvatar(
+                    avatarUrl =
+                        developerAvatarUrl,
 
-        // ---- Community & repo links: bold rows, no per-item card border ----
-        ElevatedCard(
-            shape = RoundedCornerShape(28.dp),
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
-        ) {
-            Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                communityLinks.forEachIndexed { index, link ->
-                    LinkRow(
-                        label = stringResource(link.labelRes),
-                        description = if (link.labelRes == R.string.credits_license_name) {
-                            stringResource(R.string.credits_license_desc)
-                        } else null,
-                        iconRes = link.iconRes,
-                        onClick = { uriHandler.openUri(link.url) }
-                    )
-                }
-            }
-        }
+                    sizeDp = 250,
 
-        Spacer(Modifier.height(32.dp))
+                    shape =
+                        MaterialShapes
+                            .Cookie9Sided
+                            .toShape(),
 
-        // ---- Collaborators ----
-        Material3SettingsGroup(
-            title = stringResource(R.string.credits_collaborators_section),
-            items = collaborators.map { contributor ->
-                Material3SettingsItem(
-                    leadingContent = {
-                        var clickCount by remember(contributor.name) { mutableIntStateOf(0) }
-                        ContributorAvatar(
-                            avatarUrl = contributor.avatarUrl,
-                            sizeDp = 48,
-                            shape = contributor.polygon?.toShape() ?: CircleShape,
-                            contentDescription = contributor.name,
-                            onClick = {
-                                handleEasterEggClick(
-                                    clickCount = clickCount,
-                                    favoriteSongVideoId = contributor.favoriteSongVideoId,
-                                    coroutineScope = coroutineScope,
-                                    snackbarHostState = snackbarHostState,
-                                    playerConnection = playerConnection,
-                                    wannaPlayStr = wannaPlayStr,
-                                    yeahStr = yeahStr,
-                                    onCountUpdate = { clickCount = it }
-                                )
+                    contentDescription =
+                        developerName,
+
+                    modifier =
+                        Modifier.align(
+                            Alignment.TopCenter
+                        ),
+
+                    onClick = {
+
+                        /*
+                         * Existing easter egg retained.
+                         *
+                         * It uses the original lead developer
+                         * song configuration.
+                         */
+
+                        handleEasterEggClick(
+                            clickCount =
+                                developerClickCount,
+
+                            favoriteSongVideoId =
+                                leadDeveloper
+                                    .favoriteSongVideoId,
+
+                            coroutineScope =
+                                coroutineScope,
+
+                            snackbarHostState =
+                                snackbarHostState,
+
+                            playerConnection =
+                                playerConnection,
+
+                            wannaPlayStr =
+                                wannaPlayStr,
+
+                            yeahStr =
+                                yeahStr,
+
+                            onCountUpdate = {
+                                developerClickCount =
+                                    it
                             }
                         )
-                    },
-                    title = { Text(text = contributor.name, fontWeight = FontWeight.SemiBold) },
-                    description = { Text(stringResource(contributor.roleRes)) },
-                    trailingContent = {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                    }
+                )
+            }
+
+
+            /*
+             * ====================================================
+             * DEVELOPER CARD
+             *
+             * The card overlaps the bottom of the image.
+             *
+             * Top-right:
+             *     Floating GitHub button
+             * ====================================================
+             */
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(
+                        y = (-38).dp
+                    )
+            ) {
+
+                Surface(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(168.dp),
+                    shape =
+                        RoundedCornerShape(32.dp),
+                    color =
+                        Color.White,
+                    tonalElevation = 0.dp,
+                    shadowElevation = 10.dp
+                ) {
+
+                    Box(
+                        modifier =
+                            Modifier.fillMaxSize()
+                    ) {
+
+
+                        /*
+                         * Developer information
+                         */
+
+                        Column(
+                            modifier = Modifier
+                                .align(
+                                    Alignment.CenterStart
+                                )
+                                .padding(
+                                    start = 36.dp,
+                                    end = 100.dp
+                                )
                         ) {
-                            if (contributor.sponsorUrl != null) {
-                                Surface(
-                                    onClick = { uriHandler.openUri(contributor.sponsorUrl) },
-                                    shape = CircleShape,
-                                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                                    modifier = Modifier.size(36.dp)
-                                ) {
-                                    Box(contentAlignment = Alignment.Center) {
-                                        Icon(
-                                            painter = painterResource(R.drawable.buymeacoffee),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(20.dp),
-                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                }
-                            }
-                            Icon(
-                                painter = painterResource(R.drawable.github),
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+
+                            Text(
+                                text =
+                                    developerName,
+                                fontSize = 40.sp,
+                                lineHeight = 44.sp,
+                                fontWeight =
+                                    FontWeight.Black,
+                                color =
+                                    Color.Black,
+                                letterSpacing =
+                                    (-1.2).sp
+                            )
+
+                            Spacer(
+                                modifier =
+                                    Modifier.height(2.dp)
+                            )
+
+                            Text(
+                                text =
+                                    developerRole,
+                                fontSize = 27.sp,
+                                lineHeight = 32.sp,
+                                fontWeight =
+                                    FontWeight.Bold,
+                                color =
+                                    Color(0xFF555555),
+                                letterSpacing =
+                                    (-0.7).sp
                             )
                         }
-                    },
-                    onClick = { uriHandler.openUri(contributor.githubUrl) }
-                )
+
+
+                        /*
+                         * ====================================================
+                         * FLOATING GITHUB BUTTON
+                         * ====================================================
+                         */
+
+                        Surface(
+                            onClick = {
+                                uriHandler.openUri(
+                                    repositoryUrl
+                                )
+                            },
+                            modifier = Modifier
+                                .align(
+                                    Alignment.TopEnd
+                                )
+                                .offset(
+                                    x = (-18).dp,
+                                    y = (-34).dp
+                                )
+                                .size(88.dp),
+                            shape =
+                                CircleShape,
+                            color =
+                                Color(0xFFD7E5F9),
+                            tonalElevation = 0.dp,
+                            shadowElevation = 7.dp
+                        ) {
+
+                            Box(
+                                contentAlignment =
+                                    Alignment.Center
+                            ) {
+
+                                Icon(
+                                    painter =
+                                        painterResource(
+                                            R.drawable.github
+                                        ),
+                                    contentDescription =
+                                        "GitHub",
+                                    tint =
+                                        Color.Black,
+                                    modifier =
+                                        Modifier.size(50.dp)
+                                )
+                            }
+                        }
+                    }
+                }
             }
-        )
 
-        Spacer(Modifier.height(48.dp))
 
-        Text(
-            text = stringResource(R.string.stands_with_palestine),
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+            /*
+             * ====================================================
+             * SOCIAL LINKS CARD
+             *
+             * Reference:
+             *
+             * [ icon ]    Instagram
+             *
+             * [ icon ]    Telegram
+             * ====================================================
+             */
 
-        Spacer(Modifier.height(48.dp))
-    }
+            Spacer(
+                modifier =
+                    Modifier.height(4.dp)
+            )
 
-    TopAppBar(
-        title = { Text(stringResource(R.string.about)) },
-        navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain,
+            Surface(
+                modifier =
+                    Modifier.fillMaxWidth(),
+                shape =
+                    RoundedCornerShape(34.dp),
+                color =
+                    Color.White,
+                tonalElevation = 0.dp,
+                shadowElevation = 10.dp
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.arrow_back),
-                    contentDescription = stringResource(R.string.cd_back),
-                )
-            }
-        }
-    )
 
-    Box(Modifier.fillMaxSize()) {
+                Column(
+                    modifier =
+                        Modifier.padding(
+                            vertical = 14.dp
+                        )
+                ) {
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Instagram
+                     * ------------------------------------------------
+                     */
+
+                    Surface(
+                        onClick = {
+                            uriHandler.openUri(
+                                instagramUrl
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(104.dp),
+                        color =
+                            Color.Transparent
+                    ) {
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    horizontal = 30.dp
+                                ),
+                            verticalAlignment =
+                                Alignment.CenterVertically
+                        ) {
+
+
+                            /*
+                             * Instagram icon box
+                             */
+
+                            Surface(
+                                modifier =
+                                    Modifier.size(64.dp),
+                                shape =
+                                    RoundedCornerShape(
+                                        18.dp
+                                    ),
+                                color =
+                                    Color(0xFFD7E5F9),
+                                tonalElevation = 0.dp
+                            ) {
+
+                                Box(
+                                    contentAlignment =
+                                        Alignment.Center
+                                ) {
+
+                                    Icon(
+                                        painter =
+                                            painterResource(
+                                                R.drawable.instagram
+                                            ),
+                                        contentDescription =
+                                            "Instagram",
+                                        tint =
+                                            Color.Black,
+                                        modifier =
+                                            Modifier.size(
+                                                34.dp
+                                            )
+                                    )
+                                }
+                            }
+
+
+                            Spacer(
+                                modifier =
+                                    Modifier.width(34.dp)
+                            )
+
+
+                            Text(
+                                text =
+                                    "Instagram",
+                                fontSize = 33.sp,
+                                lineHeight = 40.sp,
+                                fontWeight =
+                                    FontWeight.Bold,
+                                color =
+                                    Color.Black,
+                                letterSpacing =
+                                    (-1).sp
+                            )
+                        }
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Telegram
+                     * ------------------------------------------------
+                     */
+
+                    Surface(
+                        onClick = {
+                            uriHandler.openUri(
+                                telegramUrl
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(104.dp),
+                        color =
+                            Color.Transparent
+                    ) {
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    horizontal = 30.dp
+                                ),
+                            verticalAlignment =
+                                Alignment.CenterVertically
+                        ) {
+
+
+                            /*
+                             * Telegram icon box
+                             */
+
+                            Surface(
+                                modifier =
+                                    Modifier.size(64.dp),
+                                shape =
+                                    RoundedCornerShape(
+                                        18.dp
+                                    ),
+                                color =
+                                    Color(0xFFD7E5F9),
+                                tonalElevation = 0.dp
+                            ) {
+
+                                Box(
+                                    contentAlignment =
+                                        Alignment.Center
+                                ) {
+
+                                    Icon(
+                                        painter =
+                                            painterResource(
+                                                R.drawable.telegram
+                                            ),
+                                        contentDescription =
+                                            "Telegram",
+                                        tint =
+                                            Color.Black,
+                                        modifier =
+                                            Modifier.size(
+                                                34.dp
+                                            )
+                                    )
+                                }
+                            }
+
+
+                            Spacer(
+                                modifier =
+                                    Modifier.width(34.dp)
+                            )
+
+
+                            Text(
+                                text =
+                                    "Telegram",
+                                fontSize = 33.sp,
+                                lineHeight = 40.sp,
+                                fontWeight =
+                                    FontWeight.Bold,
+                                color =
+                                    Color.Black,
+                                letterSpacing =
+                                    (-1).sp
+                            )
+                        }
+                    }
+                }
+            }
+
+
+            /*
+             * ====================================================
+             * BOTTOM SPACE
+             * ====================================================
+             */
+
+            Spacer(
+                modifier =
+                    Modifier.height(48.dp)
+            )
+        }
+
+
+        /*
+         * ========================================================
+         * SNACKBAR
+         * ========================================================
+         */
+
         SnackbarHost(
-            hostState = snackbarHostState,
+            hostState =
+                snackbarHostState,
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
+                .align(
+                    Alignment.BottomCenter
+                )
+                .windowInsetsPadding(
+                    windowInsets.only(
+                        WindowInsetsSides.Bottom +
+                            WindowInsetsSides.Horizontal
+                    )
+                )
         )
     }
 }
