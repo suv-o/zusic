@@ -132,13 +132,16 @@ fun AboutScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues) // Double padding removed for scroll fix
+                .padding(top = paddingValues.calculateTopPadding()) // Appbar padding
+                // Mini-player scroll issue fix exactly like original code
+                .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)) 
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(16.dp))
 
+            // 1. App Header Card with new text
             Card(
                 shape = RoundedCornerShape(32.dp),
                 colors = CardDefaults.cardColors(
@@ -170,14 +173,15 @@ fun AboutScreen(
                     Spacer(Modifier.width(20.dp))
 
                     Column {
+                        // Resized text slightly to fit 3 lines perfectly
                         Text(
                             text = stringResource(R.string.app_name),
-                            style = MaterialTheme.typography.headlineLarge,
+                            style = MaterialTheme.typography.headlineMedium, 
                             fontWeight = FontWeight.Black,
                             color = MaterialTheme.colorScheme.onSurface
                         )
 
-                        Spacer(Modifier.height(8.dp)) // Increased Gap
+                        Spacer(Modifier.height(4.dp))
 
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Surface(
@@ -206,38 +210,50 @@ fun AboutScreen(
                                 )
                             }
                         }
+
+                        Spacer(Modifier.height(4.dp))
+                        
+                        // New added line
+                        Text(
+                            text = "by suv-o & zoo™",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
             }
 
             Spacer(Modifier.height(40.dp))
 
-            val fallback = painterResource(R.drawable.app_icon)
-            Surface(
-                shape = leadDeveloper.polygon?.toShape() ?: CircleShape,
-                color = MaterialTheme.colorScheme.surfaceVariant, // Outline Color
-                modifier = Modifier.size(160.dp)
+            // 2. Developer Image with Theme-aware App Icon fallback
+            Box(
+                modifier = Modifier
+                    .size(160.dp)
+                    .clip(leadDeveloper.polygon?.toShape() ?: CircleShape),
+                contentAlignment = Alignment.Center
             ) {
+                // Background Fallback Icon (Inverts with theme)
+                Image(
+                    painter = painterResource(R.drawable.app_icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp),
+                    colorFilter = ColorFilter.tint(appIconTintColor)
+                )
+                // Actual Image loading on top
                 AsyncImage(
                     model = leadDeveloper.avatarUrl,
                     contentDescription = leadDeveloper.name,
-                    placeholder = fallback,
-                    fallback = fallback,
-                    error = fallback,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(6.dp) // Padding creates the outline
-                        .clip(leadDeveloper.polygon?.toShape() ?: CircleShape)
+                    modifier = Modifier.fillMaxSize()
                 )
             }
 
             Spacer(Modifier.height(32.dp))
 
+            // 3. Developer Card with GitHub button fixed alignment
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 12.dp)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Card(
                     shape = RoundedCornerShape(32.dp),
@@ -246,7 +262,7 @@ fun AboutScreen(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp)
+                        .padding(top = 16.dp) // Space for overlapping button
                 ) {
                     Column(
                         modifier = Modifier.padding(start = 24.dp, top = 24.dp, bottom = 24.dp, end = 64.dp)
@@ -258,7 +274,7 @@ fun AboutScreen(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         
-                        Spacer(Modifier.height(8.dp)) // Increased Gap
+                        Spacer(Modifier.height(8.dp))
                         
                         Text(
                             text = leadDeveloper.role,
@@ -269,6 +285,7 @@ fun AboutScreen(
                     }
                 }
 
+                // Top Right GitHub Button moved perfectly inwards
                 Surface(
                     onClick = { uriHandler.openUri(leadDeveloper.githubUrl) },
                     shape = CircleShape,
@@ -276,8 +293,8 @@ fun AboutScreen(
                     shadowElevation = 6.dp,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
+                        .offset(x = (-16).dp, y = (-4).dp) // Moved inward to align with card boundaries
                         .size(56.dp)
-                        .offset(x = 12.dp, y = (-4).dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
@@ -292,6 +309,7 @@ fun AboutScreen(
 
             Spacer(Modifier.height(24.dp))
 
+            // 4. Social Links Card
             Card(
                 shape = RoundedCornerShape(32.dp),
                 colors = CardDefaults.cardColors(
