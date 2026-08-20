@@ -158,7 +158,7 @@ fun AboutScreen(
                         shape = RoundedCornerShape(20.dp),
                         color = appIconBgColor,
                         modifier = Modifier
-                                   .size(60.dp)
+                                   .width(60.dp)
                                    .height(80.dp)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
@@ -223,7 +223,7 @@ fun AboutScreen(
                         )
                     }
                     
-                    IconButton(
+                    /*IconButton(
                         onClick = { uriHandler.openUri("https://github.com/suv-o/zusic") },
                         onLongClick = {}
                     ) {
@@ -233,7 +233,23 @@ fun AboutScreen(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             //modifier = Modifier.size(24.dp)
                         )
-                    }
+                    }*/
+                    
+                    Surface(
+                        onClick = { uriHandler.openUri("https://github.com/suv-o/zusic") },
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                painter = painterResource(R.drawable.github),
+                                contentDescription = "Github",
+                                modifier = Modifier.size(24.dp),
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+                      }
                 }
             }
 
@@ -280,7 +296,7 @@ fun AboutScreen(
                         Text(
                             text = leadDeveloper.name,
                             style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Black,
+                            //fontWeight = FontWeight.Black,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         
@@ -289,7 +305,7 @@ fun AboutScreen(
                         Text(
                             text = leadDeveloper.role,
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
+                            //fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -358,7 +374,7 @@ fun AboutScreen(
                                 Text(
                                     text = link.label,
                                     style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.Bold,
+                                    //fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
