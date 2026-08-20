@@ -224,13 +224,14 @@ fun AboutScreen(
                     }
                     
                     IconButton(
-                        onClick = { uriHandler.openUri("https://github.com/suv-o/zusic") }
+                        onClick = { uriHandler.openUri("https://github.com/suv-o/zusic") },
+                        onLongClick = {}
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.github),
                             contentDescription = "GitHub",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(24.dp)
+                            //modifier = Modifier.size(24.dp)
                         )
                     }
                 }
