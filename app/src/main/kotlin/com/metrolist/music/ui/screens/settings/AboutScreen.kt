@@ -87,7 +87,7 @@ private val socialLinks = listOf(
     CommunityLink("Instagram", R.drawable.instagram, "https://www.instagram.com/suv.jt")
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AboutScreen(
     navController: NavController,
