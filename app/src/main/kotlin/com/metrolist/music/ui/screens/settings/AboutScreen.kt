@@ -225,7 +225,7 @@ fun AboutScreen(
     
     val windowInsets = LocalPlayerAwareWindowInsets.current
 
-    Column(
+    /*Column(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
@@ -501,6 +501,7 @@ fun AboutScreen(
         
         Spacer(Modifier.height(48.dp))
     }
+    */
 
     TopAppBar(
         title = { Text(stringResource(R.string.about)) },
@@ -517,6 +518,308 @@ fun AboutScreen(
         }
     )
 
+    /*
+     * NEW ABOUT PAGE
+     * ------------------------------------------------------------
+     * Reference layout:
+     * 1. App icon
+     * 2. App name + build variant + version
+     * 3. Developer image
+     * 4. Instagram button
+     * 5. Developer information
+     * 6. Other social/community links
+     *
+     * The complete previous About UI above has intentionally NOT been
+     * removed. It is still kept inside the existing block comment.
+     */
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(
+                windowInsets.only(
+                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+                )
+            )
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+    ) {
+        Spacer(
+            Modifier.windowInsetsPadding(
+                windowInsets.only(WindowInsetsSides.Top)
+            )
+        )
+
+        Spacer(Modifier.height(12.dp))
+
+        // ---------------------------------------------------------
+        // 1 + 2 — Application information
+        // ---------------------------------------------------------
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(30.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerLow,
+            tonalElevation = 1.dp,
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // 1 — Application icon
+                Surface(
+                    modifier = Modifier.size(82.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    tonalElevation = 2.dp,
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.about_icon),
+                        contentDescription = stringResource(R.string.metrolist),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(8.dp),
+                        contentScale = ContentScale.Fit,
+                    )
+                }
+
+                Spacer(Modifier.width(18.dp))
+
+                // 2 — Application name + build variant + version
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    val appName = stringResource(R.string.metrolist)
+                        .lowercase(Locale.getDefault())
+                        .replaceFirstChar {
+                            if (it.isLowerCase()) {
+                                it.titlecase(Locale.getDefault())
+                            } else {
+                                it.toString()
+                            }
+                        }
+
+                    Text(
+                        text = appName,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+
+                    Spacer(Modifier.height(7.dp))
+
+                    Text(
+                        text = "${BuildConfig.BUILD_TYPE.uppercase(Locale.getDefault())} • v${BuildConfig.VERSION_NAME}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+
+        Spacer(Modifier.height(18.dp))
+
+        // ---------------------------------------------------------
+        // 3 — Developer image
+        // ---------------------------------------------------------
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(245.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            /*
+             * Replace R.drawable.about_icon with your own photo resource.
+             *
+             * The Cookie9Sided shape keeps the same soft, decorative
+             * photo silhouette as the reference image.
+             */
+            Image(
+                painter = painterResource(R.drawable.about_icon),
+                contentDescription = "Developer photo",
+                modifier = Modifier
+                    .size(210.dp)
+                    .clip(MaterialShapes.Cookie9Sided.toShape()),
+                contentScale = ContentScale.Crop,
+            )
+        }
+
+        Spacer(Modifier.height(18.dp))
+
+        // ---------------------------------------------------------
+        // 5 + 4 — Developer information + Instagram
+        // ---------------------------------------------------------
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(30.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerLow,
+            tonalElevation = 1.dp,
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 18.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(
+                        text = "Subhajit Adhikary",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+
+                    Spacer(Modifier.height(3.dp))
+
+                    Text(
+                        text = "Developer",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+
+                // 4 — Instagram
+                Surface(
+                    onClick = {
+                        uriHandler.openUri("https://www.instagram.com/")
+                    },
+                    modifier = Modifier.size(52.dp),
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.instagram),
+                            contentDescription = "Instagram",
+                            modifier = Modifier.size(25.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(18.dp))
+
+        // ---------------------------------------------------------
+        // 6 — Other social/community links
+        // ---------------------------------------------------------
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(30.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerLow,
+            tonalElevation = 1.dp,
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+            ) {
+                // GitHub
+                Surface(
+                    onClick = {
+                        uriHandler.openUri("https://github.com/")
+                    },
+                    color = Color.Transparent,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.github),
+                            contentDescription = "GitHub",
+                            modifier = Modifier.size(26.dp),
+                            tint = MaterialTheme.colorScheme.onSurface,
+                        )
+
+                        Spacer(Modifier.width(18.dp))
+
+                        Text(
+                            text = "GitHub",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                }
+
+                // Telegram
+                Surface(
+                    onClick = {
+                        uriHandler.openUri("https://t.me/")
+                    },
+                    color = Color.Transparent,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.telegram),
+                            contentDescription = "Telegram",
+                            modifier = Modifier.size(26.dp),
+                            tint = MaterialTheme.colorScheme.onSurface,
+                        )
+
+                        Spacer(Modifier.width(18.dp))
+
+                        Text(
+                            text = "Telegram",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                }
+
+                // Discord
+                Surface(
+                    onClick = {
+                        uriHandler.openUri("https://discord.com/")
+                    },
+                    color = Color.Transparent,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.discord),
+                            contentDescription = "Discord",
+                            modifier = Modifier.size(26.dp),
+                            tint = MaterialTheme.colorScheme.onSurface,
+                        )
+
+                        Spacer(Modifier.width(18.dp))
+
+                        Text(
+                            text = "Discord",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(32.dp))
+    }
+
     Box(Modifier.fillMaxSize()) {
         SnackbarHost(
             hostState = snackbarHostState,
@@ -525,4 +828,5 @@ fun AboutScreen(
                 .windowInsetsPadding(windowInsets.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
         )
     }
+
 }
