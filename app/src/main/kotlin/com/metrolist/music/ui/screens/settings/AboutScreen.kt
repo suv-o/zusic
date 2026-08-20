@@ -39,6 +39,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,9 +61,18 @@ import com.metrolist.music.R
 import com.metrolist.music.ui.component.IconButton
 import com.metrolist.music.ui.utils.backToMain
 
+// Ensure you have these imports from your project for the theme preference
+// import com.metrolist.music.preferences.DarkModeKey
+// import com.metrolist.music.preferences.DarkMode
+// import com.metrolist.music.preferences.rememberEnumPreference
+
+import com.metrolist.music.constants.DarkModeKey
+import com.metrolist.music.ui.screens.settings.DarkMode
+import com.metrolist.music.utils.rememberEnumPreference
+
 private data class Contributor(
     val name: String,
-    val role: String, // Changed from Int to String
+    val role: String,
     val githubHandle: String,
     val avatarUrl: String = "https://github.com/$githubHandle.png",
     val githubUrl: String = "https://github.com/$githubHandle",
@@ -69,7 +80,7 @@ private data class Contributor(
 )
 
 private data class CommunityLink(
-    val label: String, // Changed from Int to String
+    val label: String,
     val iconRes: Int,
     val url: String
 )
@@ -95,7 +106,13 @@ fun AboutScreen(
     val uriHandler = LocalUriHandler.current
     val windowInsets = LocalPlayerAwareWindowInsets.current
     
-    val isDarkTheme = isSystemInDarkTheme()
+    // Theme Logic integrated from Player.kt
+    val isSystemDark = isSystemInDarkTheme()
+    val darkTheme by rememberEnumPreference(DarkModeKey, defaultValue = DarkMode.ON)
+    val isDarkTheme = remember(darkTheme, isSystemDark) {
+        if (darkTheme == DarkMode.AUTO) isSystemDark else darkTheme == DarkMode.ON
+    }
+    
     val appIconBgColor = if (isDarkTheme) Color.White else Color.Black
     val appIconTintColor = if (isDarkTheme) Color.Black else Color.White
 
@@ -128,56 +145,78 @@ fun AboutScreen(
         ) {
             Spacer(Modifier.height(16.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            // 1. App Header Elevated Card (Original Style)
+            ElevatedCard(
+                shape = RoundedCornerShape(32.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Surface(
-                    shape = RoundedCornerShape(20.dp),
-                    color = appIconBgColor,
-                    modifier = Modifier.size(80.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp)
                 ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Image(
-                            painter = painterResource(R.drawable.app_icon),
-                            contentDescription = null,
-                            modifier = Modifier.size(48.dp),
-                            colorFilter = ColorFilter.tint(appIconTintColor)
-                        )
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = appIconBgColor,
+                        modifier = Modifier.size(80.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Image(
+                                painter = painterResource(R.drawable.app_icon),
+                                contentDescription = null,
+                                modifier = Modifier.size(48.dp),
+                                colorFilter = ColorFilter.tint(appIconTintColor)
+                            )
+                        }
                     }
-                }
 
-                Spacer(Modifier.width(20.dp))
+                    Spacer(Modifier.width(20.dp))
 
-                Column {
-                    Text(
-                        text = stringResource(R.string.app_name),
-                        style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Black,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-
-                    Spacer(Modifier.height(4.dp))
-
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column {
                         Text(
-                            text = BuildConfig.BUILD_TYPE.lowercase(),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            text = stringResource(R.string.app_name),
+                            style = MaterialTheme.typography.headlineLarge,
+                            fontWeight = FontWeight.Black,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
-                        Text(
-                            text = BuildConfig.VERSION_NAME,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+
+                        Spacer(Modifier.height(4.dp))
+
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                            ) {
+                                Text(
+                                    text = BuildConfig.BUILD_TYPE.lowercase(),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                )
+                            }
+                            
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                            ) {
+                                Text(
+                                    text = BuildConfig.VERSION_NAME,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }
 
             Spacer(Modifier.height(40.dp))
 
+            // 2. Developer Image
             val fallback = painterResource(R.drawable.app_icon)
             AsyncImage(
                 model = leadDeveloper.avatarUrl,
@@ -193,13 +232,14 @@ fun AboutScreen(
 
             Spacer(Modifier.height(32.dp))
 
+            // 3. Developer Card (Elevated Original Style)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 12.dp)
             ) {
                 ElevatedCard(
-                    shape = RoundedCornerShape(28.dp),
+                    shape = RoundedCornerShape(32.dp),
                     colors = CardDefaults.elevatedCardColors(
                         containerColor = MaterialTheme.colorScheme.surface
                     ),
@@ -213,14 +253,15 @@ fun AboutScreen(
                         Text(
                             text = leadDeveloper.name,
                             style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = FontWeight.Black,
                             color = MaterialTheme.colorScheme.onSurface
                         )
+                        Spacer(Modifier.height(4.dp))
                         Text(
-                            text = leadDeveloper.role, // Fixed
+                            text = leadDeveloper.role,
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -248,8 +289,9 @@ fun AboutScreen(
 
             Spacer(Modifier.height(24.dp))
 
+            // 4. Social Links Card (Elevated Original Style)
             ElevatedCard(
-                shape = RoundedCornerShape(28.dp),
+                shape = RoundedCornerShape(32.dp),
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
@@ -272,7 +314,7 @@ fun AboutScreen(
                             ) {
                                 Surface(
                                     shape = CircleShape,
-                                    color = MaterialTheme.colorScheme.secondaryContainer,
+                                    color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
                                     modifier = Modifier.size(48.dp)
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
@@ -286,7 +328,7 @@ fun AboutScreen(
                                 }
                                 Spacer(Modifier.width(20.dp))
                                 Text(
-                                    text = link.label, // Fixed
+                                    text = link.label,
                                     style = MaterialTheme.typography.titleLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
