@@ -202,7 +202,10 @@ fun AppearanceSettings(
     val (cropAlbumArt, onCropAlbumArtChange) =
         rememberPreference(
             CropAlbumArtKey,
-            defaultValue = false,
+            //z-value
+            //defaultValue = false,
+            defaultValue = true,
+            //
         )
     val (playerBackground, onPlayerBackgroundChange) =
         rememberEnumPreference(
