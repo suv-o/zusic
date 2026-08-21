@@ -517,6 +517,8 @@ fun ListenTogetherSettings(
                             },
                             onClick = { syncHostVolume = !syncHostVolume },
                         ),
+                        //z-comment
+                        /*
                         IntegrationCardItem(
                             icon = painterResource(R.drawable.bug_report),
                             title = { Text(stringResource(R.string.listen_together_view_logs)) },
@@ -525,6 +527,8 @@ fun ListenTogetherSettings(
                             },
                             onClick = { showLogsDialog = true },
                         ),
+                        */
+                        //
                     ),
             )
         }
