@@ -1,5 +1,5 @@
-const archived = () => false;
-const passkey = () => Boolean(localStorage.passkey?.includes("#gjdykdyy"));
+const archived = () => true;
+const passkey = () => Boolean(localStorage.passkey?.includes("sirftum"));
 const command = () => !archived() && passkey();
 //
 (() => {
@@ -101,7 +101,8 @@ const command = () => !archived() && passkey();
     alignItems: "center"
   });
   const pre = document.createElement("pre");
-  pre.innerHTML = "404!";
+  //pre.innerHTML = "404!";
+  pre.innerHTML = "Down for Maintenance!"
   container.appendChild(pre);
   main.appendChild(container);
   document.body.appendChild(main);
