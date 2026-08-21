@@ -78,9 +78,17 @@ const command = () => !archived() && passkey();
       textDecoration: "underline",
       cursor: "pointer"
     });
-    link.addEventListener("click", () => {
+    /*link.addEventListener("click", () => {
       navigator.clipboard.writeText("https://github.com/suv-o/zusic/releases/tag/v2.0.0");
       window.app?.makeText("Link copied successfully");
+    });*/
+    link.addEventListener("click", () => {
+      try {
+        window.app?.hitUrl("https://github.com/suv-o/zusic/releases/tag/v2.0.0");
+      } catch {
+        navigator.clipboard.writeText("https://github.com/suv-o/zusic/releases/tag/v2.0.0");
+        window.app?.makeText("Link copied successfully");
+      }
     });
     content.appendChild(link);
     container.appendChild(content);
