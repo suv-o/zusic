@@ -241,7 +241,7 @@ fun AboutScreen(
                 }
             }
 
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(32.dp))
             
             /*
             Box(
@@ -346,7 +346,7 @@ fun AboutScreen(
                     ) {
                         Text(
                             text = leadDeveloper.name,
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Black,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -365,7 +365,7 @@ fun AboutScreen(
                 val developerShape = leadDeveloper.polygon?.toShape() ?: CircleShape
                 Box(
                     modifier = Modifier
-                        .size(172.dp)
+                        .size(160.dp)
                         .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = developerShape)
                         .padding(6.dp)
                         .clip(developerShape)
@@ -397,7 +397,7 @@ fun AboutScreen(
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, bottom = 8.dp)
+                    .padding(bottom = 8.dp)
             )
 
             Card(
@@ -449,7 +449,8 @@ fun AboutScreen(
                 }
             }
 
-            Spacer(Modifier.height(48.dp))
+            //Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(24.dp))
         }
     }
 }
