@@ -6,7 +6,7 @@ on:
   #    - "main"
   #  paths:
   #    - "app/build.gradle.kts"
-   workflow_dispatch:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -86,12 +86,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - variant: foss
-            variantName: Foss
+          #- variant: foss
+          #  variantName: Foss
           - variant: gms
             variantName: Gms
-          - variant: izzy
-            variantName: Izzy
+          #- variant: izzy
+          #  variantName: Izzy
 
     steps:
       - uses: actions/checkout@v4
@@ -166,7 +166,7 @@ jobs:
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.variant == 'gms' && 'Zusic' || matrix.variant == 'izzy' && 'Zusic-izzy' || 'Zusic-foss' }}
+          name: Zusic-Artifact-${{ matrix.variant }}
           path: app/build/outputs/apk/${{ matrix.variant }}/release/out/*.apk
 
   create-release:
@@ -191,14 +191,13 @@ jobs:
           echo "APKs ready for release:"
           ls -la release_files/
 
-      - name: Generate simple release note
+      - name: Generate blank release note
         run: |
-          VERSION="${{ needs.check-version.outputs.new_version }}"
-          echo "Release of version $VERSION" > release_notes.md
+          echo "" > release_notes.md
 
       - name: Create GitHub Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           gh release create "v${{ needs.check-version.outputs.new_version }}" \
             --title "v${{ needs.check-version.outputs.new_version }}" \
