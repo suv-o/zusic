@@ -362,7 +362,6 @@ fun AboutScreen(
                     }
                 }
 
-                // Overlapping Developer Image with Outline
                 val developerShape = leadDeveloper.polygon?.toShape() ?: CircleShape
                 Box(
                     modifier = Modifier
@@ -391,7 +390,6 @@ fun AboutScreen(
 
             Spacer(Modifier.height(24.dp))
             
-            // Section Heading for Social Card (Original file ke style jaisa)
             Text(
                 text = "Social Media",
                 style = MaterialTheme.typography.labelLarge,
