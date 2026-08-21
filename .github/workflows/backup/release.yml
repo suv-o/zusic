@@ -1,4 +1,4 @@
-Name: Bump to new version
+name: Bump to new version
 
 on:
   #push:
@@ -140,13 +140,13 @@ jobs:
           OUTPUT_DIR="app/build/outputs/apk/${{ matrix.variant }}/release"
           mkdir -p "$OUTPUT_DIR/out"
 
-          # Naming logic
+          # Determine target filename
           if [ "${{ matrix.variant }}" = "gms" ]; then
-            TARGET_NAME="Zusic.apk"
+            TARGET_NAME="Zusic-with-Google-Cast.apk"
           elif [ "${{ matrix.variant }}" = "izzy" ]; then
             TARGET_NAME="Zusic-izzy.apk"
           else
-            TARGET_NAME="Zusic-foss.apk"
+            TARGET_NAME="Zusic.apk"
           fi
 
           # Pick signed APK if available, otherwise take default release apk
@@ -166,7 +166,7 @@ jobs:
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.variant == 'gms' && 'Zusic' || matrix.variant == 'izzy' && 'Zusic-izzy' || 'Zusic-foss' }}
+          name: ${{ matrix.variant == 'gms' && 'Zusic-with-Google-Cast' || matrix.variant == 'izzy' && 'Zusic-izzy' || 'Zusic' }}
           path: app/build/outputs/apk/${{ matrix.variant }}/release/out/*.apk
 
   create-release:
@@ -191,10 +191,22 @@ jobs:
           echo "APKs ready for release:"
           ls -la release_files/
 
-      - name: Generate simple release note
+      - name: Generate release notes
         run: |
           VERSION="${{ needs.check-version.outputs.new_version }}"
-          echo "Release of version $VERSION" > release_notes.md
+          if [ -f ".github/scripts/parse_changelog.sh" ] && [ -f "changelog.md" ]; then
+            chmod +x .github/scripts/parse_changelog.sh
+            bash .github/scripts/parse_changelog.sh "$VERSION" changelog.md > release_notes.md || true
+          fi
+
+          if [ ! -s release_notes.md ]; then
+            {
+              echo "Release of version $VERSION"
+              echo ""
+              git log "$(git describe --tags --abbrev=0 2>/dev/null || echo "HEAD~10")..HEAD" \
+                --pretty=format:"- %s" --no-merges | head -10 || echo "- Initial release"
+            } > release_notes.md
+          fi
 
       - name: Create GitHub Release
         env:
