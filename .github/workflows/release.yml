@@ -1,4 +1,4 @@
-Name: Bump to new version
+name: Bump to new version
 
 on:
   #push:
