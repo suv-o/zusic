@@ -341,7 +341,7 @@ fun AboutScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 24.dp, end = 24.dp, top = 96.dp, bottom = 24.dp),
+                            .padding(start = 24.dp, end = 24.dp, top = 92.dp, bottom = 24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally 
                     ) {
                         Text(
