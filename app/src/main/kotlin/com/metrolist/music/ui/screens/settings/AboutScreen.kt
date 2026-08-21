@@ -7,6 +7,7 @@ package com.metrolist.music.ui.screens.settings
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -366,8 +367,9 @@ fun AboutScreen(
                 Box(
                     modifier = Modifier
                         .size(160.dp)
-                        .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = developerShape)
-                        .padding(6.dp)
+                        //.background(color = MaterialTheme.colorScheme.surfaceVariant, shape = developerShape)
+                        //.padding(6.dp)
+                        .border(6.dp, MaterialTheme.colorScheme.surfaceVariant, developerShape)
                         .clip(developerShape)
                         .background(appIconBgColor),
                     contentAlignment = Alignment.Center
