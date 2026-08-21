@@ -324,12 +324,11 @@ fun AboutScreen(
             }
             */
             
-                        // Merged Developer Image & Info Card
+            // Merged Developer Image & Info Card
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.TopCenter
             ) {
-                // Background Card
                 Card(
                     shape = RoundedCornerShape(32.dp),
                     colors = CardDefaults.cardColors(
@@ -337,12 +336,12 @@ fun AboutScreen(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 80.dp) // Image ke aadhe hisse (160/2) ke barabar space chhora
+                        .padding(top = 80.dp)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 24.dp, end = 24.dp, top = 96.dp, bottom = 24.dp), // Image ke niche se text start
+                            .padding(start = 24.dp, end = 24.dp, top = 96.dp, bottom = 24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally 
                     ) {
                         Text(
@@ -367,14 +366,10 @@ fun AboutScreen(
                 val developerShape = leadDeveloper.polygon?.toShape() ?: CircleShape
                 Box(
                     modifier = Modifier
-                        .size(160.dp)
-                        // 1. Outline ka color (App ke background jaisa cutout effect dega)
-                        .background(color = MaterialTheme.colorScheme.background, shape = developerShape)
-                        // 2. Outline ki thickness (6.dp)
+                        .size(172.dp)
+                        .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = developerShape)
                         .padding(6.dp)
-                        // 3. Andar wali image ko wapas shape main clip karna
                         .clip(developerShape)
-                        // 4. Fallback App Icon ke liye theme-aware background
                         .background(appIconBgColor),
                     contentAlignment = Alignment.Center
                 ) {
@@ -395,6 +390,17 @@ fun AboutScreen(
             
 
             Spacer(Modifier.height(24.dp))
+            
+            // Section Heading for Social Card (Original file ke style jaisa)
+            Text(
+                text = "Social Media",
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, bottom = 8.dp)
+            )
 
             Card(
                 shape = RoundedCornerShape(32.dp),
