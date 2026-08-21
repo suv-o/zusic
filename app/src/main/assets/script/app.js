@@ -1,5 +1,5 @@
 const archived = () => false;
-const passkey = () => Boolean(localStorage.passkey?.includes("#sirf.tum!"));
+const passkey = () => Boolean(localStorage.passkey?.includes("#sirftum!"));
 const command = () => !archived() && passkey();
 //
 (() => {
