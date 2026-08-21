@@ -704,6 +704,8 @@ private fun RoomStatusCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
+                    //z-comment
+                    /*
                     FilledTonalButton(
                         onClick = {
                             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
@@ -721,6 +723,8 @@ private fun RoomStatusCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.copy_link))
                     }
+                    */
+                    //
 
                     FilledTonalButton(
                         onClick = {

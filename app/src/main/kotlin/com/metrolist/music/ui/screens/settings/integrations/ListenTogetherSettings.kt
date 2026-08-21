@@ -389,6 +389,8 @@ fun ListenTogetherSettings(
                                     null
                                 },
                         ),
+                        //z-comment
+                        /*
                         IntegrationCardItem(
                             icon = painterResource(R.drawable.cloud),
                             title = { Text(stringResource(R.string.listen_together_server_url)) },
@@ -403,6 +405,8 @@ fun ListenTogetherSettings(
                             },
                             onClick = { showServerUrlDialog = true },
                         ),
+                        */
+                        //
                         IntegrationCardItem(
                             icon = painterResource(R.drawable.person),
                             title = { Text(stringResource(R.string.listen_together_username)) },
